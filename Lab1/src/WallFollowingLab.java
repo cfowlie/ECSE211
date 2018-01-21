@@ -21,7 +21,8 @@ public class WallFollowingLab {
   public static final EV3LargeRegulatedMotor leftMotor =
       new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
   public static final EV3LargeRegulatedMotor rightMotor =
-      new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+      new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+
   // Main entry point - instantiate objects used and set up sensor
 
   public static void main(String[] args) {
@@ -33,7 +34,8 @@ public class WallFollowingLab {
 
     // Setup controller objects
 
-    BangBangController bangbangController = new BangBangController(bandCenter, bandWidth, motorLow, motorHigh);
+    BangBangController bangbangController =
+        new BangBangController(bandCenter, bandWidth, motorLow, motorHigh);
 
     PController pController = new PController(bandCenter, bandWidth);
 
