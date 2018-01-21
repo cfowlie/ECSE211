@@ -17,16 +17,29 @@ public class BangBangController implements UltrasonicController {
     //WallFollowingLab.leftMotor.setSpeed(motorHigh); // Start robot moving forward
     WallFollowingLab.rightMotor.setSpeed(motorHigh);
     //WallFollowingLab.leftMotor.forward();
-    WallFollowingLab.rightMotor.forward();
-    
-    
-    
+    WallFollowingLab.rightMotor.forward(); 
   }
 
   @Override
   public void processUSData(int distance) {
     this.distance = distance;
-    // TODO: process a movement based on the us distance passed in (BANG-BANG style)
+    if(distance <= 50) {
+    	 	WallFollowingLab.leftMotor.setSpeed(motorLow); // Start robot moving forward
+        WallFollowingLab.rightMotor.setSpeed(motorHigh);
+        WallFollowingLab.leftMotor.forward();
+        WallFollowingLab.rightMotor.forward(); 
+    } else if(distance >= 100) {
+	 	WallFollowingLab.leftMotor.setSpeed(motorHigh); // Start robot moving forward
+        WallFollowingLab.rightMotor.setSpeed(motorLow);
+        WallFollowingLab.leftMotor.forward();
+        WallFollowingLab.rightMotor.forward(); 
+    }
+    else {
+	 	WallFollowingLab.leftMotor.setSpeed(motorHigh); // Start robot moving forward
+        WallFollowingLab.rightMotor.setSpeed(motorHigh);
+        WallFollowingLab.leftMotor.forward();
+        WallFollowingLab.rightMotor.forward(); 
+    }
   }
 
   @Override
