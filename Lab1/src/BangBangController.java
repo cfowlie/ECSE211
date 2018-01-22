@@ -14,31 +14,35 @@ public class BangBangController implements UltrasonicController {
     this.bandwidth = bandwidth;
     this.motorLow = motorLow;
     this.motorHigh = motorHigh;
-    //WallFollowingLab.leftMotor.setSpeed(motorHigh); // Start robot moving forward
-    WallFollowingLab.rightMotor.setSpeed(motorHigh);
-    //WallFollowingLab.leftMotor.forward();
-    WallFollowingLab.rightMotor.forward(); 
+    
   }
 
   @Override
   public void processUSData(int distance) {
     this.distance = distance;
-    if(distance <= 50) {
-    	 	WallFollowingLab.leftMotor.setSpeed(motorLow); // Start robot moving forward
-        WallFollowingLab.rightMotor.setSpeed(motorHigh);
-        WallFollowingLab.leftMotor.forward();
-        WallFollowingLab.rightMotor.forward(); 
-    } else if(distance >= 100) {
-	 	WallFollowingLab.leftMotor.setSpeed(motorHigh); // Start robot moving forward
+    if(distance <= 23) {
+    	WallFollowingLab.rightMotor.setSpeed(motorLow); //Way too close: do a spinning action
+        WallFollowingLab.leftMotor.setSpeed(motorLow);
+        WallFollowingLab.rightMotor.forward();
+        WallFollowingLab.leftMotor.backward(); } 
+    else if(distance >= 23 && distance < 25) {
+    	WallFollowingLab.leftMotor.setSpeed(motorHigh); // a bit too close: slightly increase speed of left wheel
         WallFollowingLab.rightMotor.setSpeed(motorLow);
-        WallFollowingLab.leftMotor.forward();
-        WallFollowingLab.rightMotor.forward(); 
+        WallFollowingLab.leftMotor.backward();
+        WallFollowingLab.rightMotor.backward(); 
+    } 
+    else if(distance >= 30){
+	 	
+        WallFollowingLab.leftMotor.setSpeed(motorLow); //Way too far, quickly turn back to course
+        WallFollowingLab.rightMotor.setSpeed(motorHigh);
+        WallFollowingLab.leftMotor.backward();
+        WallFollowingLab.rightMotor.backward(); 
     }
     else {
-	 	WallFollowingLab.leftMotor.setSpeed(motorHigh); // Start robot moving forward
+	 	WallFollowingLab.leftMotor.setSpeed(motorHigh); //Sweet spot (occurs between distances of 25 and 30).
         WallFollowingLab.rightMotor.setSpeed(motorHigh);
-        WallFollowingLab.leftMotor.forward();
-        WallFollowingLab.rightMotor.forward(); 
+        WallFollowingLab.leftMotor.backward();
+        WallFollowingLab.rightMotor.backward(); 
     }
   }
 

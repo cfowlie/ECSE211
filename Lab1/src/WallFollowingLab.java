@@ -13,8 +13,8 @@ public class WallFollowingLab {
 
   private static final int bandCenter = 20; // Offset from the wall (cm)
   private static final int bandWidth = 3; // Width of dead band (cm)
-  private static final int motorLow = 100; // Speed of slower rotating wheel (deg/sec)
-  private static final int motorHigh = 200; // Speed of the faster rotating wheel (deg/seec)
+  private static final int motorLow = 150; // Speed of slower rotating wheel (deg/sec)
+  private static final int motorHigh = 300; // Speed of the faster rotating wheel (deg/seec)
 
 
   private static final Port usPort = LocalEV3.get().getPort("S1");
@@ -37,7 +37,7 @@ public class WallFollowingLab {
     BangBangController bangbangController =
         new BangBangController(bandCenter, bandWidth, motorLow, motorHigh);
 
-    PController pController = new PController(bandCenter, bandWidth);
+    //PController pController = new PController(bandCenter, bandWidth);
 
     // Setup ultrasonic sensor
     // There are 4 steps involved:
@@ -68,10 +68,10 @@ public class WallFollowingLab {
         usPoller = new UltrasonicPoller(usDistance, usData, bangbangController);
         printer = new Printer(option, bangbangController);
         break;
-      case Button.ID_RIGHT: // Proportional control selected
+      /*case Button.ID_RIGHT: // Proportional control selected
         usPoller = new UltrasonicPoller(usDistance, usData, pController);
         printer = new Printer(option, pController);
-        break;
+        break;*/
       default:
         System.out.println("Error - invalid button"); // None of the above - abort
         System.exit(-1);
