@@ -20,28 +20,28 @@ public class BangBangController implements UltrasonicController {
   @Override
   public void processUSData(int distance) {
     this.distance = distance;
-    if(distance <= 23) {
+    if(distance <= 2*bandCenter) {
     	WallFollowingLab.rightMotor.setSpeed(motorLow); //Way too close: do a spinning action
         WallFollowingLab.leftMotor.setSpeed(motorLow);
-        WallFollowingLab.rightMotor.forward();
-        WallFollowingLab.leftMotor.backward(); } 
-    else if(distance >= 23 && distance < 25) {
+        WallFollowingLab.rightMotor.backward();
+        WallFollowingLab.leftMotor.forward(); } 
+    else if(distance >= 2*bandCenter + 3 && distance < 2*bandCenter + 5) {
     	WallFollowingLab.leftMotor.setSpeed(motorHigh); // a bit too close: slightly increase speed of left wheel
         WallFollowingLab.rightMotor.setSpeed(motorLow);
-        WallFollowingLab.leftMotor.backward();
-        WallFollowingLab.rightMotor.backward(); 
+        WallFollowingLab.leftMotor.forward();
+        WallFollowingLab.rightMotor.forward(); 
     } 
-    else if(distance >= 30){
+    else if(distance >= 2*bandCenter + 10){
         WallFollowingLab.leftMotor.setSpeed(motorLow); //Way too far, quickly turn back to course
         WallFollowingLab.rightMotor.setSpeed(motorHigh);
-        WallFollowingLab.leftMotor.backward();
-        WallFollowingLab.rightMotor.backward(); 
+        WallFollowingLab.leftMotor.forward();
+        WallFollowingLab.rightMotor.forward(); 
     }
     else {
 	 	WallFollowingLab.leftMotor.setSpeed(motorHigh); //Sweet spot (occurs between distances of 25 and 30).
         WallFollowingLab.rightMotor.setSpeed(motorHigh);
-        WallFollowingLab.leftMotor.backward();
-        WallFollowingLab.rightMotor.backward(); 
+        WallFollowingLab.leftMotor.forward();
+        WallFollowingLab.rightMotor.forward(); 
     }
   }
 

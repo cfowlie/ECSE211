@@ -28,8 +28,8 @@ public class Printer extends Thread {
       t.drawString("Controller Type is... ", 0, 0); // print header
       if (this.option == Button.ID_LEFT)
         t.drawString("BangBang", 0, 1);
-     /* else if (this.option == Button.ID_RIGHT)
-        t.drawString("P type", 0, 1);*/
+      else if (this.option == Button.ID_RIGHT)
+        t.drawString("P type", 0, 1);
       t.drawString("US Distance: " + cont.readUSDistance(), 0, 2); // print last US reading
 
       try {
@@ -43,6 +43,6 @@ public class Printer extends Thread {
   public static void printMainMenu() { // a static method for drawing
     t.clear(); // the screen at initialization
     t.drawString("left = bangbang", 0, 0);
-    //t.drawString("right = p type", 0, 1);
+    t.drawString("right = p type", 0, 1);
   }
 }
