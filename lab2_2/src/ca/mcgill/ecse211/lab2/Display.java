@@ -12,7 +12,6 @@ public class Display implements Runnable {
 
   private Odometer odo;
   private TextLCD lcd;
-  private double[] position;
   private final long DISPLAY_PERIOD = 25;
   private long timeout = Long.MAX_VALUE;
 
@@ -50,13 +49,13 @@ public class Display implements Runnable {
       updateStart = System.currentTimeMillis();
 
       // Retrieve x, y and Theta information
-      position = odo.getXYT();
+      double position[] = odo.getXYT();
       
       // Print x,y, and theta information
       DecimalFormat numberFormat = new DecimalFormat("######0.00");
-      lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
-      lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
-      lcd.drawString("T: " + numberFormat.format(position[2]), 0, 2);
+      lcd.drawString("X: " + numberFormat.format(Utils.convertTacho(position[0])), 0, 0);
+      lcd.drawString("Y: " + numberFormat.format(Utils.convertTacho(position[1])), 0, 1);
+      lcd.drawString("T: " + numberFormat.format(Utils.convertAngle(position[2])), 0, 2);
       
       // this ensures that the data is updated only once every period
       updateEnd = System.currentTimeMillis();

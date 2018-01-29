@@ -38,36 +38,23 @@ public class SquareDriver {
       // There is nothing to be done here
     }
 
-    for (int i = 0; i < 4; i++) {
+//    for (int i = 0; i < 4; i++) {
       // drive forward two tiles
+
+
+//      //turn 90 degrees clockwise
+//      leftMotor.setSpeed(ROTATE_SPEED);
+//      rightMotor.setSpeed(ROTATE_SPEED);
+
+      leftMotor.rotate(Utils.convertAngle(90.0), true);
+      rightMotor.rotate(-Utils.convertAngle(90.0), false);
+      
       leftMotor.setSpeed(FORWARD_SPEED);
       rightMotor.setSpeed(FORWARD_SPEED);
 
-      leftMotor.rotate(convertDistance(leftRadius, 2 * TILE_SIZE), true);
-      rightMotor.rotate(convertDistance(rightRadius, 2 * TILE_SIZE), false);
-
-      // turn 90 degrees clockwise
-      leftMotor.setSpeed(ROTATE_SPEED);
-      rightMotor.setSpeed(ROTATE_SPEED);
-
-      leftMotor.rotate(convertAngle(leftRadius, track, 90.0), true);
-      rightMotor.rotate(-convertAngle(rightRadius, track, 90.0), false);
-    }
+      leftMotor.rotate(Utils.convertDistance(3*TILE_SIZE), true);
+      rightMotor.rotate(Utils.convertDistance(3*TILE_SIZE), false);
+//    }
   }
-
-  /**
-   * This method allows the conversion of a distance to the total rotation of each wheel need to
-   * cover that distance.
-   * 
-   * @param radius
-   * @param distance
-   * @return
-   */
-  private static int convertDistance(double radius, double distance) {
-    return (int) ((180.0 * distance) / (Math.PI * radius));
-  }
-
-  private static int convertAngle(double radius, double width, double angle) {
-    return convertDistance(radius, Math.PI * width * angle / 360.0);
-  }
+  
 }

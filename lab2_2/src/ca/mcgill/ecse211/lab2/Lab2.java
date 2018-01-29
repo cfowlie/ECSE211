@@ -15,19 +15,16 @@ public class Lab2 {
   private static final EV3LargeRegulatedMotor rightMotor =
       new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
   private static final TextLCD lcd = LocalEV3.get().getTextLCD();
-  public static final double WHEEL_RAD = 2.095;
-  public static final double TRACK = 9.2;
-
+  
   public static void main(String[] args) throws OdometerExceptions {
 
     int buttonChoice;
 
     // Odometer related objects
-    Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete implementation
-    OdometryCorrection odometryCorrection = new OdometryCorrection(); // TODO Complete
-                                                                      // implementation
+    Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, Utils.WHEEL_TRACK, Utils.WHEEL_RAD); // TODO Complete implementation
+    OdometryCorrection odometryCorrection = new OdometryCorrection(); 
+                                                                      
     Display odometryDisplay = new Display(lcd); // No need to change
-
 
     do {
       // clear the display
@@ -36,28 +33,18 @@ public class Lab2 {
       // ask the user whether the motors should drive in a square or float
       lcd.drawString("< Left | Right >", 0, 0);
       lcd.drawString("       |        ", 0, 1);
-      lcd.drawString(" Float | Drive  ", 0, 2);
-      lcd.drawString("motors | in a   ", 0, 3);
-      lcd.drawString("       | square ", 0, 4);
-
+      lcd.drawString("       |        ", 0, 2);
+      lcd.drawString("       |        ", 0, 3);
+      lcd.drawString("       |        ", 0, 4);
+      
       buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
     } while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 
     if (buttonChoice == Button.ID_LEFT) {
       // Float the motors
-      leftMotor.forward();
-      leftMotor.flt();
-      rightMotor.forward();
-      rightMotor.flt();
-
-      // Display changes in position as wheels are (manually) moved
-      
-      Thread odoThread = new Thread(odometer);
-      odoThread.start();
-      Thread odoDisplayThread = new Thread(odometryDisplay);
-      odoDisplayThread.start();
-
-    } else {
+    	 lcd.clear();
+    	    	 
+        } else {
       // clear the display
       lcd.clear();
 
@@ -76,7 +63,7 @@ public class Lab2 {
       Thread odoDisplayThread = new Thread(odometryDisplay);
       odoDisplayThread.start();
 
-      // Start correction if right button was pressed
+      // Start correction if right button was pressed   39.7 39.4 39.5 for 1080
       if (buttonChoice == Button.ID_RIGHT) {
         Thread odoCorrectionThread = new Thread(odometryCorrection);
         odoCorrectionThread.start();
@@ -85,12 +72,12 @@ public class Lab2 {
       // spawn a new Thread to avoid SquareDriver.drive() from blocking
       (new Thread() {
         public void run() {
-          SquareDriver.drive(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK);
+          SquareDriver.drive(leftMotor, rightMotor, Utils.WHEEL_RAD, Utils.WHEEL_RAD, Utils.WHEEL_TRACK);
         }
       }).start();
     }
 
-    while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+    Button.waitForAnyPress();
     System.exit(0);
   }
 }

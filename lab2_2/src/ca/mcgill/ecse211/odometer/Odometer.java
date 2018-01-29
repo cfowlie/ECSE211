@@ -10,11 +10,15 @@
 
 package ca.mcgill.ecse211.odometer;
 
-import ca.mcgill.ecse211.lab2.Lab2;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+
+import java.util.ArrayList;
+
+import ca.mcgill.ecse211.lab2.*;
 
 public class Odometer extends OdometerData implements Runnable {
 
+  private OdometerData odoData;
   private static Odometer odo = null; // Returned as singleton
 
   // Motors and related variables
@@ -25,9 +29,6 @@ public class Odometer extends OdometerData implements Runnable {
 
   private final double TRACK;
   private final double WHEEL_RAD;
-
-  private double[] position = new double[3];
-
 
   private static final long ODOMETER_PERIOD = 25; // odometer update period in ms
 
@@ -40,19 +41,20 @@ public class Odometer extends OdometerData implements Runnable {
    * @throws OdometerExceptions
    */
   private Odometer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
-      final double TRACK, final double WHEEL_RAD) throws OdometerExceptions {
-
+      final double wheelWidth, final double wheelRad) throws OdometerExceptions {
+    odoData = OdometerData.getOdometerData(); // Allows access to x,y,z
+                                              // manipulation methods
     this.leftMotor = leftMotor;
     this.rightMotor = rightMotor;
 
     // Reset the values of x, y and z to 0
-    this.setXYT(0, 0, 0);
+    odoData.setXYT(0, 0, 0);
 
     this.leftMotorTachoCount = 0;
     this.rightMotorTachoCount = 0;
 
-    this.TRACK = TRACK;
-    this.WHEEL_RAD = WHEEL_RAD;
+    this.TRACK = wheelWidth;
+    this.WHEEL_RAD = wheelRad;
 
   }
 
@@ -90,49 +92,52 @@ public class Odometer extends OdometerData implements Runnable {
     return odo;
   }
 
-  /**
-   * This method is where the logic for the odometer will run. Use the methods provided from the
-   * OdometerData class to implement the odometer.
-   */
-  // run method (required for Thread)
-  public void run() {
-    long updateStart, updateEnd;
+  	/**
+	 * This method is where the logic for the odometer will run. Use the methods
+	 * provided from the OdometerData class to implement the odometer.
+	 */
+	// run method (required for Thread)
+	public void run() {
+		long updateStart, updateEnd;
 
-    while (true) {
-      updateStart = System.currentTimeMillis();
-      
-      double dL = leftMotor.getTachoCount() - leftMotorTachoCount;
-      double dR = rightMotor.getTachoCount() - rightMotorTachoCount;
-      
-      double d1 = (Math.PI*dL*Lab2.WHEEL_RAD)/180;
-    	  double d2 = (Math.PI*dR*Lab2.WHEEL_RAD)/180;
-    	  
-    	  //Distance
-    	  double distance = (d1+d2)/2;
-    	  
-    	  //Theta
-    	  double dt = (d1-d2)/Lab2.TRACK;
-    	  double t = dt + odo.position[2];
-    	  
-    	  //Positions
-    	  double dx = distance * Math.sin(t);
-    	  double dy = distance * Math.code(t);
-      
-      leftMotorTachoCount = leftMotor.getTachoCount();
-      rightMotorTachoCount = rightMotor.getTachoCount();
+		while (true) {
+			updateStart = System.currentTimeMillis();
 
-      odo.update(dx, dy, dt);
+			// Calculate new robot position based on tachometer counts
+			double position[] = odo.getXYT();
+			
+			//Distance
+			double sL = leftMotor.getTachoCount() - odo.leftMotorTachoCount;
+			double sR = rightMotor.getTachoCount() - odo.rightMotorTachoCount;
+			double distance = (sL + sR)/2;
+			
+			// Delta Theta
+			double dt = (sL-sR)/odo.TRACK;
+			
+			// X & Y
+			double t = dt + position[2];
+			double dx = distance * Math.sin(t);
+			double dy = distance * Math.cos(t);
+	
 
-      // this ensures that the odometer only runs once every period
-      updateEnd = System.currentTimeMillis();
-      if (updateEnd - updateStart < ODOMETER_PERIOD) {
-        try {
-          Thread.sleep(ODOMETER_PERIOD - (updateEnd - updateStart));
-        } catch (InterruptedException e) {
-          // there is nothing to be done
-        }
-      }
-    }
-  }
+			// Update the odo only if we have moved
+			if((dx != odo.getXYT()[0] || dy != odo.getXYT()[1] || dt != odo.getXYT()[2]) && distance != 0)  {
+				odo.leftMotorTachoCount = leftMotor.getTachoCount();
+				odo.rightMotorTachoCount = rightMotor.getTachoCount();
+				odo.update(dx, dy, dt);
+			}
+			
+
+			// this ensures that the odometer only runs once every period
+			updateEnd = System.currentTimeMillis();
+			if (updateEnd - updateStart < ODOMETER_PERIOD) {
+				try {
+					Thread.sleep(ODOMETER_PERIOD - (updateEnd - updateStart));
+				} catch (InterruptedException e) {
+					// there is nothing to be done
+				}
+			}
+		}
+	}
 
 }

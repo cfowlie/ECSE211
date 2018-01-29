@@ -36,7 +36,7 @@ public class OdometryCorrection implements Runnable {
 
       // TODO Update odometer with new calculated (and more accurate) vales
 
-      odometer.setXYT(0.3, 19.23, 5.0);
+//      odometer.setXYT(0.3, 19.23, 5.0);
 
       // this ensure the odometry correction occurs only once every period
       correctionEnd = System.currentTimeMillis();
