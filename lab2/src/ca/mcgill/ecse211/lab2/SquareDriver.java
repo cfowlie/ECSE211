@@ -11,8 +11,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 public class SquareDriver {
   private static final int FORWARD_SPEED = 250;
   private static final int ROTATE_SPEED = 150;
-  private static final double TILE_SIZE = 30.48;
-
+  public static final double TILE_SIZE = 30.48;
+  public static int i;
   /**
    * This method is meant to drive the robot in a square of size 2x2 Tiles. It is to run in parallel
    * with the odometer and Odometer correcton classes allow testing their functionality.
@@ -38,13 +38,13 @@ public class SquareDriver {
       // There is nothing to be done here
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
       // drive forward two tiles
       leftMotor.setSpeed(FORWARD_SPEED);
       rightMotor.setSpeed(FORWARD_SPEED);
 
-      leftMotor.rotate(convertDistance(leftRadius, 2 * TILE_SIZE), true);
-      rightMotor.rotate(convertDistance(rightRadius, 2 * TILE_SIZE), false);
+      leftMotor.rotate(convertDistance(leftRadius, 3 * TILE_SIZE), true);
+      rightMotor.rotate(convertDistance(rightRadius, 3 * TILE_SIZE), false);
 
       // turn 90 degrees clockwise
       leftMotor.setSpeed(ROTATE_SPEED);

@@ -11,6 +11,7 @@
 package ca.mcgill.ecse211.odometer;
 
 import ca.mcgill.ecse211.lab2.Lab2;
+import java.lang.Math;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 public class Odometer extends OdometerData implements Runnable {
@@ -23,8 +24,7 @@ public class Odometer extends OdometerData implements Runnable {
   private EV3LargeRegulatedMotor leftMotor;
   private EV3LargeRegulatedMotor rightMotor;
 
-  private final double TRACK;
-  private final double WHEEL_RAD;
+  
 
   private double[] position = new double[3];
 
@@ -39,7 +39,7 @@ public class Odometer extends OdometerData implements Runnable {
    * @param rightMotor
    * @throws OdometerExceptions
    */
-  private Odometer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
+  public Odometer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
       final double TRACK, final double WHEEL_RAD) throws OdometerExceptions {
 
     this.leftMotor = leftMotor;
@@ -51,8 +51,7 @@ public class Odometer extends OdometerData implements Runnable {
     this.leftMotorTachoCount = 0;
     this.rightMotorTachoCount = 0;
 
-    this.TRACK = TRACK;
-    this.WHEEL_RAD = WHEEL_RAD;
+   
 
   }
 
@@ -101,27 +100,31 @@ public class Odometer extends OdometerData implements Runnable {
     while (true) {
       updateStart = System.currentTimeMillis();
       
+     
+    
       double dL = leftMotor.getTachoCount() - leftMotorTachoCount;
       double dR = rightMotor.getTachoCount() - rightMotorTachoCount;
       
       double d1 = (Math.PI*dL*Lab2.WHEEL_RAD)/180;
     	  double d2 = (Math.PI*dR*Lab2.WHEEL_RAD)/180;
     	  
-    	  //Distance
+    	  //Distance 
     	  double distance = (d1+d2)/2;
     	  
-    	  //Theta
+    	  //Theta 
     	  double dt = (d1-d2)/Lab2.TRACK;
-    	  double t = dt + odo.position[2];
     	  
-    	  //Positions
-    	  double dx = distance * Math.sin(t);
-    	  double dy = distance * Math.code(t);
+    	  position = odo.getXYT();
+    	  //Positions 
+    	  double dx = distance*Math.sin(position[2]*1.03);
+    	  double dy = distance*Math.cos(position[2]*1.03);
       
-      leftMotorTachoCount = leftMotor.getTachoCount();
-      rightMotorTachoCount = rightMotor.getTachoCount();
+    	  leftMotorTachoCount = leftMotor.getTachoCount();
+          rightMotorTachoCount = rightMotor.getTachoCount();
 
       odo.update(dx, dy, dt);
+      
+      
 
       // this ensures that the odometer only runs once every period
       updateEnd = System.currentTimeMillis();
