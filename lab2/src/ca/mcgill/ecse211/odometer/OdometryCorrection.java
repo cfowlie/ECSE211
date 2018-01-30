@@ -1,52 +1,167 @@
-/*
- * OdometryCorrection.java
+/**
+ * This class is meant as a skeleton for the odometer class to be used.
+ * 
+ * @author Rodrigo Silva
+ * @author Dirk Dubois
+ * @author Derek Yu
+ * @author Karim El-Baba
+ * @author Michael Smith
  */
+
 package ca.mcgill.ecse211.odometer;
 
-public class OdometryCorrection implements Runnable {
-  private static final long CORRECTION_PERIOD = 10;
-  private Odometer odometer;
+import ca.mcgill.ecse211.lab2.Lab2;
+import ca.mcgill.ecse211.lab2.SquareDriver;
+
+import java.lang.Math;
+
+import lejos.hardware.Sound;
+import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.sensor.EV3ColorSensor;
+
+public class OdometryCorrection extends OdometerData implements Runnable {
+
+  private static OdometryCorrection odo = null; // Returned as singleton
+
+  // Motors and related variables
+  private int leftMotorTachoCount;
+  private int rightMotorTachoCount;
+  private EV3LargeRegulatedMotor leftMotor;
+  private EV3LargeRegulatedMotor rightMotor;
+  
+  private static final EV3ColorSensor colorSensor =
+	      new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+
+  
+
+  private double[] position = new double[3];
+
+
+  private static final long ODOMETER_PERIOD = 25; // odometer update period in ms
 
   /**
-   * This is the default class constructor. An existing instance of the odometer is used. This is to
-   * ensure thread safety.
+   * This is the default constructor of this class. It initiates all motors and variables once.It
+   * cannot be accessed externally.
    * 
+   * @param leftMotor
+   * @param rightMotor
    * @throws OdometerExceptions
    */
-  public OdometryCorrection() throws OdometerExceptions {
+  public OdometryCorrection(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
+      final double TRACK, final double WHEEL_RAD) throws OdometerExceptions {
 
-    this.odometer = Odometer.getOdometer();
+    this.leftMotor = leftMotor;
+    this.rightMotor = rightMotor;
+
+    // Reset the values of x, y and z to 0
+    this.setXYT(0, 0, 0);
+
+    this.leftMotorTachoCount = 0;
+    this.rightMotorTachoCount = 0;
+
+   
 
   }
 
   /**
-   * Here is where the odometer correction code should be run.
+   * This method is meant to ensure only one instance of the odometer is used throughout the code.
    * 
+   * @param leftMotor
+   * @param rightMotor
+   * @return new or existing Odometer Object
    * @throws OdometerExceptions
+   */
+  public synchronized static OdometryCorrection getOdometer(EV3LargeRegulatedMotor leftMotor,
+      EV3LargeRegulatedMotor rightMotor, final double TRACK, final double WHEEL_RAD)
+      throws OdometerExceptions {
+    if (odo != null) { // Return existing object
+      return odo;
+    } else { // create object and return it
+      odo = new OdometryCorrection(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+      return odo;
+    }
+  }
+
+  /**
+   * This class is meant to return the existing Odometer Object. It is meant to be used only if an
+   * odometer object has been created
+   * 
+   * @return error if no previous odometer exists
+   */
+  public synchronized static OdometryCorrection getOdometer() throws OdometerExceptions {
+
+    if (odo == null) {
+      throw new OdometerExceptions("No previous Odometer exits.");
+
+    }
+    return odo;
+  }
+
+  /**
+   * This method is where the logic for the odometer will run. Use the methods provided from the
+   * OdometerData class to implement the odometer.
    */
   // run method (required for Thread)
   public void run() {
-    long correctionStart, correctionEnd;
+    long updateStart, updateEnd;
 
     while (true) {
-      correctionStart = System.currentTimeMillis();
+      updateStart = System.currentTimeMillis();
+      
+     
+    
+      double dL = leftMotor.getTachoCount() - leftMotorTachoCount;
+      double dR = rightMotor.getTachoCount() - rightMotorTachoCount;
+      
+      double d1 = (Math.PI*dL*Lab2.WHEEL_RAD)/180;
+    	  double d2 = (Math.PI*dR*Lab2.WHEEL_RAD)/180;
+    	  
+    	  //Distance 
+    	  double distance = (d1+d2)/2;
+    	  
+    	  //Theta 
+    	  double dt = (d1-d2)/Lab2.TRACK;
+    	  
+    	  position = odo.getXYT();
+    	  //Positions 
+    	  double dx = distance*Math.sin(position[2]*1.03);
+    	  double dy = distance*Math.cos(position[2]*1.03);
+      
+    	  leftMotorTachoCount = leftMotor.getTachoCount();
+          rightMotorTachoCount = rightMotor.getTachoCount();
 
-      // TODO Trigger correction (When do I have information to correct?)
-      // TODO Calculate new (accurate) robot position
+      odo.update(dx, dy, dt);
+      
+      
+      
+      double c = 0;
+      
+      if(colorSensor.getColorID() > 10) {
+    	  
+      
+      
+      if(SquareDriver.i == 0) {
+    	  Sound.beepSequenceUp();
+    	  odo.setY(dy+c);
+    	  c=c+SquareDriver.TILE_SIZE;
+    	  
+      }
+      
+      }
+      
+      
 
-      // TODO Update odometer with new calculated (and more accurate) vales
-
-      odometer.setXYT(0.3, 19.23, 5.0);
-
-      // this ensure the odometry correction occurs only once every period
-      correctionEnd = System.currentTimeMillis();
-      if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+      // this ensures that the odometer only runs once every period
+      updateEnd = System.currentTimeMillis();
+      if (updateEnd - updateStart < ODOMETER_PERIOD) {
         try {
-          Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+          Thread.sleep(ODOMETER_PERIOD - (updateEnd - updateStart));
         } catch (InterruptedException e) {
-          // there is nothing to be done here
+          // there is nothing to be done
         }
       }
     }
   }
+
 }
