@@ -16,16 +16,15 @@ public class Lab2 {
       new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
   private static final TextLCD lcd = LocalEV3.get().getTextLCD();
   public static final double WHEEL_RAD = 2.095;
-  public static final double TRACK = 9.0;
+  public static final double TRACK = 9.17;
 
   public static void main(String[] args) throws OdometerExceptions {
 
     int buttonChoice;
 
     // Odometer related objects
-    Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete implementation
-    OdometryCorrection odometryCorrection = new OdometryCorrection(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete
-                                                                      // implementation
+    Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); 
+    OdometryCorrection odometryCorrection = OdometryCorrection.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);                                                               
     Display odometryDisplay = new Display(lcd); // No need to change
 
 

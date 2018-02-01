@@ -30,13 +30,9 @@ public class OdometryCorrection extends OdometerData implements Runnable {
   private EV3LargeRegulatedMotor leftMotor;
   private EV3LargeRegulatedMotor rightMotor;
   
-  private static final EV3ColorSensor colorSensor =
-	      new EV3ColorSensor(LocalEV3.get().getPort("S1"));
-
-  
+  public static final EV3ColorSensor colorSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
   private double[] position = new double[3];
-
 
   private static final long ODOMETER_PERIOD = 25; // odometer update period in ms
 
@@ -59,9 +55,6 @@ public class OdometryCorrection extends OdometerData implements Runnable {
 
     this.leftMotorTachoCount = 0;
     this.rightMotorTachoCount = 0;
-
-   
-
   }
 
   /**
@@ -108,8 +101,6 @@ public class OdometryCorrection extends OdometerData implements Runnable {
 
     while (true) {
       updateStart = System.currentTimeMillis();
-      
-     
     
       double dL = leftMotor.getTachoCount() - leftMotorTachoCount;
       double dR = rightMotor.getTachoCount() - rightMotorTachoCount;
@@ -121,37 +112,40 @@ public class OdometryCorrection extends OdometerData implements Runnable {
     	  double distance = (d1+d2)/2;
     	  
     	  //Theta 
-    	  double dt = (d1-d2)/Lab2.TRACK;
+    	  double dt = (d2-d1)/Lab2.TRACK;
     	  
     	  position = odo.getXYT();
     	  //Positions 
-    	  double dx = distance*Math.sin(position[2]*1.03);
-    	  double dy = distance*Math.cos(position[2]*1.03);
+    	  double dx = distance*Math.sin(position[2]+dt);
+    	  double dy = distance*Math.cos(position[2]+dt);
       
     	  leftMotorTachoCount = leftMotor.getTachoCount();
-          rightMotorTachoCount = rightMotor.getTachoCount();
+      rightMotorTachoCount = rightMotor.getTachoCount();
 
       odo.update(dx, dy, dt);
-      
-      
-      
-      double c = 0;
-      
+             
+      // Detected Line
       if(colorSensor.getColorID() > 10) {
-    	  
-      
-      
-      if(SquareDriver.i == 0) {
-    	  Sound.beepSequenceUp();
-    	  odo.setY(dy+c);
-    	  c=c+SquareDriver.TILE_SIZE;
-    	  
-      }
-      
-      }
-      
-      
 
+    	  	// Moving in X direction
+    	  	if(dx > 0.05 || dx < -0.05) {
+    	  	  	Sound.playTone(1500, 300);
+        	  	odo.setX(SquareDriver.TILE_SIZE*Math.round(position[0]%SquareDriver.TILE_SIZE));
+    	  	}
+    	  	
+    	  	// Moving in Y direction
+    	  	if(dy > 0.05 || dy < -0.05) {
+    	  		Sound.playTone(1000, 300);
+        	  	odo.setY(SquareDriver.TILE_SIZE*Math.round(position[1]%SquareDriver.TILE_SIZE));
+        	 }
+    	  	
+    	  	//Turning Correction
+    	  	if(dt > 0.05 || dt < -0.05) {
+    	  		//Nothing to do here
+    	  	}
+        	  	 
+      }
+      
       // this ensures that the odometer only runs once every period
       updateEnd = System.currentTimeMillis();
       if (updateEnd - updateStart < ODOMETER_PERIOD) {

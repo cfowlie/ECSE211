@@ -3,7 +3,10 @@ package ca.mcgill.ecse211.lab2;
 import java.text.DecimalFormat;
 import ca.mcgill.ecse211.odometer.Odometer;
 import ca.mcgill.ecse211.odometer.OdometerExceptions;
+import ca.mcgill.ecse211.odometer.OdometryCorrection;
+import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
+import lejos.hardware.sensor.EV3ColorSensor;
 
 /**
  * This class is used to display the content of the odometer variables (x, y, Theta)
@@ -57,6 +60,7 @@ public class Display implements Runnable {
       lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
       lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
       lcd.drawString("T: " + numberFormat.format((int) (position[2]*1.02*360/(2*Math.PI)%360)), 0, 2);
+      lcd.drawString("C: " + numberFormat.format(OdometryCorrection.colorSensor.getColorID()), 0, 3);
       
       // this ensures that the data is updated only once every period
       updateEnd = System.currentTimeMillis();

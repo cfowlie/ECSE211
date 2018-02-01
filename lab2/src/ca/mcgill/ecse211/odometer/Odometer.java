@@ -24,10 +24,7 @@ public class Odometer extends OdometerData implements Runnable {
   private EV3LargeRegulatedMotor leftMotor;
   private EV3LargeRegulatedMotor rightMotor;
 
-  
-
   private double[] position = new double[3];
-
 
   private static final long ODOMETER_PERIOD = 25; // odometer update period in ms
 
@@ -50,9 +47,7 @@ public class Odometer extends OdometerData implements Runnable {
 
     this.leftMotorTachoCount = 0;
     this.rightMotorTachoCount = 0;
-
-   
-
+    
   }
 
   /**
@@ -100,8 +95,6 @@ public class Odometer extends OdometerData implements Runnable {
     while (true) {
       updateStart = System.currentTimeMillis();
       
-     
-    
       double dL = leftMotor.getTachoCount() - leftMotorTachoCount;
       double dR = rightMotor.getTachoCount() - rightMotorTachoCount;
       
@@ -120,12 +113,10 @@ public class Odometer extends OdometerData implements Runnable {
     	  double dy = distance*Math.cos(position[2]*1.03);
       
     	  leftMotorTachoCount = leftMotor.getTachoCount();
-          rightMotorTachoCount = rightMotor.getTachoCount();
+      rightMotorTachoCount = rightMotor.getTachoCount();
 
       odo.update(dx, dy, dt);
       
-      
-
       // this ensures that the odometer only runs once every period
       updateEnd = System.currentTimeMillis();
       if (updateEnd - updateStart < ODOMETER_PERIOD) {
