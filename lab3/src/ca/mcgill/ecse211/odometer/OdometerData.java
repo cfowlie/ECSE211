@@ -121,7 +121,7 @@ public class OdometerData {
     try {
       x += dx;
       y += dy;
-      theta = (theta + (360 + dtheta) % 360) % 360; // keeps the updates
+      theta = (theta + (360 + dtheta)%360)%360 ; // keeps the updates
                                                     // within 360
                                                     // degrees
       isReseting = false; // Done reseting

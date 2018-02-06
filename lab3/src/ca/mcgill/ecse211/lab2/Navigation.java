@@ -10,6 +10,8 @@ public class Navigation {
 	  private static final int ROTATE_SPEED = 85;
 	  public static final double TILE_SIZE = 30.48;	
 	
+	  static double arr_d[] = new double[6];
+	  
 	  public static final int map1_X[] = {0,1,2,2,1};
 	  public static final int map2_X[] = {1,0,2,2,1};
 	  public static final int map3_X[] = {1,2,2,0,1};
@@ -43,9 +45,38 @@ public class Navigation {
 	  
 	  public static double turnAngle(int stage, int map) {
 		  
-		  double angle = Math.atan((double) Odometer.position[0]-TILE_SIZE*all_maps_X[map][stage]/ ((double) Odometer.position[1]-TILE_SIZE*all_maps_Y[map][stage]+0.0001));
+		  double diff = Math.atan((Odometer.position[0]-TILE_SIZE*all_maps_X[map][stage]) / (Odometer.position[1]-TILE_SIZE*all_maps_Y[map][stage]+0.0001));
+		  
+		  
+		  
+		  arr_d[stage+1] = diff;
+		  
+		  if(diff >= -9*Math.PI/8 && diff < -Math.PI/8 ) {
+		  
+		  if(Odometer.position[2]%180 > 165 && Odometer.position[2]%180 <= 180) {
+			  double angle = (Odometer.position[2]%90 + diff*180/Math.PI);
+			  
+			  return angle; 
+		  }else {
+			  
+		  double angle = -(Odometer.position[2]%90 - diff*180/Math.PI);
 			  
 		  return angle;
+		  }
+		  
+		  }
+		  
+		  else {
+			  
+			  
+			  if(Odometer.position[2]%180 > 165 && Odometer.position[2]%180 <= 180) {
+				  double angle = -(Odometer.position[2]%90 - diff*180/Math.PI);
+				  return angle;
+			  }else {
+				  double angle = Odometer.position[2]%90 + diff*180/Math.PI;
+				  return angle;
+			  }
+		  }
 	  }
 
 	  
@@ -56,11 +87,11 @@ public class Navigation {
 		    // reset the motors
 		    for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
 		      motor.stop();
-		      motor.setAcceleration(1000);
+		      motor.setAcceleration(3000);
 		      
 		      
 		      try {
-		          Thread.sleep(2000);
+		          Thread.sleep(8000);
 		        } catch (InterruptedException e) {
 		          // There is nothing to be done here
 		        }

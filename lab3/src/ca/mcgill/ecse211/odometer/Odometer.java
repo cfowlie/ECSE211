@@ -105,17 +105,17 @@ public class Odometer extends OdometerData implements Runnable {
     	  double distance = (d1+d2)/2;
     	  
     	  //Theta 
-    	  double dt = (d1-d2)/Lab3.TRACK;
+    	  double dt = (d1-d2)/Lab3.TRACK*1.06;
     	  
     	  position = odo.getXYT();
     	  //Positions 
-    	  double dx = distance*Math.sin(position[2]*1.03);
-    	  double dy = distance*Math.cos(position[2]*1.03);
+    	  double dx = distance*Math.sin(position[2]*Math.PI/180);
+    	  double dy = distance*Math.cos(position[2]*Math.PI/180);
       
     	  leftMotorTachoCount = leftMotor.getTachoCount();
       rightMotorTachoCount = rightMotor.getTachoCount();
 
-      odo.update(dx, dy, dt);
+      odo.update(dx, dy, dt*180/Math.PI);
       
       // this ensures that the odometer only runs once every period
       updateEnd = System.currentTimeMillis();

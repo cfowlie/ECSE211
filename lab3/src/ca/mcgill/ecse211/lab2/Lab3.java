@@ -16,7 +16,7 @@ public class Lab3 {
       new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
   private static final TextLCD lcd = LocalEV3.get().getTextLCD();
   public static final double WHEEL_RAD = 2.095;
-  public static final double TRACK = 9.17;
+  public static final double TRACK = 9.1;
 
   public static void main(String[] args) throws OdometerExceptions {
 
@@ -75,7 +75,7 @@ public class Lab3 {
         }).start();
       
 
-    } else if (buttonChoice == Button.ID_RIGHT) {
+    } else if (buttonChoice == Button.ID_RIGHT ) {
     	
       lcd.clear();
 
@@ -84,18 +84,32 @@ public class Lab3 {
       Thread odoDisplayThread = new Thread(odometryDisplay);
       odoDisplayThread.start();
     	
-    	
-       // Thread odoCorrectionThread = new Thread(odometryCorrection);
-       // odoCorrectionThread.start();
-      
+    
 
       // spawn a new Thread to avoid SquareDriver.drive() from blocking
       (new Thread() {
         public void run() {
-          SquareDriver.drive(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK);
+          Navigation.drive(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK,2);
         }
       }).start();
-    }
+    } else if (buttonChoice == Button.ID_LEFT ) {
+    	
+        lcd.clear();
+
+        Thread odoThread = new Thread(odometer);
+        odoThread.start();
+        Thread odoDisplayThread = new Thread(odometryDisplay);
+        odoDisplayThread.start();
+      	
+      
+
+        // spawn a new Thread to avoid SquareDriver.drive() from blocking
+        (new Thread() {
+          public void run() {
+            Navigation.drive(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK,3);
+          }
+        }).start();
+      }
 
     Button.waitForAnyPress();
     System.exit(0);
