@@ -10,14 +10,14 @@ import lejos.robotics.SampleProvider;
  * one cycle through the loop is approximately 70 mS. This corresponds to a sampling rate of 1/70mS
  * or about 14 Hz.
  */
-public class UltrasonicPoller extends Thread {
+public class UltrasonicPoller extends Thread implements Runnable {
   private SampleProvider us;
   private UltrasonicController cont;
   private float[] usData;
 
-  public UltrasonicPoller(SampleProvider us, float[] usData) {
+  public UltrasonicPoller(SampleProvider us, float[] usData, UltrasonicController cont) {
     this.us = us;
-
+    this.cont = cont;
     this.usData = usData;
   }
 

@@ -3,6 +3,7 @@ package lab4;
 import odometer.Display;
 import odometer.Odometer;
 import odometer.OdometerExceptions;
+import ultrasonic.UltrasonicPoller;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -39,7 +40,7 @@ public class Lab4 {
 		SampleProvider usDistance = usSensor.getMode("Distance"); // usDistance provides samples from
 
 		// Localizers
-		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
+		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer(leftMotor, rightMotor);
 		final LightLocalizer lightLocalizer = new LightLocalizer();
 
 		int buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
@@ -54,13 +55,17 @@ public class Lab4 {
 		lcd.drawString(" edge  | edge   ", 0, 3);
 		buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
 
-		if (buttonChoice == Button.ID_LEFT) {
-			// Display changes in position as wheels are (manually) moved
-			Thread odoThread = new Thread(odometer);
-			odoThread.start();
-			Thread odoDisplayThread = new Thread(odometryDisplay);
-			odoDisplayThread.start();
+		// Start Ultrasonic Thread
+	    float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
+		UltrasonicPoller usPoller = new UltrasonicPoller(usDistance, usData, ultrasonicLocalizer);
+		
+		// Start Odo Thread
+		Thread odoThread = new Thread(odometer);
+		odoThread.start();
+		Thread odoDisplayThread = new Thread(odometryDisplay);
+		odoDisplayThread.start();
 
+		if (buttonChoice == Button.ID_LEFT) {
 			// Falling edge
 			(new Thread() {
 				public void run() {
@@ -68,12 +73,7 @@ public class Lab4 {
 				}
 			}).start();
 		} else if (buttonChoice == Button.ID_RIGHT) {
-			// Display changes in position as wheels are (manually) moved
-			Thread odoThread = new Thread(odometer);
-			odoThread.start();
-			Thread odoDisplayThread = new Thread(odometryDisplay);
-			odoDisplayThread.start();
-
+		
 			// Rising edge
 			(new Thread() {
 				public void run() {

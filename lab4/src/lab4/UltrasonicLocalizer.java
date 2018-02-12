@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import ultrasonic.UltrasonicController;
 
-public class UltrasonicLocalizer {
+public class UltrasonicLocalizer implements UltrasonicController {
 
 	ArrayList<Integer> distances = new ArrayList<Integer>();
 	
@@ -21,14 +22,11 @@ public class UltrasonicLocalizer {
 	EV3UltrasonicSensor ultrasonicSensor; 
 
 	
-	UltrasonicLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3UltrasonicSensor ultrasonicSensor){
+	UltrasonicLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor){
 		// Motors
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
-		
-		// Sensors
-		this.ultrasonicSensor = ultrasonicSensor;
-		
+				
 		// Distance and Noise Margin
 		d = 5;
 		k = 2;
@@ -40,6 +38,18 @@ public class UltrasonicLocalizer {
 	
 	public void risingEdge() {
 		// Begin Spinning
+	}
+
+	@Override
+	public void processUSData(int distance) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int readUSDistance() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }
