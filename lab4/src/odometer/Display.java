@@ -55,7 +55,7 @@ public class Display implements Runnable {
       DecimalFormat numberFormat = new DecimalFormat("######0.00");
       lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
       lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
-      lcd.drawString("T: " + numberFormat.format((int) (position[2]*1.02*360/(2*Math.PI)%360)), 0, 2);
+      lcd.drawString("T: " + numberFormat.format((int) (position[2]%360)), 0, 2);
 //      lcd.drawString("C: " + numberFormat.format(OdometryCorrection.colorSensor.getColorID()), 0, 3);
       
       // this ensures that the data is updated only once every period

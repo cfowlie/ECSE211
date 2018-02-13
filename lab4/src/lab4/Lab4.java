@@ -13,6 +13,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
+
 public class Lab4 {
 
 	// Motor Objects
@@ -43,8 +44,6 @@ public class Lab4 {
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer(leftMotor, rightMotor);
 		final LightLocalizer lightLocalizer = new LightLocalizer();
 
-		int buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
-
 		// clear the display
 		lcd.clear();
 
@@ -53,11 +52,12 @@ public class Lab4 {
 		lcd.drawString("       |        ", 0, 1);
 		lcd.drawString(" fall  | rise   ", 0, 2);
 		lcd.drawString(" edge  | edge   ", 0, 3);
-		buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
+		int buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
 
 		// Start Ultrasonic Thread
 	    float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
 		UltrasonicPoller usPoller = new UltrasonicPoller(usDistance, usData, ultrasonicLocalizer);
+		usPoller.start();
 		
 		// Start Odo Thread
 		Thread odoThread = new Thread(odometer);
@@ -66,20 +66,31 @@ public class Lab4 {
 		odoDisplayThread.start();
 
 		if (buttonChoice == Button.ID_LEFT) {
-			// Falling edge
+			// Falling edge thread start
 			(new Thread() {
 				public void run() {
-					ultrasonicLocalizer.fallingEdge();
+					try {
+						ultrasonicLocalizer.fallingEdge();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}).start();
 		} else if (buttonChoice == Button.ID_RIGHT) {
-		
-			// Rising edge
+			// Rising edge thread start
 			(new Thread() {
 				public void run() {
-					ultrasonicLocalizer.risingEdge();
+					try {
+						ultrasonicLocalizer.risingEdge();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}).start();
 		}
+		
+		Button.waitForAnyPress(); // Wait to exit program
+		System.exit(0);
+		
 	}
 }
