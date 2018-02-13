@@ -14,70 +14,81 @@ public class LightLocalizer {
 	private static final int FWD_SPEED = 100;
 	private static final double LIGHT_RADIUS = 6.80;
 
-	public static void findOrigin(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) throws InterruptedException {
+	/*
+	 * Light localizer find origin method
+	 * 
+	 * @param leftMotor
+	 * 
+	 * @param rightMotor
+	 */
+	public static void findOrigin(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor)
+			throws InterruptedException {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
 			motor.setAcceleration(3000);
 		}
 
-		
+		// wait two seconds to know its the light starting
 		Thread.sleep(2000);
-		
 
+		// set speed to 100
 		leftMotor.setSpeed(FWD_SPEED);
 		rightMotor.setSpeed(FWD_SPEED);
 
-		while (colorSensor.getColorID() < 10){
+		// wait until black line at y=0
+		while (colorSensor.getColorID() < 10) {
 			leftMotor.forward();
 			rightMotor.forward();
-		} 
-		
+		}
+		// set the y coordinate to y=light radius
 		Odometer.odo.setY(LIGHT_RADIUS);
-		
+
 		leftMotor.setSpeed(ROTATE_SPEED);
 		rightMotor.setSpeed(ROTATE_SPEED);
 
+		// turn 90 degrees to go towards the x=0 line
 		leftMotor.rotate(convertAngle(Lab4.WHEEL_RAD, Lab4.TRACK, 90), true);
 		rightMotor.rotate(-convertAngle(Lab4.WHEEL_RAD, Lab4.TRACK, 90), false);
-		
+
 		leftMotor.setSpeed(FWD_SPEED);
 		rightMotor.setSpeed(FWD_SPEED);
 
-		while(colorSensor.getColorID() < 10) {
+		// wait until the x=0 line
+		while (colorSensor.getColorID() < 10) {
 			leftMotor.forward();
 			rightMotor.forward();
-			
-		} 
-		
-			Odometer.odo.setX(LIGHT_RADIUS);
-			
-			leftMotor.setSpeed(ROTATE_SPEED);
-			rightMotor.setSpeed(ROTATE_SPEED);
 
+		}
+		// set the x coordinate to x= light radius
+		Odometer.odo.setX(LIGHT_RADIUS);
+
+		leftMotor.setSpeed(ROTATE_SPEED);
+		rightMotor.setSpeed(ROTATE_SPEED);
+
+		// turn back towards the (0,0) coordinate
 		leftMotor.rotate(-convertAngle(Lab4.WHEEL_RAD, Lab4.TRACK, 45), true);
 		rightMotor.rotate(convertAngle(Lab4.WHEEL_RAD, Lab4.TRACK, 45), false);
 
-		
-//		double LR2 = Math.sqrt(Math.pow(Odometer.position[0], 2)+Math.pow(Odometer.position[1], 2));
-		
+		// travel the euclidian distance of two timea lthe light radius
 		double LR2 = Math.sqrt(2 * Math.pow(LIGHT_RADIUS, 2));
 
 		leftMotor.setSpeed(FWD_SPEED);
 		rightMotor.setSpeed(FWD_SPEED);
-		
-		
-		leftMotor.rotate(-convertDistance(Lab4.WHEEL_RAD, LR2),true);
-		rightMotor.rotate(-convertDistance(Lab4.WHEEL_RAD, LR2),false);
-		
+
+		leftMotor.rotate(-convertDistance(Lab4.WHEEL_RAD, LR2), true);
+		rightMotor.rotate(-convertDistance(Lab4.WHEEL_RAD, LR2), false);
+
 		leftMotor.setSpeed(ROTATE_SPEED);
 		rightMotor.setSpeed(ROTATE_SPEED);
-		
-		while(colorSensor.getColorID() < 10) {
+
+		// wait until line y=0 to become straight.
+		while (colorSensor.getColorID() < 10) {
 			leftMotor.backward();
 			rightMotor.forward();
 		}
-		
+
+		// done
 		leftMotor.stop(true);
 		rightMotor.stop(false);
 	}
