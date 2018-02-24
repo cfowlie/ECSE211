@@ -4,9 +4,9 @@ import lejos.hardware.Button;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import odometer.Odometer;
-import ultrasonic.UltrasonicController;
+import ultrasonic.UltrasonicPoller;
 
-public class UltrasonicLocalizer implements UltrasonicController {
+public class UltrasonicLocalizer {
 
 	double fallingEdge;
 	double risingEdge;
@@ -17,11 +17,10 @@ public class UltrasonicLocalizer implements UltrasonicController {
 
 	int slowSpeed = 65;
 
-	int distance;
-
 	EV3LargeRegulatedMotor leftMotor;
 	EV3LargeRegulatedMotor rightMotor;
 	EV3UltrasonicSensor ultrasonicSensor;
+	UltrasonicPoller usPoller;
 
 	/*
 	 * Ultrasonic Localizer Constructor
@@ -30,10 +29,13 @@ public class UltrasonicLocalizer implements UltrasonicController {
 	 * 
 	 * @param rightMotor
 	 */
-	UltrasonicLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) {
+	UltrasonicLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, UltrasonicPoller usPoller) {
 		// Motors
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
+		
+		// Sensors
+		this.usPoller = usPoller;
 
 		// Distance and Noise Margin
 		d = 30;
@@ -50,16 +52,16 @@ public class UltrasonicLocalizer implements UltrasonicController {
 		Lab5.leftMotor.setSpeed(slowSpeed);
 		Lab5.rightMotor.setSpeed(slowSpeed);
 
-		if (this.distance < d + k) { // Currently facing wall
+		if (usPoller.getDistance() < d + k) { // Currently facing wall
 			do { // Turn right
 				Lab5.leftMotor.forward();
 				Lab5.rightMotor.backward();
 				Thread.sleep(1000);
-			} while (this.distance < d + k);
+			} while (usPoller.getDistance() < d + k);
 		}
 
 		// Check for first falling edge
-		while (this.distance > d + k) { // Turn right until first wall found
+		while (usPoller.getDistance() > d + k) { // Turn right until first wall found
 			Lab5.leftMotor.forward();
 			Lab5.rightMotor.backward();
 		}
@@ -75,7 +77,7 @@ public class UltrasonicLocalizer implements UltrasonicController {
 			Lab5.leftMotor.backward();
 			Lab5.rightMotor.forward();
 			Thread.sleep(1000);
-		} while (this.distance > d - k);
+		} while (usPoller.getDistance() > d - k);
 
 		// Record Position of wall
 		Lab5.leftMotor.stop(true);
@@ -103,18 +105,8 @@ public class UltrasonicLocalizer implements UltrasonicController {
 		// Set Odometer value and stop
 		Lab5.leftMotor.stop(true);
 		Lab5.rightMotor.stop(false);
-
-		// Run Light Localization
-		(new Thread() {
-			public void run() {
-				try {
-					LightLocalizer.findOrigin(leftMotor, rightMotor);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
-
+		
+		return;
 	}
 
 	/*
@@ -129,18 +121,6 @@ public class UltrasonicLocalizer implements UltrasonicController {
 	 */
 	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
-	}
-
-	// MARK: Ultrasonic Sensor
-
-	@Override
-	public void processUSData(int distance) {
-		this.distance = distance;
-	}
-
-	@Override
-	public int readUSDistance() {
-		return this.distance;
 	}
 
 }

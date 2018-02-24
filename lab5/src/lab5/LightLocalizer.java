@@ -9,20 +9,28 @@ import odometer.Odometer;
 
 public class LightLocalizer {
 
-	public static final EV3ColorSensor colorSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
-
 	private static final int ROTATE_SPEED = 60;
 	private static final int FWD_SPEED = 100;
 	private static final double LIGHT_RADIUS = 6.80;
 
+	EV3LargeRegulatedMotor leftMotor;
+	EV3LargeRegulatedMotor rightMotor;
+	EV3ColorSensor colorSensor;
+	
+	public LightLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3ColorSensor colorSensor) {
+		// Motors
+		this.leftMotor = leftMotor;
+		this.rightMotor = rightMotor;
+		
+		// Sensors
+		this.colorSensor = colorSensor;
+	}
+	
 	/*
 	 * Light localizer find origin method
 	 * 
-	 * @param leftMotor
-	 * 
-	 * @param rightMotor
 	 */
-	public static void findOrigin(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor)
+	public void findOrigin()
 			throws InterruptedException {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
