@@ -72,7 +72,7 @@ public class LightLocalizer {
 		// travel the euclidian distance of two timea lthe light radius
 		double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 
-		driveManager.forwardBy(-DriveManager.convertDistance(LR2));
+		driveManager.forwardBy((int)-LR2);
 
 		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
 		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);

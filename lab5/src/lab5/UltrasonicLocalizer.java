@@ -101,7 +101,7 @@ public class UltrasonicLocalizer {
 		double actualTheta = currentTheta + deltaTheta; // Correct theta by adding deltaTheta to the current heading
 		double zeroDegrees = 180 - actualTheta; // Find the zero point based off our angle calculations
 
-		driveManager.turnBy(zeroDegrees + 11);
+		driveManager.turnBy(zeroDegrees + 12);
 
 		// Set Odometer value and stop
 		driveManager.stopAll();

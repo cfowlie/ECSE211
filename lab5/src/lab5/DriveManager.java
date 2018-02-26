@@ -1,5 +1,6 @@
 package lab5;
 
+import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import odometer.OdometerExceptions;
@@ -31,8 +32,8 @@ public class DriveManager {
 	private final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 
 	// Constants
-	public static final double WHEEL_RAD = 2.095;
-	public static final double TRACK = 17.15;
+	public static final double WHEEL_RAD = 2.2;
+	public static final double TRACK = 17.1;
 	public static final int ROTATE_SPEED = 100;
 	public static final int FWD_SPEED = 140;
 	public static final double LIGHT_RADIUS = 13.5;
@@ -78,7 +79,7 @@ public class DriveManager {
     }
     
 	/**
-     * This method causes the robot to turn (on point) by amount theta
+     * This method causes the robot to travel forward by a distance (cm)
      * 
      * @param theta
 	 * @throws OdometerExceptions 
@@ -86,8 +87,8 @@ public class DriveManager {
     public void forwardBy(int distance) throws OdometerExceptions {
     		getLeftMotor().setSpeed(FWD_SPEED);
     		getRightMotor().setSpeed(FWD_SPEED);
-    		getLeftMotor().rotate(distance, true);
-        getRightMotor().rotate(distance, false);  
+    		getLeftMotor().rotate(DriveManager.convertDistance(distance), true);
+        getRightMotor().rotate(DriveManager.convertDistance(distance), false);  
         return;
     }
     
@@ -113,7 +114,7 @@ public class DriveManager {
 		double position[] = sensorManager.getOdometer().getXYT();
 		double currentX = position[0];
 		double currentY = position[1];
-		double currentT = Math.toDegrees(position[2]); // Convert the angle from radians to degrees
+		double currentT = position[2];
 
 		double dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
 												// direction
@@ -121,7 +122,7 @@ public class DriveManager {
 												// direction
 
 		double headingT = Math.toDegrees(Math.atan2(dX, dY)); // Calculate the angle the robot need to turn to and
-																// convert to degrees
+																
 		double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
 
 		// This makes sure the robot always turns the smaller angle
@@ -137,6 +138,9 @@ public class DriveManager {
 		
 		// Start robot forward towards the waypoint
 		forwardBy((int) distance);
+		
+		// Play sound when reaching location
+		Sound.beep();
 	}
     
 	/*
@@ -158,11 +162,17 @@ public class DriveManager {
         return getLeftMotor().isMoving() && getRightMotor().isMoving();
     }
 
+    /*
+     * Convert distance in cm to motor rotation
+     */
 	public static int convertDistance(double distance) {
 		double radius = DriveManager.WHEEL_RAD;
 		return (int) ((180.0 * distance) / (Math.PI * radius));
 	}
 
+	/*
+	 * Convert and angle
+	 */
 	public static int convertAngle(double angle) {
 		double width = DriveManager.TRACK;
 		return convertDistance(Math.PI * width * angle / 360.0);

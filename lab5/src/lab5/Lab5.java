@@ -53,7 +53,7 @@ public class Lab5 {
 				lightLocalizer.findOrigin();
 
 				// Move to starting location
-				travelTo(LLx, LLy, false);
+				driveManager.travelTo(LLx, LLy, false);
 
 				// Begin Block Search
 				blockSearch();
@@ -79,18 +79,6 @@ public class Lab5 {
 
 	public static void blockSearch() {
 		// TODO: Search for color block
-	}
-
-	/**
-	 * This method causes the robot to travel to the absolute field location (x,y),
-	 * specified in tile points.
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public static void travelTo(double x, double y, boolean avoid) {
-
-		
 	}
 
 }
