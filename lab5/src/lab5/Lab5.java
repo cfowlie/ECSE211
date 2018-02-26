@@ -3,14 +3,16 @@ package lab5;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import odometer.Display;
+import odometer.Odometer;
 import odometer.OdometerExceptions;
 
 public class Lab5 {
 
 	// Lab 5 Constants
-	public static final int LLx = 0;
-	public static final int LLy = 0;
+	public static final int LLx = 2;
+	public static final int LLy = 3;
 	public static final int URx = 0;
 	public static final int URy = 0;
 	public static final int TB = 0;
@@ -41,17 +43,17 @@ public class Lab5 {
 		final LightLocalizer lightLocalizer = new LightLocalizer();
 
 		// Setup Drive Thread
-		driveManager.setDriveThread(new DriveThread() {			
+		driveManager.setDriveThread(new DriveThread() {
 			@Override
 			public void run() throws InterruptedException {
 				// Ultrasonic localize
 				ultrasonicLocalizer.fallingEdge2();
-				
+
 				// Light localize
 				lightLocalizer.findOrigin();
 
 				// Move to starting location
-				navigateToStart();
+				travelTo(LLx, LLy, false);
 
 				// Begin Block Search
 				blockSearch();
@@ -77,8 +79,16 @@ public class Lab5 {
 		// TODO: Search for color block
 	}
 
-	public static void navigateToStart() {
-		// TODO: Go to search grid
+	/**
+	 * This method causes the robot to travel to the absolute field location (x,y),
+	 * specified in tile points.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public static void travelTo(double x, double y, boolean avoid) {
+
+		
 	}
 
 }

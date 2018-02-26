@@ -36,6 +36,8 @@ public class DriveManager {
 	public static final int FWD_SPEED = 160;
 	public static final double LIGHT_RADIUS = 13.5;
 	public static final double NO_WALL_DIST = 35;
+	public static final double TILE_SIZE = 30.48;
+
 
 	private DriveManager() {
 		setThread((new Thread() {
@@ -59,6 +61,29 @@ public class DriveManager {
 		}
 		return sharedManager;
 	}
+	
+	/**
+     * This method causes the robot to turn (on point) to the absolute heading theta
+     * 
+     * @param theta
+     */
+    public static void turnTo(double theta) {
+    		DriveManager.getInstance().getLeftMotor().setSpeed(ROTATE_SPEED);
+    		DriveManager.getInstance().getRightMotor().setSpeed(ROTATE_SPEED);
+        DriveManager.getInstance().getLeftMotor().rotate(DriveManager.convertAngle(theta), true);
+        DriveManager.getInstance().getRightMotor().rotate(-DriveManager.convertAngle(theta), false);  
+    }
+    
+    /**
+     * This method returns true if another thread has called travelTo() or 
+     * turnTo() and the method has yet to return; false otherwise
+     * 
+     * @return
+     * returns true if the robots motors are moving, false otherwise
+     */
+    boolean isNavigating() {
+        return leftMotor.isMoving() && rightMotor.isMoving();
+    }
 
 	public static int convertDistance(double distance) {
 		double radius = DriveManager.WHEEL_RAD;
