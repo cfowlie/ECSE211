@@ -9,7 +9,6 @@ import ultrasonic.UltrasonicPoller;
 public class UltrasonicLocalizer {
 
 	double fallingEdge;
-	double risingEdge;
 	double estimate;
 
 	int d;
@@ -57,11 +56,11 @@ public class UltrasonicLocalizer {
 				Lab5.leftMotor.forward();
 				Lab5.rightMotor.backward();
 				Thread.sleep(1000);
-			} while (usPoller.getDistance() < d + k);
+			} while (usPoller.getDistance() < (d + k));
 		}
 
 		// Check for first falling edge
-		while (usPoller.getDistance() > d + k) { // Turn right until first wall found
+		while (usPoller.getDistance() > (d + k)) { // Turn right until first wall found
 			Lab5.leftMotor.forward();
 			Lab5.rightMotor.backward();
 		}

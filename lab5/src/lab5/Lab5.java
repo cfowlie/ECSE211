@@ -2,6 +2,7 @@ package lab5;
 
 import lab5.LightLocalizer;
 import lab5.UltrasonicLocalizer;
+import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -41,11 +42,12 @@ public class Lab5 {
 	private static final Port usPort = LocalEV3.get().getPort("S2");
 
 	// Light Sensor
-	private static final Port lightPort = LocalEV3.get().getPort("S1");
+	private static final Port lightPort = LocalEV3.get().getPort("S3");
+	private static final Port colorPort = LocalEV3.get().getPort("S1");
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 	public static final double WHEEL_RAD = 2.095;
-	public static final double TRACK = 8.5;
+	public static final double TRACK = 17.8;
 
 	public static void main(String[] args) throws OdometerExceptions, InterruptedException {
 
@@ -95,6 +97,9 @@ public class Lab5 {
 		
 		// Begin Block Search
 		blockSearch(odometer, usPoller, colorPoller);
+		
+		Button.waitForAnyPress();
+		System.exit(0);
 	}
 
 	public static void blockSearch(Odometer odometer, UltrasonicPoller usPoller, ColorPoller colorPoller) {
@@ -105,4 +110,7 @@ public class Lab5 {
 		// TODO: Go to search grid
 	}
 
+	
+	
+	
 }

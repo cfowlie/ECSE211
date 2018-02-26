@@ -11,7 +11,7 @@ public class LightLocalizer {
 
 	private static final int ROTATE_SPEED = 60;
 	private static final int FWD_SPEED = 100;
-	private static final double LIGHT_RADIUS = 6.80;
+	private static final double LIGHT_RADIUS = 13.4;
 
 	EV3LargeRegulatedMotor leftMotor;
 	EV3LargeRegulatedMotor rightMotor;
@@ -30,20 +30,14 @@ public class LightLocalizer {
 	 * Light localizer find origin method
 	 * 
 	 */
-	public void findOrigin()
-			throws InterruptedException {
+	public void findOrigin() throws InterruptedException {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
 			motor.setAcceleration(3000);
 		}
 
-		int buttonChoice = 0;
-		do {
-			buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
-		} while (buttonChoice != Button.ID_DOWN && buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT
-				&& buttonChoice != Button.ID_UP);
-
+		
 		// wait two seconds to know its the light starting
 		Thread.sleep(2000);
 
