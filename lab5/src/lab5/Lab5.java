@@ -1,25 +1,10 @@
 package lab5;
 
-import lab5.LightLocalizer;
-import lab5.UltrasonicLocalizer;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.port.Port;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.hardware.sensor.SensorModes;
-import lejos.robotics.SampleProvider;
-import light.ColorPoller;
 import odometer.Display;
-import odometer.Odometer;
 import odometer.OdometerExceptions;
-import ultrasonic.UltrasonicPoller;
-
-interface Localizer {
-	void localize() throws InterruptedException;
-}
 
 public class Lab5 {
 
@@ -33,20 +18,19 @@ public class Lab5 {
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
-
 	public static void main(String[] args) throws OdometerExceptions, InterruptedException {
 
 		// Init shared Managers
-		DriveManager.getInstance();
+		DriveManager driveManager = DriveManager.getInstance();
 		SensorManager.getInstance();
-		
+
 		// LCD
 		lcd.clear();
 
 		// ask the user whether the motors should drive in a square or float
 		lcd.drawString("	Press Any Button", 0, 0);
 		int buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
-		
+
 		// Odo Display
 		Display odometryDisplay = new Display(lcd);
 		Thread odoDisplayThread = new Thread(odometryDisplay);
@@ -56,40 +40,35 @@ public class Lab5 {
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
 
-		// Localize to correct location
-		final Localizer localizer = new Localizer() {
-						
-			// TODO: Orient using SC Here, can define dynamic localization methods called by
-			public void localize() throws InterruptedException {
-
+		// Setup Drive Thread
+		driveManager.setDriveThread(new DriveThread() {			
+			@Override
+			public void run() throws InterruptedException {
 				// Ultrasonic localize
 				ultrasonicLocalizer.fallingEdge();
-
+				
 				// Light localize
 				lightLocalizer.findOrigin();
 
-				// If using async, use CountDownLatch here
+				// Move to starting location
+				navigateToStart();
+
+				// Begin Block Search
+				blockSearch();
+
+				completion();
 			}
-		};
 
-		// Movement Thread
-		(new Thread() {
-			public void run() {
-				try {
+			@Override
+			public void completion() {
+				// Any code that should be run after the main drive method completes
+				// Drive Thread is async, so must go here and not after thread.start()
 
-					localizer.localize();
-
-					// Move to starting location
-					navigateToStart();
-
-					// Begin Block Search
-					blockSearch();
-
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 			}
-		}).start();
+		});
+
+		// Start Drive Thread Async
+		driveManager.start();
 
 		Button.waitForAnyPress(); // Wait to exit program
 		System.exit(0);

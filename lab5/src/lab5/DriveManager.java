@@ -3,10 +3,27 @@ package lab5;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
+interface DriveThread {
+	
+	/*
+	 * Run robot code on async thread
+	 */
+	void run() throws InterruptedException;
+	
+	/*
+	 * Completion method for callback
+	 */
+	void completion();
+}
+
 public class DriveManager {
 
 	// Singleton Object
 	private static DriveManager sharedManager = null;
+	
+	// Movement thread
+	private static DriveThread driveThread = null;
+	private static Thread thread;
 
 	// Motor Objects
 	private final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
@@ -14,13 +31,25 @@ public class DriveManager {
 
 	// Constants
 	public static final double WHEEL_RAD = 2.095;
-	public static final double TRACK = 17.8;
-	public static final int ROTATE_SPEED = 60;
-	public static final int FWD_SPEED = 100;
-	public static final double LIGHT_RADIUS = 13.4;
+	public static final double TRACK = 14.45;
+	public static final int ROTATE_SPEED = 100;
+	public static final int FWD_SPEED = 160;
+	public static final double LIGHT_RADIUS = 13.5;
 
-	protected DriveManager() {
-
+	private DriveManager() {
+		setThread((new Thread() {
+			public void run() {
+				try {
+					DriveManager.driveThread.run();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		}));
+	}
+	
+	public void start() {
+		this.getThread().start();	
 	}
 
 	public static DriveManager getInstance() {
@@ -40,6 +69,8 @@ public class DriveManager {
 		return convertDistance(Math.PI * width * angle / 360.0);
 	}
 	
+	// Field Encapsulation
+	
 	/**
 	 * @return the leftMotor
 	 */
@@ -52,6 +83,34 @@ public class DriveManager {
 	 */
 	public EV3LargeRegulatedMotor getRightMotor() {
 		return rightMotor;
+	}
+
+	/**
+	 * @return the driveThread
+	 */
+	public DriveThread getDriveThread() {
+		return driveThread;
+	}
+
+	/**
+	 * @param driveThread the driveThread to set
+	 */
+	public void setDriveThread(DriveThread driveThread) {
+		DriveManager.driveThread = driveThread;
+	}
+
+	/**
+	 * @return the thread
+	 */
+	private Thread getThread() {
+		return thread;
+	}
+
+	/**
+	 * @param thread the thread to set
+	 */
+	private static void setThread(Thread thread) {
+		DriveManager.thread = thread;
 	}
 
 }

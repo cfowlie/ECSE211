@@ -43,8 +43,8 @@ public class UltrasonicLocalizer {
 		this.usPoller = sensorManager.getUsPoller();
 
 		// Distance and Noise Margin
-		d = 30;
-		k = 6;
+		d = 28;
+		k = 4;
 	}
 
 	/*

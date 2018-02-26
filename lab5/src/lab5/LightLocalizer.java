@@ -97,6 +97,8 @@ public class LightLocalizer {
 			leftMotor.backward();
 			rightMotor.forward();
 		}
+		
+		Odometer.odo.setTheta(0);
 
 		// done
 		leftMotor.stop(true);
