@@ -3,6 +3,7 @@ package odometer;
 import java.text.DecimalFormat;
 
 import lejos.hardware.lcd.TextLCD;
+import light.ColorPoller;
 
 /**
  * This class is used to display the content of the odometer variables (x, y,
@@ -57,9 +58,11 @@ public class Display implements Runnable {
 			lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
 			lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
 			lcd.drawString("T: " + numberFormat.format((int) (position[2] % 360)), 0, 2);
-			// lcd.drawString("C: " +
+			lcd.drawString("Wall Type:" + ColorPoller.color, 0, 4);
 			// numberFormat.format(OdometryCorrection.colorSensor.getColorID()), 0, 3);
 
+			lcd.clear(4);
+			
 			// this ensures that the data is updated only once every period
 			updateEnd = System.currentTimeMillis();
 			if (updateEnd - updateStart < DISPLAY_PERIOD) {
