@@ -31,10 +31,11 @@ public class DriveManager {
 
 	// Constants
 	public static final double WHEEL_RAD = 2.095;
-	public static final double TRACK = 14.45;
+	public static final double TRACK = 16.9; //14.45;
 	public static final int ROTATE_SPEED = 100;
 	public static final int FWD_SPEED = 160;
 	public static final double LIGHT_RADIUS = 13.5;
+	public static final double NO_WALL_DIST = 35;
 
 	private DriveManager() {
 		setThread((new Thread() {

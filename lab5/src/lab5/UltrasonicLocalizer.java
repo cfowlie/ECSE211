@@ -1,6 +1,7 @@
 package lab5;
 
 import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import odometer.Odometer;
@@ -21,6 +22,10 @@ public class UltrasonicLocalizer {
 	EV3LargeRegulatedMotor rightMotor;
 	EV3UltrasonicSensor ultrasonicSensor;
 	UltrasonicPoller usPoller;
+	
+	// Shared Maangers
+	DriveManager driveManager = DriveManager.getInstance();
+	SensorManager sensorManager = SensorManager.getInstance();
 
 	/*
 	 * Ultrasonic Localizer Constructor
@@ -31,10 +36,6 @@ public class UltrasonicLocalizer {
 	 */
 	UltrasonicLocalizer() throws OdometerExceptions {
 		
-		// Shared Maangers
-		DriveManager driveManager = DriveManager.getInstance();
-		SensorManager sensorManager = SensorManager.getInstance();
-		
 		// Motors
 		this.leftMotor = driveManager.getLeftMotor();
 		this.rightMotor = driveManager.getRightMotor();
@@ -43,7 +44,7 @@ public class UltrasonicLocalizer {
 		this.usPoller = sensorManager.getUsPoller();
 
 		// Distance and Noise Margin
-		d = 28;
+		d = 30;
 		k = 4;
 	}
 
@@ -114,4 +115,77 @@ public class UltrasonicLocalizer {
 		return;
 	}
 
+	/**
+     * This is the falling edge method of USLocalization
+     * This method finds the angles by looking for the distance to cross over 
+     * the set distance from a larger value to a smaller value
+     */
+    void fallingEdge2() {
+        
+        // Variables
+        double alpha;
+        double beta;
+        double deltaTheta;
+        double average;
+        double actualTheta;
+        double currentTheta;
+        double zeroDegrees;
+        
+        // Rotate clockwise until no wall is seen
+        leftMotor.setSpeed(DriveManager.ROTATE_SPEED); 
+        rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
+        while(sensorManager.getDistance() < DriveManager.NO_WALL_DIST) {
+            leftMotor.forward();
+            rightMotor.backward();
+        }
+        // Now rotate until the set distance has been reached
+        while(sensorManager.getDistance() > this.d) {
+            leftMotor.forward();
+            rightMotor.backward();
+        }  
+        // once the set distance has been reached, stop rotating and save the angle
+        Sound.beep();
+        leftMotor.stop(true);
+        rightMotor.stop(true);
+        alpha = sensorManager.getOdometer().getXYT()[2];
+        
+        // Now rotate again until no wall is seen, but counterclockwise
+        leftMotor.setSpeed(DriveManager.ROTATE_SPEED); 
+        rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
+        while(sensorManager.getDistance() < DriveManager.NO_WALL_DIST) {
+            leftMotor.backward();
+            rightMotor.forward();
+        }
+        // Rotate the robot counterclockwise until the sensor has reached the set distance from the wall in the opposite direction
+        while(sensorManager.getDistance() > this.d) {
+            leftMotor.backward();
+            rightMotor.forward();
+        } 
+        // once the set distance has been reached, stop rotating and save the angle
+        Sound.beep();
+        leftMotor.stop(true);
+        rightMotor.stop(true);
+        beta = sensorManager.getOdometer().getXYT()[2]; 
+        
+        // Now use alpha and beta to calculate deltaTheta
+        average = Math.toDegrees((alpha + beta)/2);
+        if(alpha < beta) {
+            deltaTheta = 45 - average;
+        } else {
+            deltaTheta = 225 - average;
+        }
+        currentTheta = Math.toDegrees(sensorManager.getOdometer().getXYT()[2]);
+        actualTheta = currentTheta + deltaTheta; // Correct theta by adding deltaTheta to the current heading
+        zeroDegrees = 180 - actualTheta;         // Find the zero point based off our angle calculations
+        // Rotate to 0 degrees
+        leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
+        rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
+        leftMotor.rotate(DriveManager.convertAngle(zeroDegrees), true);
+        rightMotor.rotate(-DriveManager.convertAngle(zeroDegrees), false);  
+        
+        // Initialize theta to zero degrees
+        sensorManager.getOdometer().setTheta(0);
+        
+    }
+	
 }

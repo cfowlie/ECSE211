@@ -45,7 +45,7 @@ public class Lab5 {
 			@Override
 			public void run() throws InterruptedException {
 				// Ultrasonic localize
-				ultrasonicLocalizer.fallingEdge();
+				ultrasonicLocalizer.fallingEdge2();
 				
 				// Light localize
 				lightLocalizer.findOrigin();
@@ -63,7 +63,6 @@ public class Lab5 {
 			public void completion() {
 				// Any code that should be run after the main drive method completes
 				// Drive Thread is async, so must go here and not after thread.start()
-
 			}
 		});
 

@@ -96,8 +96,8 @@ public class Odometer extends OdometerData implements Runnable {
 
 			position = odo.getXYT();
 			// Positions
-			double dx = distance * Math.sin(position[2] * Math.PI / 180);
-			double dy = distance * Math.cos(position[2] * Math.PI / 180);
+			double dx = distance * Math.sin((position[2] + dt) * Math.PI / 180);
+			double dy = distance * Math.cos((position[2] + dt) * Math.PI / 180);
 
 			leftMotorTachoCount = leftMotor.getTachoCount();
 			rightMotorTachoCount = rightMotor.getTachoCount();
