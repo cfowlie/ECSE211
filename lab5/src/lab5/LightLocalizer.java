@@ -38,14 +38,8 @@ public class LightLocalizer {
 			motor.setAcceleration(3000);
 		}
 
-		int buttonChoice = 0;
-		do {
-			buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
-		} while (buttonChoice != Button.ID_DOWN && buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT
-				&& buttonChoice != Button.ID_UP);
-
 		// wait two seconds to know its the light starting
-		Thread.sleep(2000);
+		Thread.sleep(500);
 
 		// set speed to 100
 		leftMotor.setSpeed(FWD_SPEED);
