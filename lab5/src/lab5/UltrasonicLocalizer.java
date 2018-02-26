@@ -49,7 +49,7 @@ public class UltrasonicLocalizer {
 	/*
 	 * Localize using falling edges
 	 */
-	public void fallingEdge() throws InterruptedException {
+	public void fallingEdge() throws InterruptedException, OdometerExceptions {
 
 		Thread.sleep(1000);
 

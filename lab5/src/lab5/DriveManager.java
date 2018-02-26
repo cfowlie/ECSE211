@@ -2,13 +2,14 @@ package lab5;
 
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import odometer.OdometerExceptions;
 
 interface DriveThread {
 	
 	/*
 	 * Run robot code on async thread
 	 */
-	void run() throws InterruptedException;
+	void run() throws InterruptedException, OdometerExceptions;
 	
 	/*
 	 * Completion method for callback
@@ -39,12 +40,12 @@ public class DriveManager {
 	public static final double TILE_SIZE = 30.48;
 
 
-	private DriveManager() {
+	private DriveManager() throws OdometerExceptions {		
 		setThread((new Thread() {
 			public void run() {
 				try {
 					DriveManager.driveThread.run();
-				} catch (InterruptedException e) {
+				} catch (InterruptedException | OdometerExceptions e) {
 					// TODO Auto-generated catch block
 				}
 			}
@@ -55,7 +56,7 @@ public class DriveManager {
 		this.getThread().start();	
 	}
 
-	public static DriveManager getInstance() {
+	public static DriveManager getInstance() throws OdometerExceptions {
 		if (sharedManager == null) {
 			sharedManager = new DriveManager();
 		}
@@ -66,12 +67,13 @@ public class DriveManager {
      * This method causes the robot to turn (on point) by amount theta
      * 
      * @param theta
+	 * @throws OdometerExceptions 
      */
-    public void turnBy(double theta) {
-    		DriveManager.getInstance().getLeftMotor().setSpeed(ROTATE_SPEED);
-    		DriveManager.getInstance().getRightMotor().setSpeed(ROTATE_SPEED);
-        DriveManager.getInstance().getLeftMotor().rotate(DriveManager.convertAngle(theta), true);
-        DriveManager.getInstance().getRightMotor().rotate(-DriveManager.convertAngle(theta), false);  
+    public void turnBy(double theta) throws OdometerExceptions {
+    		getLeftMotor().setSpeed(ROTATE_SPEED);
+    		getRightMotor().setSpeed(ROTATE_SPEED);
+        getLeftMotor().rotate(DriveManager.convertAngle(theta), true);
+        getRightMotor().rotate(-DriveManager.convertAngle(theta), false);  
         return;
     }
     
@@ -79,12 +81,13 @@ public class DriveManager {
      * This method causes the robot to turn (on point) by amount theta
      * 
      * @param theta
+	 * @throws OdometerExceptions 
      */
-    public void forwardBy(int distance) {
-    		DriveManager.getInstance().getLeftMotor().setSpeed(FWD_SPEED);
-    		DriveManager.getInstance().getRightMotor().setSpeed(FWD_SPEED);
-        DriveManager.getInstance().getLeftMotor().rotate(distance, true);
-        DriveManager.getInstance().getRightMotor().rotate(distance, false);  
+    public void forwardBy(int distance) throws OdometerExceptions {
+    		getLeftMotor().setSpeed(FWD_SPEED);
+    		getRightMotor().setSpeed(FWD_SPEED);
+    		getLeftMotor().rotate(distance, true);
+        getRightMotor().rotate(distance, false);  
         return;
     }
     
@@ -95,9 +98,53 @@ public class DriveManager {
     
     }
     
-    public  void stopAll() {
-    		DriveManager.getInstance().getLeftMotor().stop(true);
-		DriveManager.getInstance().getRightMotor().stop(false);
+    /**
+	 * This method causes the robot to travel to the absolute field location (x,y),
+	 * specified in tile points.
+	 * 
+	 * @param x
+	 * @param y
+     * @throws OdometerExceptions 
+	 */
+	public void travelTo(double x, double y, boolean avoid) throws OdometerExceptions {
+		SensorManager sensorManager = SensorManager.getInstance();
+		
+		// Get the current x, y and theta positions from the odometer
+		double position[] = sensorManager.getOdometer().getXYT();
+		double currentX = position[0];
+		double currentY = position[1];
+		double currentT = Math.toDegrees(position[2]); // Convert the angle from radians to degrees
+
+		double dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
+												// direction
+		double dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
+												// direction
+
+		double headingT = Math.toDegrees(Math.atan2(dX, dY)); // Calculate the angle the robot need to turn to and
+																// convert to degrees
+		double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
+
+		// This makes sure the robot always turns the smaller angle
+		if (theta < -180) {
+			theta += 360;
+		} else if (theta > 180) {
+			theta -= 360;
+		}
+		turnBy(theta);
+
+		// Calculate the distance the robot must travel to get to the waypoint
+		double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+		
+		// Start robot forward towards the waypoint
+		forwardBy((int) distance);
+	}
+    
+	/*
+	 * Stops all motors
+	 */
+    public void stopAll() throws OdometerExceptions {
+    		getLeftMotor().stop(true);
+		getRightMotor().stop(false);
     }
     
     /**
@@ -108,7 +155,7 @@ public class DriveManager {
      * returns true if the robots motors are moving, false otherwise
      */
     boolean isNavigating() {
-        return leftMotor.isMoving() && rightMotor.isMoving();
+        return getLeftMotor().isMoving() && getRightMotor().isMoving();
     }
 
 	public static int convertDistance(double distance) {

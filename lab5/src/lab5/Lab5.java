@@ -45,7 +45,7 @@ public class Lab5 {
 		// Setup Drive Thread
 		driveManager.setDriveThread(new DriveThread() {
 			@Override
-			public void run() throws InterruptedException {
+			public void run() throws InterruptedException, OdometerExceptions {
 				// Ultrasonic localize
 				ultrasonicLocalizer.fallingEdge();
 

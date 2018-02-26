@@ -32,7 +32,7 @@ public class LightLocalizer {
 	 * 
 	 */
 	public void findOrigin()
-			throws InterruptedException {
+			throws InterruptedException, OdometerExceptions {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
