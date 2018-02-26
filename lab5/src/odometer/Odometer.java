@@ -10,6 +10,7 @@
 
 package odometer;
 
+import lab5.DriveManager;
 import lab5.Lab5;
 import java.lang.Math;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -59,29 +60,15 @@ public class Odometer extends OdometerData implements Runnable {
 	 * @return new or existing Odometer Object
 	 * @throws OdometerExceptions
 	 */
-	public synchronized static Odometer getOdometer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
-			final double TRACK, final double WHEEL_RAD) throws OdometerExceptions {
+	public synchronized static Odometer getOdometer() throws OdometerExceptions {
+		DriveManager driveManager = DriveManager.getInstance();
+		
 		if (odo != null) { // Return existing object
 			return odo;
 		} else { // create object and return it
-			odo = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+			odo = new Odometer(driveManager.getLeftMotor(), driveManager.getRightMotor(), driveManager.TRACK, driveManager.WHEEL_RAD);
 			return odo;
 		}
-	}
-
-	/**
-	 * This class is meant to return the existing Odometer Object. It is meant to be
-	 * used only if an odometer object has been created
-	 * 
-	 * @return error if no previous odometer exists
-	 */
-	public synchronized static Odometer getOdometer() throws OdometerExceptions {
-
-		if (odo == null) {
-			throw new OdometerExceptions("No previous Odometer exits.");
-
-		}
-		return odo;
 	}
 
 	/**
@@ -98,14 +85,14 @@ public class Odometer extends OdometerData implements Runnable {
 			double dL = leftMotor.getTachoCount() - leftMotorTachoCount;
 			double dR = rightMotor.getTachoCount() - rightMotorTachoCount;
 
-			double d1 = (Math.PI * dL * Lab5.WHEEL_RAD) / 180;
-			double d2 = (Math.PI * dR * Lab5.WHEEL_RAD) / 180;
+			double d1 = (Math.PI * dL * DriveManager.WHEEL_RAD) / 180;
+			double d2 = (Math.PI * dR * DriveManager.WHEEL_RAD) / 180;
 
 			// Distance
 			double distance = (d1 + d2) / 2;
 
 			// Theta
-			double dt = (d1 - d2) / Lab5.TRACK * 1.06;
+			double dt = (d1 - d2) / DriveManager.TRACK;
 
 			position = odo.getXYT();
 			// Positions

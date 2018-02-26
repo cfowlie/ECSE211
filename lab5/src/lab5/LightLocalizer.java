@@ -6,24 +6,25 @@ import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import odometer.Odometer;
+import odometer.OdometerExceptions;
 
 public class LightLocalizer {
-
-	private static final int ROTATE_SPEED = 60;
-	private static final int FWD_SPEED = 100;
-	private static final double LIGHT_RADIUS = 6.80;
 
 	EV3LargeRegulatedMotor leftMotor;
 	EV3LargeRegulatedMotor rightMotor;
 	EV3ColorSensor colorSensor;
 	
-	public LightLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3ColorSensor colorSensor) {
+	public LightLocalizer() throws OdometerExceptions {
+		
+		DriveManager driveManager = DriveManager.getInstance();
+		SensorManager sensorManager = SensorManager.getInstance();
+		
 		// Motors
-		this.leftMotor = leftMotor;
-		this.rightMotor = rightMotor;
+		this.leftMotor = driveManager.getLeftMotor();
+		this.rightMotor = driveManager.getRightMotor();
 		
 		// Sensors
-		this.colorSensor = colorSensor;
+		this.colorSensor = sensorManager.getLightSensor();
 	}
 	
 	/*
@@ -42,8 +43,8 @@ public class LightLocalizer {
 		Thread.sleep(500);
 
 		// set speed to 100
-		leftMotor.setSpeed(FWD_SPEED);
-		rightMotor.setSpeed(FWD_SPEED);
+		leftMotor.setSpeed(DriveManager.FWD_SPEED);
+		rightMotor.setSpeed(DriveManager.FWD_SPEED);
 
 		// wait until black line at y=0
 		while (colorSensor.getColorID() < 10) {
@@ -51,17 +52,17 @@ public class LightLocalizer {
 			rightMotor.forward();
 		}
 		// set the y coordinate to y=light radius
-		Odometer.odo.setY(LIGHT_RADIUS);
+		Odometer.odo.setY(DriveManager.LIGHT_RADIUS);
 
-		leftMotor.setSpeed(ROTATE_SPEED);
-		rightMotor.setSpeed(ROTATE_SPEED);
+		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
+		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
 
 		// turn 90 degrees to go towards the x=0 line
-		leftMotor.rotate(convertAngle(Lab5.WHEEL_RAD, Lab5.TRACK, 90), true);
-		rightMotor.rotate(-convertAngle(Lab5.WHEEL_RAD, Lab5.TRACK, 90), false);
+		leftMotor.rotate(DriveManager.convertAngle(90), true);
+		rightMotor.rotate(-DriveManager.convertAngle(90), false);
 
-		leftMotor.setSpeed(FWD_SPEED);
-		rightMotor.setSpeed(FWD_SPEED);
+		leftMotor.setSpeed(DriveManager.FWD_SPEED);
+		rightMotor.setSpeed(DriveManager.FWD_SPEED);
 
 		// wait until the x=0 line
 		while (colorSensor.getColorID() < 10) {
@@ -70,26 +71,26 @@ public class LightLocalizer {
 
 		}
 		// set the x coordinate to x= light radius
-		Odometer.odo.setX(LIGHT_RADIUS);
+		Odometer.odo.setX(DriveManager.LIGHT_RADIUS);
 
-		leftMotor.setSpeed(ROTATE_SPEED);
-		rightMotor.setSpeed(ROTATE_SPEED);
+		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
+		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
 
 		// turn back towards the (0,0) coordinate
-		leftMotor.rotate(-convertAngle(Lab5.WHEEL_RAD, Lab5.TRACK, 45), true);
-		rightMotor.rotate(convertAngle(Lab5.WHEEL_RAD, Lab5.TRACK, 45), false);
+		leftMotor.rotate(-DriveManager.convertAngle(45), true);
+		rightMotor.rotate(DriveManager.convertAngle(45), false);
 
 		// travel the euclidian distance of two timea lthe light radius
-		double LR2 = Math.sqrt(2 * Math.pow(LIGHT_RADIUS, 2));
+		double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 
-		leftMotor.setSpeed(FWD_SPEED);
-		rightMotor.setSpeed(FWD_SPEED);
+		leftMotor.setSpeed(DriveManager.FWD_SPEED);
+		rightMotor.setSpeed(DriveManager.FWD_SPEED);
 
-		leftMotor.rotate(-convertDistance(Lab5.WHEEL_RAD, LR2), true);
-		rightMotor.rotate(-convertDistance(Lab5.WHEEL_RAD, LR2), false);
+		leftMotor.rotate(-DriveManager.convertDistance(LR2), true);
+		rightMotor.rotate(-DriveManager.convertDistance(LR2), false);
 
-		leftMotor.setSpeed(ROTATE_SPEED);
-		rightMotor.setSpeed(ROTATE_SPEED);
+		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
+		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
 
 		// wait until line y=0 to become straight.
 		while (colorSensor.getColorID() < 10) {
@@ -100,13 +101,5 @@ public class LightLocalizer {
 		// done
 		leftMotor.stop(true);
 		rightMotor.stop(false);
-	}
-
-	private static int convertDistance(double radius, double distance) {
-		return (int) ((180.0 * distance) / (Math.PI * radius));
-	}
-
-	private static int convertAngle(double radius, double width, double angle) {
-		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
 }
