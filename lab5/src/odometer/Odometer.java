@@ -17,7 +17,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 public class Odometer extends OdometerData implements Runnable {
 
-	public static Odometer odo = null; // Returned as singleton
+	private static Odometer odo = null; // Returned as singleton
 
 	// Motors and related variables
 	private int leftMotorTachoCount;
@@ -25,7 +25,7 @@ public class Odometer extends OdometerData implements Runnable {
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 
-	public static double[] position = new double[3];
+	public double[] position = new double[3];
 
 	private static final long ODOMETER_PERIOD = 25; // odometer update period in ms
 

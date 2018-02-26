@@ -14,10 +14,10 @@ public class LightLocalizer {
 	EV3LargeRegulatedMotor rightMotor;
 	EV3ColorSensor colorSensor;
 	
+	DriveManager driveManager = DriveManager.getInstance();
+	SensorManager sensorManager = SensorManager.getInstance();
+	
 	public LightLocalizer() throws OdometerExceptions {
-		
-		DriveManager driveManager = DriveManager.getInstance();
-		SensorManager sensorManager = SensorManager.getInstance();
 		
 		// Motors
 		this.leftMotor = driveManager.getLeftMotor();
@@ -52,17 +52,10 @@ public class LightLocalizer {
 			rightMotor.forward();
 		}
 		// set the y coordinate to y=light radius
-		Odometer.odo.setY(DriveManager.LIGHT_RADIUS);
-
-		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
-		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
+		sensorManager.getOdometer().setY(DriveManager.LIGHT_RADIUS);
 
 		// turn 90 degrees to go towards the x=0 line
-		leftMotor.rotate(DriveManager.convertAngle(90), true);
-		rightMotor.rotate(-DriveManager.convertAngle(90), false);
-
-		leftMotor.setSpeed(DriveManager.FWD_SPEED);
-		rightMotor.setSpeed(DriveManager.FWD_SPEED);
+		driveManager.turnBy(90);
 
 		// wait until the x=0 line
 		while (colorSensor.getColorID() < 10) {
@@ -71,37 +64,27 @@ public class LightLocalizer {
 
 		}
 		// set the x coordinate to x= light radius
-		Odometer.odo.setX(DriveManager.LIGHT_RADIUS);
-
-		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
-		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
+		sensorManager.getOdometer().setX(DriveManager.LIGHT_RADIUS);
 
 		// turn back towards the (0,0) coordinate
-		leftMotor.rotate(-DriveManager.convertAngle(45), true);
-		rightMotor.rotate(DriveManager.convertAngle(45), false);
+		driveManager.turnBy(-45);
 
 		// travel the euclidian distance of two timea lthe light radius
 		double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 
-		leftMotor.setSpeed(DriveManager.FWD_SPEED);
-		rightMotor.setSpeed(DriveManager.FWD_SPEED);
-
-		leftMotor.rotate(-DriveManager.convertDistance(LR2), true);
-		rightMotor.rotate(-DriveManager.convertDistance(LR2), false);
+		driveManager.forwardBy(-DriveManager.convertDistance(LR2));
 
 		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
 		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
 
 		// wait until line y=0 to become straight.
 		while (colorSensor.getColorID() < 10) {
-			leftMotor.backward();
-			rightMotor.forward();
+			driveManager.turnBy(2);
 		}
 		
-		Odometer.odo.setTheta(0);
+		sensorManager.getOdometer().setTheta(0);
 
 		// done
-		leftMotor.stop(true);
-		rightMotor.stop(false);
+		driveManager.stopAll();
 	}
 }

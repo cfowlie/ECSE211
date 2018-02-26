@@ -47,7 +47,7 @@ public class Lab5 {
 			@Override
 			public void run() throws InterruptedException {
 				// Ultrasonic localize
-				ultrasonicLocalizer.fallingEdge2();
+				ultrasonicLocalizer.fallingEdge();
 
 				// Light localize
 				lightLocalizer.findOrigin();

@@ -31,9 +31,9 @@ public class DriveManager {
 
 	// Constants
 	public static final double WHEEL_RAD = 2.095;
-	public static final double TRACK = 16.9; //14.45;
-	public static final int ROTATE_SPEED = 100;
-	public static final int FWD_SPEED = 160;
+	public static final double TRACK = 17.3;
+	public static final int ROTATE_SPEED = 80;
+	public static final int FWD_SPEED = 120;
 	public static final double LIGHT_RADIUS = 13.5;
 	public static final double NO_WALL_DIST = 35;
 	public static final double TILE_SIZE = 30.48;
@@ -63,15 +63,41 @@ public class DriveManager {
 	}
 	
 	/**
-     * This method causes the robot to turn (on point) to the absolute heading theta
+     * This method causes the robot to turn (on point) by amount theta
      * 
      * @param theta
      */
-    public static void turnTo(double theta) {
+    public void turnBy(double theta) {
     		DriveManager.getInstance().getLeftMotor().setSpeed(ROTATE_SPEED);
     		DriveManager.getInstance().getRightMotor().setSpeed(ROTATE_SPEED);
         DriveManager.getInstance().getLeftMotor().rotate(DriveManager.convertAngle(theta), true);
         DriveManager.getInstance().getRightMotor().rotate(-DriveManager.convertAngle(theta), false);  
+        return;
+    }
+    
+	/**
+     * This method causes the robot to turn (on point) by amount theta
+     * 
+     * @param theta
+     */
+    public void forwardBy(int distance) {
+    		DriveManager.getInstance().getLeftMotor().setSpeed(FWD_SPEED);
+    		DriveManager.getInstance().getRightMotor().setSpeed(FWD_SPEED);
+        DriveManager.getInstance().getLeftMotor().rotate(distance, true);
+        DriveManager.getInstance().getRightMotor().rotate(distance, false);  
+        return;
+    }
+    
+    /*
+     * This method causes the robot to turn to the absolute heading
+     */
+    public void turnTo(double theta) {
+    
+    }
+    
+    public  void stopAll() {
+    		DriveManager.getInstance().getLeftMotor().stop(true);
+		DriveManager.getInstance().getRightMotor().stop(false);
     }
     
     /**
