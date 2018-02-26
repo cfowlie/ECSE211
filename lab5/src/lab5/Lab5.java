@@ -24,7 +24,7 @@ public class Lab5 {
 
 		// Init shared Managers
 		final DriveManager driveManager = DriveManager.getInstance();
-		SensorManager.getInstance();
+		final SensorManager sensorManager = SensorManager.getInstance();
 
 		// LCD
 		lcd.clear();
@@ -51,6 +51,19 @@ public class Lab5 {
 
 				// Light localize
 				lightLocalizer.findOrigin();
+				
+				switch (SC) {
+					case 0: 
+						sensorManager.getOdometer().setXYT(0, 0, 0);
+					case 1:
+						sensorManager.getOdometer().setXYT(7, 0, 270);
+					case 2:
+						sensorManager.getOdometer().setXYT(7, 7, 180);
+					case 3:
+						sensorManager.getOdometer().setXYT(0, 7, 90);
+					default:
+						sensorManager.getOdometer().setXYT(0, 0, 0);
+				}
 
 				// Move to starting location
 				driveManager.travelTo(LLx, LLy, false);
