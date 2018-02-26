@@ -79,7 +79,8 @@ public class LightLocalizer {
 
 		// wait until line y=0 to become straight.
 		while (colorSensor.getColorID() < 10) {
-			driveManager.turnBy(2);
+			leftMotor.backward();
+			rightMotor.forward();
 		}
 		
 		sensorManager.getOdometer().setTheta(0);

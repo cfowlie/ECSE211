@@ -12,7 +12,7 @@ public class Lab5 {
 
 	// Lab 5 Constants
 	public static final int LLx = 2;
-	public static final int LLy = 3;
+	public static final int LLy = 2;
 	public static final int URx = 0;
 	public static final int URy = 0;
 	public static final int TB = 0;
@@ -23,7 +23,7 @@ public class Lab5 {
 	public static void main(String[] args) throws OdometerExceptions, InterruptedException {
 
 		// Init shared Managers
-		DriveManager driveManager = DriveManager.getInstance();
+		final DriveManager driveManager = DriveManager.getInstance();
 		SensorManager.getInstance();
 
 		// LCD
@@ -57,7 +57,7 @@ public class Lab5 {
 
 				// Begin Block Search
 				blockSearch();
-
+				
 				completion();
 			}
 
@@ -68,6 +68,8 @@ public class Lab5 {
 			}
 		});
 
+		Thread.sleep(2500); // Wait to make sure all threads have initialzed before starting drive code
+		
 		// Start Drive Thread Async
 		driveManager.start();
 

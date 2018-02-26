@@ -17,7 +17,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 public class Odometer extends OdometerData implements Runnable {
 
-	private static Odometer odo = null; // Returned as singleton
+	static Odometer odo = null; // Returned as singleton
 
 	// Motors and related variables
 	private int leftMotorTachoCount;
