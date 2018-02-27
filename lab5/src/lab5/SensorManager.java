@@ -19,6 +19,8 @@ public class SensorManager {
 
 	// Ultrasonic Sensor
 	private static final Port usPort = LocalEV3.get().getPort("S2");
+	
+	private static final Port distancePort = LocalEV3.get().getPort("S4");
 
 	// Light Sensor
 	private static final Port lightPort = LocalEV3.get().getPort("S3");
@@ -38,9 +40,13 @@ public class SensorManager {
 
 	// Ultrasonic Sensor
 	private SensorModes usSensor = new EV3UltrasonicSensor(usPort); // usSensor is the instance
-	private SampleProvider usDistance = usSensor.getMode("Distance"); // usDistance provides samples from
+	private SampleProvider usDistance = usSensor.getMode("Distance");
+	private SensorModes distanceSensor = new EV3UltrasonicSensor(distancePort); // usSensor is the instance
+	private SampleProvider distanceDistance = distanceSensor.getMode("Distance");// usDistance provides samples from
 	private float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
 	private UltrasonicPoller usPoller;
+	private float[] distanceData = new float[distanceDistance.sampleSize()]; // usData is the buffer in which data are
+	private UltrasonicPoller distancePoller;
 
 	private SensorManager() throws OdometerExceptions {
 		
@@ -52,6 +58,9 @@ public class SensorManager {
 		// Ultrasonic Sensor
 		this.setUsPoller(new UltrasonicPoller(usDistance, usData));
 		this.getUsPoller().start();
+		
+		this.setDistancePoller(new UltrasonicPoller(distanceDistance, distanceData));
+		this.getDistancePoller().start();
 
 		// Color Sensor
 		setColorPoller(new ColorPoller(colorSensor));
@@ -74,6 +83,8 @@ public class SensorManager {
 	public int getDistance() {
 		return this.getUsPoller().getDistance();
 	}
+	
+	
 	
 	/*
 	 * Returns true if currently over a line
@@ -150,5 +161,18 @@ public class SensorManager {
 	private void setUsPoller(UltrasonicPoller usPoller) {
 		this.usPoller = usPoller;
 	}
+	
+	public UltrasonicPoller getDistancePoller() {
+		return distancePoller;
+	}
+
+	/**
+	 * @param usPoller the usPoller to set
+	 */
+	private void setDistancePoller(UltrasonicPoller distancePoller) {
+		this.distancePoller = distancePoller;
+	}
+	
+	
 
 }

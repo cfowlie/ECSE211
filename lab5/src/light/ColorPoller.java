@@ -74,8 +74,8 @@ public class ColorPoller extends Thread implements Runnable {
 		return this.color;
 	}
 	
-	public int getColorInt() {
-		return this.color.intValue();
+	public static int getColorInt() {
+		return color.intValue();
 	}
 
 	/**

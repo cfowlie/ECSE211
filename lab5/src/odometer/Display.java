@@ -58,10 +58,11 @@ public class Display implements Runnable {
 			lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
 			lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
 			lcd.drawString("T: " + numberFormat.format((int) (position[2] % 360)), 0, 2);
+		
 			lcd.drawString("Wall Type:" + ColorPoller.color, 0, 4);
 			// numberFormat.format(OdometryCorrection.colorSensor.getColorID()), 0, 3);
 
-			lcd.clear(4);
+			
 			
 			// this ensures that the data is updated only once every period
 			updateEnd = System.currentTimeMillis();
@@ -71,7 +72,10 @@ public class Display implements Runnable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				
 			}
+			
+			lcd.clear(4); //always reload the color on the display
 		} while ((updateEnd - tStart) <= timeout);
 
 	}

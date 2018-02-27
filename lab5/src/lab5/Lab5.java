@@ -13,10 +13,10 @@ public class Lab5 {
 	// Lab 5 Constants
 	public static final int LLx = 2;
 	public static final int LLy = 2;
-	public static final int URx = 0;
-	public static final int URy = 0;
-	public static final int TB = 0;
-	public static final int SC = 0;
+	public static final int URx = 5;
+	public static final int URy = 5;
+	public static final int TB = 2;
+	public static final int SC = 2;
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
@@ -41,6 +41,7 @@ public class Lab5 {
 		// Localizers
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
+		final blockSearch blockSearch = new blockSearch();
 
 		// Setup Drive Thread
 		driveManager.setDriveThread(new DriveThread() {
@@ -51,6 +52,8 @@ public class Lab5 {
 
 				// Light localize
 				lightLocalizer.findOrigin();
+				
+				blockSearch.bSearch();
 				
 				switch (SC) {
 					case 0: 
@@ -69,7 +72,7 @@ public class Lab5 {
 				driveManager.travelTo(LLx, LLy, false);
 
 				// Begin Block Search
-				blockSearch();
+				
 				
 				completion();
 			}

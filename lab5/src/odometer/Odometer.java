@@ -25,7 +25,7 @@ public class Odometer extends OdometerData implements Runnable {
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 
-	public double[] position = new double[3];
+	public static double[] position = new double[3];
 
 	private static final long ODOMETER_PERIOD = 25; // odometer update period in ms
 
