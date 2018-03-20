@@ -2,6 +2,7 @@ package odometer;
 
 import java.text.DecimalFormat;
 
+import lab5.SensorManager;
 import lejos.hardware.lcd.TextLCD;
 import light.ColorPoller;
 
@@ -42,6 +43,14 @@ public class Display implements Runnable {
 
 	public void run() {
 
+		SensorManager sensorManager = null;
+		try {
+			sensorManager = SensorManager.getInstance();
+		} catch (OdometerExceptions e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		lcd.clear();
 
 		long updateStart, updateEnd;
@@ -58,11 +67,14 @@ public class Display implements Runnable {
 			lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
 			lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
 			lcd.drawString("T: " + numberFormat.format((int) (position[2] % 360)), 0, 2);
-		
-			lcd.drawString("Wall Type:" + ColorPoller.color, 0, 4);
-			// numberFormat.format(OdometryCorrection.colorSensor.getColorID()), 0, 3);
-
 			
+			lcd.clear(3); //always reload the color on the display
+			lcd.clear(4); //always reload the color on the display
+			
+			if(sensorManager.getDistance() < 6) {
+				lcd.drawString("Object Detected", 0, 3);
+				lcd.drawString("Color:" + ColorPoller.color, 0, 4);
+			}	
 			
 			// this ensures that the data is updated only once every period
 			updateEnd = System.currentTimeMillis();
@@ -75,7 +87,6 @@ public class Display implements Runnable {
 				
 			}
 			
-			lcd.clear(4); //always reload the color on the display
 		} while ((updateEnd - tStart) <= timeout);
 
 	}

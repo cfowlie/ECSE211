@@ -15,7 +15,7 @@ interface DriveThread {
 	/*
 	 * Completion method for callback
 	 */
-	void completion();
+	void completion() throws OdometerExceptions;
 }
 
 public class DriveManager {
@@ -33,12 +33,13 @@ public class DriveManager {
 
 	// Constants
 	public static final double WHEEL_RAD = 2.2;
-	public static final double TRACK = 17.1;
+	public static final double TRACK = 16.9;
 	public static final int ROTATE_SPEED = 100;
-	public static final int FWD_SPEED = 140;
-	public static final double LIGHT_RADIUS = 13.5;
+	public static final int FWD_SPEED = 180;
+	public static final double LIGHT_RADIUS = 14.5;
 	public static final double NO_WALL_DIST = 35;
-	public static final double TILE_SIZE = 30.48;
+	public static final double TILE_SIZE = 31.0;
+	public static final int ULTRA_OFFSET = 7;
 
 
 	private DriveManager() throws OdometerExceptions {		
@@ -84,11 +85,11 @@ public class DriveManager {
      * @param theta
 	 * @throws OdometerExceptions 
      */
-    public void forwardBy(int distance) throws OdometerExceptions {
+    public void forwardBy(double dist) throws OdometerExceptions {
     		getLeftMotor().setSpeed(FWD_SPEED);
     		getRightMotor().setSpeed(FWD_SPEED);
-    		getLeftMotor().rotate(DriveManager.convertDistance(distance), true);
-        getRightMotor().rotate(DriveManager.convertDistance(distance), false);  
+    		getLeftMotor().rotate(DriveManager.convertDistance(dist), true);
+        getRightMotor().rotate(DriveManager.convertDistance(dist), false);  
         return;
     }
     
@@ -108,6 +109,7 @@ public class DriveManager {
      * @throws OdometerExceptions 
 	 */
 	public void travelTo(double x, double y, boolean avoid) throws OdometerExceptions {
+		
 		SensorManager sensorManager = SensorManager.getInstance();
 		
 		// Get the current x, y and theta positions from the odometer
@@ -135,6 +137,61 @@ public class DriveManager {
 
 		// Calculate the distance the robot must travel to get to the waypoint
 		double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+		
+		// Start robot forward towards the waypoint
+		forwardBy((int) distance);
+		
+		// Play sound when reaching location
+		Sound.beep();
+	}
+	
+	public void travelToGrid(double x, double y) throws OdometerExceptions {
+		SensorManager sensorManager = SensorManager.getInstance();
+		
+		int curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
+		int curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
+		if((int) y != curY) {
+			travelTo(curX, y, false);
+			turnBy(90);
+		}
+		
+		curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
+		curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
+		if((int) x != curX) {
+			travelTo(x, curY, false);
+		}
+	}
+	
+    /**
+	 * This method causes the robot to travel to the absolute field location (x,y),
+	 * specified in tile points.
+	 * 
+	 * @param x
+	 * @param y
+     * @throws OdometerExceptions 
+	 */
+	public void travelToDistance(double xDist, double yDist, boolean avoid) throws OdometerExceptions {
+		
+		SensorManager sensorManager = SensorManager.getInstance();
+		
+		// Get the current x, y and theta positions from the odometer
+		double position[] = sensorManager.getOdometer().getXYT();
+		double currentT = position[2];
+
+		double headingT = Math.toDegrees(Math.atan2(xDist, yDist)); // Calculate the angle the robot need to turn to and
+																
+		double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
+
+		// This makes sure the robot always turns the smaller angle
+		if (theta < -180) {
+			theta += 360;
+		} else if (theta > 180) {
+			theta -= 360;
+		}
+		turnBy(theta);
+
+		// Calculate the distance the robot must travel to get to the waypoint
+		double distance = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 		
 		// Start robot forward towards the waypoint
 		forwardBy((int) distance);

@@ -1,22 +1,21 @@
 package lab5;
 
 import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import odometer.Display;
-import odometer.Odometer;
 import odometer.OdometerExceptions;
 
 public class Lab5 {
 
 	// Lab 5 Constants
-	public static final int LLx = 2;
-	public static final int LLy = 2;
+	public static final int LLx = 1;
+	public static final int LLy = 1;
 	public static final int URx = 5;
 	public static final int URy = 5;
-	public static final int TB = 2;
-	public static final int SC = 2;
+	public static final int TB = 0;
+	public static final int SC = 0;
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
@@ -31,7 +30,7 @@ public class Lab5 {
 
 		// ask the user whether the motors should drive in a square or float
 		lcd.drawString("	Press Any Button", 0, 0);
-		int buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
+		Button.waitForAnyPress(); // Record choice (left or right press)
 
 		// Odo Display
 		Display odometryDisplay = new Display(lcd);
@@ -41,8 +40,10 @@ public class Lab5 {
 		// Localizers
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
-		final blockSearch blockSearch = new blockSearch();
+		final BlockSearch blockSearch = new BlockSearch();
 
+		Button.waitForAnyPress(); // Record choice (left or right press)
+		
 		// Setup Drive Thread
 		driveManager.setDriveThread(new DriveThread() {
 			@Override
@@ -52,9 +53,7 @@ public class Lab5 {
 
 				// Light localize
 				lightLocalizer.findOrigin();
-				
-				blockSearch.bSearch();
-				
+								
 				switch (SC) {
 					case 0: 
 						sensorManager.getOdometer().setXYT(0, 0, 0);
@@ -69,18 +68,28 @@ public class Lab5 {
 				}
 
 				// Move to starting location
-				driveManager.travelTo(LLx, LLy, false);
-
+				driveManager.travelToGrid(LLx, LLy);
+				
+				// Back to 0
+				driveManager.turnBy(-sensorManager.getOdometer().getXYT()[2]);
+				
 				// Begin Block Search
+				blockSearch.search();
 				
+				driveManager.stopAll();
 				
+				// Move to ending location
+				driveManager.travelToGrid(URx, URy);
+												
 				completion();
 			}
 
 			@Override
-			public void completion() {
+			public void completion() throws OdometerExceptions {				
 				// Any code that should be run after the main drive method completes
 				// Drive Thread is async, so must go here and not after thread.start()
+				driveManager.stopAll();
+				Sound.beep();
 			}
 		});
 
@@ -91,10 +100,6 @@ public class Lab5 {
 
 		Button.waitForAnyPress(); // Wait to exit program
 		System.exit(0);
-	}
-
-	public static void blockSearch() {
-		// TODO: Search for color block
 	}
 
 }

@@ -17,16 +17,17 @@ public class SensorManager {
 	// Singleton Object
 	private static SensorManager sharedManager = null;
 
+	// Color Sensor
+	private static final Port colorPort = LocalEV3.get().getPort("S1");
+	
 	// Ultrasonic Sensor
 	private static final Port usPort = LocalEV3.get().getPort("S2");
-	
-	private static final Port distancePort = LocalEV3.get().getPort("S4");
 
 	// Light Sensor
 	private static final Port lightPort = LocalEV3.get().getPort("S3");
 
-	// Color Sensor
-	private static final Port colorPort = LocalEV3.get().getPort("S1");
+	// Ultrasonic Sensor 2
+	private static final Port distancePort = LocalEV3.get().getPort("S4");
 
 	// Odometer
 	private Odometer odometer;
@@ -78,13 +79,18 @@ public class SensorManager {
 	}
 	
 	/*
-	 * Returns Ultrasonic Sensors distance
+	 * Returns Forward Ultrasonic Sensors distance
 	 */
 	public int getDistance() {
 		return this.getUsPoller().getDistance();
 	}
 	
-	
+	/*
+	 * Returns Side Ultrasonic Sensors distance
+	 */
+	public int getSideDistance() {
+		return this.getDistancePoller().getDistance();
+	}
 	
 	/*
 	 * Returns true if currently over a line
@@ -169,7 +175,7 @@ public class SensorManager {
 	/**
 	 * @param usPoller the usPoller to set
 	 */
-	private void setDistancePoller(UltrasonicPoller distancePoller) {
+	public void setDistancePoller(UltrasonicPoller distancePoller) {
 		this.distancePoller = distancePoller;
 	}
 	

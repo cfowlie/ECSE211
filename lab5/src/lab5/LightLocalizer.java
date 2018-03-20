@@ -42,7 +42,7 @@ public class LightLocalizer {
 		// wait two seconds to know its the light starting
 		Thread.sleep(500);
 
-		// set speed to 100
+		// set speed
 		leftMotor.setSpeed(DriveManager.FWD_SPEED);
 		rightMotor.setSpeed(DriveManager.FWD_SPEED);
 

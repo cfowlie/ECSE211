@@ -11,113 +11,21 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
-  <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="JAVA/lab5" pinned="false" current-in-tab="true">
-        <entry file="uml://JAVA/lab5">
-          <provider selected="true" editor-type-id="UmlEditorProvider">
-            <state>
-              <ID>JAVA</ID>
-              <OriginalElement>lab5</OriginalElement>
-              <nodes>
-                <node x="1210.6875" y="0.0">light.ColorPoller.COLOR</node>
-                <node x="1134.6875" y="258.0">light.ColorPoller</node>
-                <node x="479.9375" y="649.5">lab5.UltrasonicLocalizer</node>
-                <node x="883.9375" y="583.0">lab5.SensorManager</node>
-                <node x="0.0" y="1040.0">lab5.DriveManager</node>
-                <node x="1488.9375" y="682.5">odometer.Display</node>
-                <node x="258.75" y="749.5">lab5.DriveThread</node>
-                <node x="0.0" y="1616.0">odometer.OdometerData</node>
-                <node x="1807.9375" y="715.5">lab5.LightLocalizer</node>
-                <node x="719.1125" y="324.0">ultrasonic.UltrasonicPoller</node>
-                <node x="96.5" y="1514.0">odometer.OdometerExceptions</node>
-                <node x="1014.4187499999999" y="1129.0">lab5.Lab5</node>
-              </nodes>
-              <notes />
-              <edges>
-                <edge source="lab5.Lab5" target="lab5.UltrasonicLocalizer">
-                  <point x="-36.375" y="-125.5" />
-                  <point x="1123.5437499999998" y="1010.0" />
-                  <point x="671.9375" y="1010.0" />
-                  <point x="0.0" y="137.0" />
-                </edge>
-                <edge source="lab5.UltrasonicLocalizer" target="ultrasonic.UltrasonicPoller">
-                  <point x="0.0" y="-137.0" />
-                  <point x="671.9375" y="563.0" />
-                  <point x="763.1125" y="563.0" />
-                  <point x="-88.0" y="71.5" />
-                </edge>
-                <edge source="lab5.DriveManager" target="lab5.DriveThread">
-                  <point x="0.0" y="-214.5" />
-                  <point x="-37.75" y="37.0" />
-                </edge>
-                <edge source="lab5.SensorManager" target="ultrasonic.UltrasonicPoller">
-                  <point x="-219.375" y="-203.5" />
-                  <point x="957.0625" y="563.0" />
-                  <point x="851.1125" y="563.0" />
-                  <point x="0.0" y="71.5" />
-                </edge>
-                <edge source="lab5.SensorManager" target="light.ColorPoller">
-                  <point x="219.375" y="-203.5" />
-                  <point x="1395.8125" y="563.0" />
-                  <point x="1402.4375" y="563.0" />
-                  <point x="89.25" y="137.5" />
-                </edge>
-                <edge source="odometer.OdometerData" target="odometer.OdometerExceptions">
-                  <point x="0.0" y="-203.5" />
-                  <point x="0.0" y="26.0" />
-                </edge>
-                <edge source="light.ColorPoller.COLOR" target="light.ColorPoller">
-                  <point x="51.25" y="104.0" />
-                  <point x="1364.4375" y="233.0" />
-                  <point x="1402.4375" y="233.0" />
-                  <point x="89.25" y="-137.5" />
-                </edge>
-                <edge source="lab5.Lab5" target="odometer.Display">
-                  <point x="36.375" y="-125.5" />
-                  <point x="1196.2937499999998" y="1010.0" />
-                  <point x="1638.4375" y="1010.0" />
-                  <point x="0.0" y="104.0" />
-                </edge>
-                <edge source="light.ColorPoller" target="light.ColorPoller.COLOR">
-                  <point x="-89.25" y="-137.5" />
-                  <point x="1223.9375" y="233.0" />
-                  <point x="1261.9375" y="233.0" />
-                  <point x="-51.25" y="104.0" />
-                </edge>
-                <edge source="lab5.Lab5" target="lab5.LightLocalizer">
-                  <point x="109.125" y="-125.5" />
-                  <point x="1269.0437499999998" y="1020.0" />
-                  <point x="1991.9375" y="1020.0" />
-                  <point x="0.0" y="71.0" />
-                </edge>
-                <edge source="lab5.Lab5" target="lab5.DriveThread">
-                  <point x="-109.125" y="-125.5" />
-                  <point x="1050.7937499999998" y="1020.0" />
-                  <point x="372.0" y="1020.0" />
-                  <point x="37.75" y="37.0" />
-                </edge>
-              </edges>
-              <settings layout="Hierarchic Group" zoom="0.3567430016214086" x="878.4668961646048" y="1137.9164509247964" />
-              <SelectedNodes />
-              <Categories>
-                <Category>Fields</Category>
-                <Category>Methods</Category>
-                <Category>Constructors</Category>
-                <Category>Properties</Category>
-                <Category>Inner Classes</Category>
-              </Categories>
-              <SCOPE>All</SCOPE>
-              <VISIBILITY>private</VISIBILITY>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>sensorM</find>
+    </findStrings>
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/lab5/UltrasonicLocalizer.java" />
+      </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -147,6 +55,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -157,6 +66,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="lab5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lab5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lab5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -235,7 +158,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -504,6 +426,7 @@
       <setting name="passParentEnv" value="true" />
       <setting name="launchBrowser" value="true" />
       <setting name="launchBrowserUrl" value="" />
+      <setting name="depsClasspath" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -632,6 +555,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -659,43 +588,46 @@
       <option name="presentableId" value="Default" />
       <updated>1519671653503</updated>
       <workItem from="1519671654963" duration="155000" />
+      <workItem from="1519933382390" duration="499000" />
+      <workItem from="1521052001679" duration="326000" />
+      <workItem from="1521052631360" duration="890000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="155000" />
+    <option name="totallyTimeSpent" value="1870000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="52" y="22" width="1628" height="1028" extended-state="6" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24968474" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2591425" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -709,6 +641,37 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/lab5/Lab5.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/Lab5.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/BlockSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="53" column="24" lean-forward="false" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/Lab5.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="uml://JavaScript-modules-diagram//Users/connor/Dropbox/Classes/U3/S2/ECSE211/lab5/src/lab5;/Users/connor/Dropbox/Classes/U3/S2/ECSE211/lab5/src/light;/Users/connor/Dropbox/Classes/U3/S2/ECSE211/lab5/src/odometer;/Users/connor/Dropbox/Classes/U3/S2/ECSE211/lab5/src/ultrasonic;">
       <provider selected="true" editor-type-id="UmlEditorProvider">
         <state>
@@ -722,7 +685,15 @@
           <Categories>
             <Category>All</Category>
           </Categories>
+          <SCOPE>All</SCOPE>
           <VISIBILITY>Details</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/BlockSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="53" column="24" lean-forward="false" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -732,95 +703,138 @@
           <ID>JAVA</ID>
           <OriginalElement>lab5</OriginalElement>
           <nodes>
-            <node x="1210.6875" y="0.0">light.ColorPoller.COLOR</node>
-            <node x="1134.6875" y="258.0">light.ColorPoller</node>
-            <node x="479.9375" y="649.5">lab5.UltrasonicLocalizer</node>
-            <node x="883.9375" y="583.0">lab5.SensorManager</node>
-            <node x="0.0" y="1040.0">lab5.DriveManager</node>
-            <node x="1488.9375" y="682.5">odometer.Display</node>
-            <node x="258.75" y="749.5">lab5.DriveThread</node>
-            <node x="0.0" y="1616.0">odometer.OdometerData</node>
-            <node x="1807.9375" y="715.5">lab5.LightLocalizer</node>
-            <node x="719.1125" y="324.0">ultrasonic.UltrasonicPoller</node>
-            <node x="96.5" y="1514.0">odometer.OdometerExceptions</node>
-            <node x="1014.4187499999999" y="1129.0">lab5.Lab5</node>
+            <node x="750.0" y="716.0">lab5.UltrasonicLocalizer</node>
+            <node x="1199.0" y="716.0">lab5.BlockSearch</node>
+            <node x="0.0" y="716.0">lab5.SensorManager</node>
+            <node x="0.0" y="0.0">lab5.DriveManager</node>
+            <node x="749.0" y="1300.0">lab5.DriveThread</node>
+            <node x="296.0" y="1300.0">lab5.LightLocalizer</node>
+            <node x="71.55176481907256" y="1445.2717649356928">lab5.Lab5</node>
           </nodes>
           <notes />
-          <edges>
-            <edge source="lab5.Lab5" target="lab5.UltrasonicLocalizer">
-              <point x="-36.375" y="-125.5" />
-              <point x="1123.5437499999998" y="1010.0" />
-              <point x="671.9375" y="1010.0" />
-              <point x="0.0" y="137.0" />
-            </edge>
-            <edge source="lab5.UltrasonicLocalizer" target="ultrasonic.UltrasonicPoller">
-              <point x="0.0" y="-137.0" />
-              <point x="671.9375" y="563.0" />
-              <point x="763.1125" y="563.0" />
-              <point x="-88.0" y="71.5" />
-            </edge>
-            <edge source="lab5.DriveManager" target="lab5.DriveThread">
-              <point x="0.0" y="-214.5" />
-              <point x="-37.75" y="37.0" />
-            </edge>
-            <edge source="lab5.SensorManager" target="ultrasonic.UltrasonicPoller">
-              <point x="-219.375" y="-203.5" />
-              <point x="957.0625" y="563.0" />
-              <point x="851.1125" y="563.0" />
-              <point x="0.0" y="71.5" />
-            </edge>
-            <edge source="lab5.SensorManager" target="light.ColorPoller">
-              <point x="219.375" y="-203.5" />
-              <point x="1395.8125" y="563.0" />
-              <point x="1402.4375" y="563.0" />
-              <point x="89.25" y="137.5" />
-            </edge>
-            <edge source="odometer.OdometerData" target="odometer.OdometerExceptions">
-              <point x="0.0" y="-203.5" />
-              <point x="0.0" y="26.0" />
-            </edge>
-            <edge source="light.ColorPoller.COLOR" target="light.ColorPoller">
-              <point x="51.25" y="104.0" />
-              <point x="1364.4375" y="233.0" />
-              <point x="1402.4375" y="233.0" />
-              <point x="89.25" y="-137.5" />
-            </edge>
-            <edge source="lab5.Lab5" target="odometer.Display">
-              <point x="36.375" y="-125.5" />
-              <point x="1196.2937499999998" y="1010.0" />
-              <point x="1638.4375" y="1010.0" />
-              <point x="0.0" y="104.0" />
-            </edge>
-            <edge source="light.ColorPoller" target="light.ColorPoller.COLOR">
-              <point x="-89.25" y="-137.5" />
-              <point x="1223.9375" y="233.0" />
-              <point x="1261.9375" y="233.0" />
-              <point x="-51.25" y="104.0" />
-            </edge>
-            <edge source="lab5.Lab5" target="lab5.LightLocalizer">
-              <point x="109.125" y="-125.5" />
-              <point x="1269.0437499999998" y="1020.0" />
-              <point x="1991.9375" y="1020.0" />
-              <point x="0.0" y="71.0" />
-            </edge>
-            <edge source="lab5.Lab5" target="lab5.DriveThread">
-              <point x="-109.125" y="-125.5" />
-              <point x="1050.7937499999998" y="1020.0" />
-              <point x="372.0" y="1020.0" />
-              <point x="37.75" y="37.0" />
-            </edge>
-          </edges>
-          <settings layout="Hierarchic Group" zoom="0.3567430016214086" x="878.4668961646048" y="1137.9164509247964" />
-          <SelectedNodes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="0.4612045570566227" x="-133.0" y="438.0" />
+          <SelectedNodes>
+            <node>lab5.Lab5</node>
+          </SelectedNodes>
           <Categories>
             <Category>Fields</Category>
-            <Category>Methods</Category>
+            <Category>Inner Classes</Category>
             <Category>Constructors</Category>
             <Category>Properties</Category>
-            <Category>Inner Classes</Category>
+            <Category>Methods</Category>
           </Categories>
           <SCOPE>All</SCOPE>
           <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/lab5.LightLocalizer">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>lab5.LightLocalizer</OriginalElement>
+          <nodes>
+            <node x="1104.3263888888887" y="559.0">light.ColorPoller</node>
+            <node x="1157.75" y="201.5">light.ColorPoller.COLOR</node>
+            <node x="0.0" y="1605.0">lab5.UltrasonicLocalizer</node>
+            <node x="861.4513888888887" y="950.0">lab5.SensorManager</node>
+            <node x="28.451388888888687" y="884.0">lab5.DriveManager</node>
+            <node x="1601.9513888888887" y="1115.5">odometer.Display</node>
+            <node x="1445.2013888888887" y="102.0">odometer.OdometerData</node>
+            <node x="1497.2013888888887" y="570.5">odometer.Odometer</node>
+            <node x="1054.5" y="1660.0">lab5.LightLocalizer</node>
+            <node x="364.375" y="625.0">ultrasonic.UltrasonicPoller</node>
+            <node x="1541.7013888888887" y="0.0">odometer.OdometerExceptions</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="odometer.Odometer" target="odometer.OdometerData">
+              <point x="0.0" y="-126.0" />
+              <point x="0.0" y="203.5" />
+            </edge>
+            <edge source="light.ColorPoller.COLOR" target="light.ColorPoller">
+              <point x="51.25" y="104.0" />
+              <point x="1311.5" y="534.0" />
+              <point x="1372.0763888888887" y="534.0" />
+              <point x="89.25" y="-137.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="0.392967249997736" x="862.0" y="1013.0" />
+          <SelectedNodes />
+          <Categories>
+            <Category>Fields</Category>
+            <Category>Inner Classes</Category>
+            <Category>Constructors</Category>
+            <Category>Properties</Category>
+            <Category>Methods</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/LightLocalizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-447">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/UltrasonicLocalizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="77" column="0" lean-forward="true" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/lab5.SensorManager">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>lab5.SensorManager</OriginalElement>
+          <nodes>
+            <node x="0.0" y="0.0">lab5.SensorManager</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="0.7247072353507094" x="-240.0" y="99.0" />
+          <SelectedNodes />
+          <Categories>
+            <Category>Fields</Category>
+            <Category>Inner Classes</Category>
+            <Category>Constructors</Category>
+            <Category>Properties</Category>
+            <Category>Methods</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/Lab5.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1395">
+          <caret line="98" column="24" lean-forward="false" selection-start-line="98" selection-start-column="24" selection-end-line="98" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/DriveManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="266" column="0" lean-forward="true" selection-start-line="266" selection-start-column="0" selection-end-line="266" selection-end-column="0" />
+          <folding>
+            <element signature="e#1503#1504#0" expanded="true" />
+            <element signature="e#1535#1536#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lab5/SensorManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="607">
+          <caret line="109" column="5" lean-forward="true" selection-start-line="80" selection-start-column="4" selection-end-line="109" selection-end-column="5" />
         </state>
       </provider>
     </entry>

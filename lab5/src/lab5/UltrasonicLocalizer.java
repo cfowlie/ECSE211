@@ -74,7 +74,9 @@ public class UltrasonicLocalizer {
 		leftMotor.stop(true);
 		rightMotor.stop(false);
 		Thread.sleep(1000);
-		double alpha = sensorManager.getOdometer().position[2];
+		double
+
+				alpha = sensorManager.getOdometer().position[2];
 
 		// Check for second falling edge
 		do {
