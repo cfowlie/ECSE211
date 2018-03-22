@@ -28,18 +28,25 @@ public class DriveManager {
 	private static Thread thread;
 
 	// Motor Objects
-	private final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+	private final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+	private final EV3LargeRegulatedMotor leftUpMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+	private final EV3LargeRegulatedMotor rightUpMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
 	// Constants
 	public static final double WHEEL_RAD = 2.2;
-	public static final double TRACK = 16.9;
-	public static final int ROTATE_SPEED = 100;
-	public static final int FWD_SPEED = 180;
-	public static final double LIGHT_RADIUS = 14.5;
+	public static final double TRACK_OPEN = 21.2;
+	public static final double TRACK_CLOSED = 16.1;
+	public static final int ROTATE_SPEED = 75;
+	public static final int ROTATE_UP_SPEED = 20;
+	public static final double UP_ROTATION = 40;
+	public static final int FWD_SPEED = 140;
+	public static final double LIGHT_RADIUS = 4.1;
+	public static final double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 	public static final double NO_WALL_DIST = 35;
-	public static final double TILE_SIZE = 31.0;
-	public static final int ULTRA_OFFSET = 7;
+	public static final double TILE_SIZE = 30.48;
+	
+	public static int trackState = 0 ; 
 
 
 	private DriveManager() throws OdometerExceptions {		
@@ -98,6 +105,44 @@ public class DriveManager {
      */
     public void turnTo(double theta) {
     
+    	
+    	
+    }
+    
+    public static double widthCheck() {
+    	if(trackState == 0) {
+    		return TRACK_CLOSED;
+    	}
+    	else {
+    		return TRACK_OPEN;
+    	}
+    	
+    }
+    
+    
+    
+    public void upOpen() {
+    	
+    	leftUpMotor.setSpeed(ROTATE_UP_SPEED);
+    	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
+    	
+    	leftUpMotor.rotate(40,true);
+		rightUpMotor.rotate(40,false);
+		
+		trackState = 1;		
+    	
+    }
+    
+public void upClose() {
+    	
+    	leftUpMotor.setSpeed(ROTATE_UP_SPEED);
+    	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
+    	
+    	leftUpMotor.rotate(-40,true);
+		rightUpMotor.rotate(-40,false);
+		
+		trackState = 0;		
+    	
     }
     
     /**
@@ -231,7 +276,7 @@ public class DriveManager {
 	 * Convert and angle
 	 */
 	public static int convertAngle(double angle) {
-		double width = DriveManager.TRACK;
+		double width = DriveManager.widthCheck();
 		return convertDistance(Math.PI * width * angle / 360.0);
 	}
 	
@@ -249,6 +294,20 @@ public class DriveManager {
 	 */
 	public EV3LargeRegulatedMotor getRightMotor() {
 		return rightMotor;
+	}
+	/**
+	 * 
+	 * @return the leftUpMotor
+	 */
+	public EV3LargeRegulatedMotor getLeftUpMotor() {
+		return leftUpMotor;
+	}
+
+	/**
+	 * @return the rightUpMotor
+	 */
+	public EV3LargeRegulatedMotor getRightUpMotor() {
+		return rightUpMotor;
 	}
 
 	/**
@@ -277,6 +336,15 @@ public class DriveManager {
 	 */
 	private static void setThread(Thread thread) {
 		DriveManager.thread = thread;
+	}
+	
+	public void setRotSpd() {  //setting wheels to a slower rotating speed
+		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
+		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
+	}
+	public void setDriveSpd() { // setting wheels to a faster forward speed
+		leftMotor.setSpeed(DriveManager.FWD_SPEED);
+		rightMotor.setSpeed(DriveManager.FWD_SPEED);
 	}
 
 }

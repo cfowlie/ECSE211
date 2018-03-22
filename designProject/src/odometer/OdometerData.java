@@ -4,6 +4,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import main.SensorManager;
+
 /**
  * This class stores and provides thread safe access to the odometer data.
  * 
@@ -14,8 +16,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Michael Smith
  */
 
-public class OdometerData {
+public class OdometerData  {
 
+	
+	
 	// Position parameters
 	private volatile double x; // x-axis position
 	private volatile double y; // y-axis position
@@ -213,6 +217,22 @@ public class OdometerData {
 										// done reseting
 		} finally {
 			lock.unlock();
+		}
+	}
+	public void roundToNearest90() {
+		double realT = Odometer.position[2];
+		
+		if(realT >=315 && realT <45) {
+			setTheta(0);
+		}
+		else if(realT >=45 && realT <135) {
+			setTheta(90);
+		}
+		else if(realT >=135 && realT <225) {
+			setTheta(180);
+		}
+		else if(realT >=225 && realT <315) {
+			setTheta(270);
 		}
 	}
 

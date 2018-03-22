@@ -13,8 +13,11 @@ package odometer;
 import java.lang.Math;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import main.DriveManager;
+import main.SensorManager;
 
 public class Odometer extends OdometerData implements Runnable {
+	
+	
 
 	static Odometer odo = null; // Returned as singleton
 
@@ -65,7 +68,7 @@ public class Odometer extends OdometerData implements Runnable {
 		if (odo != null) { // Return existing object
 			return odo;
 		} else { // create object and return it
-			odo = new Odometer(driveManager.getLeftMotor(), driveManager.getRightMotor(), driveManager.TRACK, driveManager.WHEEL_RAD);
+			odo = new Odometer(driveManager.getLeftMotor(), driveManager.getRightMotor(), driveManager.TRACK_CLOSED, driveManager.WHEEL_RAD);
 			return odo;
 		}
 	}
@@ -91,7 +94,7 @@ public class Odometer extends OdometerData implements Runnable {
 			double distance = (d1 + d2) / 2;
 
 			// Theta
-			double dt = (d1 - d2) / DriveManager.TRACK;
+			double dt = (d1 - d2) / DriveManager.TRACK_CLOSED;
 
 			position = odo.getXYT();
 			// Positions
@@ -112,7 +115,11 @@ public class Odometer extends OdometerData implements Runnable {
 					// there is nothing to be done
 				}
 			}
-		}
+		}		
 	}
+	
+	
+	
+	
 
 }

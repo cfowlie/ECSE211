@@ -34,7 +34,7 @@ public class Main {
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
 
-		Button.waitForAnyPress(); // Record choice (left or right press)
+
 		
 		// Setup Drive Thread
 		driveManager.setDriveThread(new DriveThread() {

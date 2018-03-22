@@ -17,17 +17,16 @@ public class SensorManager {
 	// Singleton Object
 	private static SensorManager sharedManager = null;
 
-	// Color Sensor
-	private static final Port colorPort = LocalEV3.get().getPort("S1");
-	
 	// Ultrasonic Sensor
-	private static final Port usPort = LocalEV3.get().getPort("S2");
+	private static final Port usPort = LocalEV3.get().getPort("S4");
+	
+	private static final Port lightRightPort = LocalEV3.get().getPort("S2");
 
 	// Light Sensor
-	private static final Port lightPort = LocalEV3.get().getPort("S3");
+	private static final Port lightLeftPort = LocalEV3.get().getPort("S3");
 
-	// Ultrasonic Sensor 2
-	private static final Port distancePort = LocalEV3.get().getPort("S4");
+	// Color Sensor
+	private static final Port colorPort = LocalEV3.get().getPort("S1");
 
 	// Odometer
 	private Odometer odometer;
@@ -37,17 +36,16 @@ public class SensorManager {
 	private ColorPoller colorPoller;
 
 	// Light Sensor
-	private EV3ColorSensor lightSensor;
+	private EV3ColorSensor lightRightSensor;
+	private EV3ColorSensor lightLeftSensor;
 
 	// Ultrasonic Sensor
 	private SensorModes usSensor = new EV3UltrasonicSensor(usPort); // usSensor is the instance
 	private SampleProvider usDistance = usSensor.getMode("Distance");
-	private SensorModes distanceSensor = new EV3UltrasonicSensor(distancePort); // usSensor is the instance
-	private SampleProvider distanceDistance = distanceSensor.getMode("Distance");// usDistance provides samples from
+	
 	private float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
 	private UltrasonicPoller usPoller;
-	private float[] distanceData = new float[distanceDistance.sampleSize()]; // usData is the buffer in which data are
-	private UltrasonicPoller distancePoller;
+	
 
 	private SensorManager() throws OdometerExceptions {
 		
@@ -60,15 +58,18 @@ public class SensorManager {
 		this.setUsPoller(new UltrasonicPoller(usDistance, usData));
 		this.getUsPoller().start();
 		
-		this.setDistancePoller(new UltrasonicPoller(distanceDistance, distanceData));
-		this.getDistancePoller().start();
+		
 
 		// Color Sensor
 		setColorPoller(new ColorPoller(colorSensor));
 		getColorPoller().start();
+		
+		setColorPoller(new ColorPoller(colorSensor));
+		getColorPoller().start();
 
 		// Light Sensor
-		setLightSensor(new EV3ColorSensor(lightPort));
+		setLightSensorR(new EV3ColorSensor(lightRightPort));
+		setLightSensorL(new EV3ColorSensor(lightLeftPort));
 	}
 
 	public static SensorManager getInstance() throws OdometerExceptions {
@@ -79,24 +80,41 @@ public class SensorManager {
 	}
 	
 	/*
-	 * Returns Forward Ultrasonic Sensors distance
+	 * Returns Ultrasonic Sensors distance
 	 */
 	public int getDistance() {
 		return this.getUsPoller().getDistance();
 	}
 	
+	
 	/*
-	 * Returns Side Ultrasonic Sensors distance
+	 * Returns int if currently over a line
+	 * 0 -> No line
+	 * 1 -> Left Line
+	 * 2 -> Right Line
+	 * 3 -> Both Lines
 	 */
-	public int getSideDistance() {
-		return this.getDistancePoller().getDistance();
+	public int getLine() {
+		int ret = 0;
+		if (this.lightLeftSensor.getColorID() > 10) ret +=1; 
+		if (this.lightRightSensor.getColorID() > 10) ret +=2;
+		return ret;
+		
 	}
+	
+	
 	
 	/*
 	 * Returns true if currently over a line
 	 */
-	public boolean getLine() {
-		if (this.lightSensor.getColorID() < 10) {
+	public boolean getLineR() {
+		if (this.lightRightSensor.getColorID() < 10) {
+			return false;
+		}
+		return true;
+	}
+	public boolean getLineL() {
+		if (this.lightLeftSensor.getColorID() < 10) {
 			return false;
 		}
 		return true;
@@ -143,15 +161,21 @@ public class SensorManager {
 	/**
 	 * @return the lightSensor
 	 */
-	public EV3ColorSensor getLightSensor() {
-		return lightSensor;
+	public EV3ColorSensor getLightSensorR() {
+		return lightRightSensor;
+	}
+	public EV3ColorSensor getLightSensorL() {
+		return lightLeftSensor;
 	}
 
 	/**
 	 * @param lightSensor the lightSensor to set
 	 */
-	private void setLightSensor(EV3ColorSensor lightSensor) {
-		this.lightSensor = lightSensor;
+	private void setLightSensorR(EV3ColorSensor lightSensor) {
+		this.lightRightSensor = lightSensor;
+	}
+	private void setLightSensorL(EV3ColorSensor lightSensor) {
+		this.lightLeftSensor = lightSensor;
 	}
 
 	/**
@@ -168,16 +192,7 @@ public class SensorManager {
 		this.usPoller = usPoller;
 	}
 	
-	public UltrasonicPoller getDistancePoller() {
-		return distancePoller;
-	}
-
-	/**
-	 * @param usPoller the usPoller to set
-	 */
-	public void setDistancePoller(UltrasonicPoller distancePoller) {
-		this.distancePoller = distancePoller;
-	}
+	
 	
 	
 
