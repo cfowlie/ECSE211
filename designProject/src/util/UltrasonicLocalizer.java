@@ -1,5 +1,7 @@
 package util;
 
+import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import main.DriveManager;
@@ -50,21 +52,21 @@ public class UltrasonicLocalizer {
 	 */
 	public void fallingEdge() throws InterruptedException, OdometerExceptions {
 
-		Thread.sleep(1000);
+		Thread.sleep(200);
 
 		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
 		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
-
+		
 		if (usPoller.getDistance() < d + k) { // Currently facing wall
 			do { // Turn right
 				leftMotor.forward();
 				rightMotor.backward();
-				Thread.sleep(1000);
+				Thread.sleep(200);
 			} while (usPoller.getDistance() < (d + k));
 		}
 
 		// Check for first falling edge
-		while (usPoller.getDistance() > (d + k)) { // Turn right until first wall found
+		while (usPoller.getDistance() > (d - k)) { // Turn right until first wall found
 			leftMotor.forward();
 			rightMotor.backward();
 		}
@@ -72,22 +74,30 @@ public class UltrasonicLocalizer {
 		// Record Position of wall
 		leftMotor.stop(true);
 		rightMotor.stop(false);
-		Thread.sleep(1000);
+		Thread.sleep(200);
 		double
 
 				alpha = sensorManager.getOdometer().position[2];
+		
+		if (usPoller.getDistance() < d + k) { // Currently facing wall
+			do { // Turn right
+				leftMotor.backward();
+				rightMotor.forward();
+				Thread.sleep(200);
+			} while (usPoller.getDistance() < (d + k));
+		}
 
 		// Check for second falling edge
 		do {
 			leftMotor.backward();
 			rightMotor.forward();
-			Thread.sleep(1000);
+			Thread.sleep(200);
 		} while (usPoller.getDistance() > d - k);
 
 		// Record Position of wall
 		leftMotor.stop(true);
 		rightMotor.stop(false);
-		Thread.sleep(1000);
+		Thread.sleep(200);
 		double beta = sensorManager.getOdometer().position[2];
 
 		// Now use alpha and beta to calculate deltaTheta
@@ -102,7 +112,7 @@ public class UltrasonicLocalizer {
 		double actualTheta = currentTheta + deltaTheta; // Correct theta by adding deltaTheta to the current heading
 		double zeroDegrees = 180 - actualTheta; // Find the zero point based off our angle calculations
 
-		driveManager.turnBy(zeroDegrees + 12);
+		driveManager.turnBy(zeroDegrees);
 
 		// Set Odometer value and stop
 		driveManager.stopAll();

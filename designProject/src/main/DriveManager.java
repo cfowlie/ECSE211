@@ -20,6 +20,7 @@ interface DriveThread {
 
 public class DriveManager {
 
+	
 	// Singleton Object
 	private static DriveManager sharedManager = null;
 	
@@ -34,17 +35,45 @@ public class DriveManager {
 	private final EV3LargeRegulatedMotor rightUpMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
 	// Constants
-	public static final double WHEEL_RAD = 2.2;
+	public static final double WHEEL_RAD = 2.02;
 	public static final double TRACK_OPEN = 21.2;
-	public static final double TRACK_CLOSED = 16.1;
-	public static final int ROTATE_SPEED = 75;
+	public static final double TRACK_CLOSED = 15.4 ;
+	public static final int ROTATE_SPEED = 140;
+	public static final int SL_ROTATE_SPEED = 80;
 	public static final int ROTATE_UP_SPEED = 20;
 	public static final double UP_ROTATION = 40;
-	public static final int FWD_SPEED = 140;
-	public static final double LIGHT_RADIUS = 4.1;
+	public static final int FWD_SPEED = 200;
+	public static final double LIGHT_RADIUS = 4.2;
 	public static final double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 	public static final double NO_WALL_DIST = 35;
 	public static final double TILE_SIZE = 30.48;
+	
+	/**
+	 * TODO:  All of these values need to be assigned and attributed in the CourseFollowing class
+	 * The way we assign them will be with the wifi program which will have a "get" method to call the values
+	 * 
+	 */
+	
+//	public static final double 	RedTeam; 
+//	public static final double GreenTeam; 
+//	public static final double RedCorner; 
+//	public static final double GreenCorner; 
+//	public static final double OG; 
+//	public static final double OR;
+//	public static final double Red_LL;  
+//	public static final double Red_UR; 
+//	public static final double Green_LL; 
+//	public static final double Green_UR;  
+//	public static final double TN_LL; 
+//	public static final double TN_UR;  
+//	public static final double BR_LL; 
+//	public static final double BR_UR; 
+//	public static final double SR_LL; 
+//	public static final double SR_UR;
+//	public static final double SG_LL;  
+//	public static final double SG_UR;  
+	
+	
 	
 	public static int trackState = 0 ; 
 
@@ -100,14 +129,23 @@ public class DriveManager {
         return;
     }
     
+    public void forwardByT(int tile_amount) throws OdometerExceptions {
+		getLeftMotor().setSpeed(FWD_SPEED);
+		getRightMotor().setSpeed(FWD_SPEED);
+		
+		for(int i =0; i> tile_amount; i++) {
+		
+		getLeftMotor().rotate(DriveManager.convertDistance(tile_amount*TILE_SIZE), true);
+    getRightMotor().rotate(DriveManager.convertDistance(tile_amount*TILE_SIZE), true);  
+    
+		}
+    return;
+}
+    
     /*
      * This method causes the robot to turn to the absolute heading
      */
-    public void turnTo(double theta) {
-    
-    	
-    	
-    }
+   
     
     public static double widthCheck() {
     	if(trackState == 0) {
@@ -120,17 +158,30 @@ public class DriveManager {
     }
     
     
+    public void tunnelSeq() throws OdometerExceptions {
+    	
+    	forwardBy(3*DriveManager.TILE_SIZE);
+    	
+    }
     
+    
+    public void bridgeSeq() throws OdometerExceptions {
+    	
+    	upOpen();
+    	forwardBy(3*DriveManager.TILE_SIZE);
+    	upClose();
+    	forwardBy(1*DriveManager.TILE_SIZE);
+    }
+       
     public void upOpen() {
     	
     	leftUpMotor.setSpeed(ROTATE_UP_SPEED);
     	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
     	
     	leftUpMotor.rotate(40,true);
-		rightUpMotor.rotate(40,false);
+		rightUpMotor.rotate(40,true);
 		
 		trackState = 1;		
-    	
     }
     
 public void upClose() {
@@ -139,7 +190,7 @@ public void upClose() {
     	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
     	
     	leftUpMotor.rotate(-40,true);
-		rightUpMotor.rotate(-40,false);
+		rightUpMotor.rotate(-40,true);
 		
 		trackState = 0;		
     	
@@ -178,6 +229,9 @@ public void upClose() {
 		} else if (theta > 180) {
 			theta -= 360;
 		}
+		
+		if(avoid==true) {
+		
 		turnBy(theta);
 
 		// Calculate the distance the robot must travel to get to the waypoint
@@ -185,6 +239,16 @@ public void upClose() {
 		
 		// Start robot forward towards the waypoint
 		forwardBy((int) distance);
+		
+		}
+		
+		else {
+			
+	
+		forwardBy(dX);
+		turnBy(-90);
+		forwardBy(dY);		
+		}
 		
 		// Play sound when reaching location
 		Sound.beep();
@@ -342,9 +406,66 @@ public void upClose() {
 		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
 		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
 	}
+	public void setSLRotSpd() {  //setting wheels to a slower rotating speed
+		leftMotor.setSpeed(DriveManager.SL_ROTATE_SPEED);
+		rightMotor.setSpeed(DriveManager.SL_ROTATE_SPEED);
+	}
 	public void setDriveSpd() { // setting wheels to a faster forward speed
 		leftMotor.setSpeed(DriveManager.FWD_SPEED);
 		rightMotor.setSpeed(DriveManager.FWD_SPEED);
 	}
+	
+	
+	public void lineLocWait() throws InterruptedException, OdometerExceptions {
+		
+		SensorManager sensorManager = SensorManager.getInstance();
+		setDriveSpd();
+
+		// wait until black line hits one of the two light sensors
+		while (sensorManager.getLine() == 0) {
+			leftMotor.forward();
+			rightMotor.forward();
+		}
+		
+		//if the right light sensor hit first, stop right motor and keep left running until left light hits line
+		if(sensorManager.getLine()==2) {
+			rightMotor.stop(true);
+			setSLRotSpd();
+			while (sensorManager.getLine() != 3) {
+				leftMotor.forward();
+			}
+			leftMotor.rotate(20);
+			
+		}
+		//if the left light sensor hit first, stop left motor and keep left running until right light hits line
+		else if(sensorManager.getLine()==1) {
+			leftMotor.stop(true);
+			setSLRotSpd();
+			while (sensorManager.getLine() != 3) {
+				rightMotor.forward();
+			}
+			rightMotor.rotate(20);
+		}
+		
+		leftMotor.stop(true);
+		rightMotor.stop(false);
+		
+		sensorManager.getOdometer().roundToNearest90();
+		setRotSpd();
+	
+		
+		Thread.sleep(200);
+	}
+	
+	
+	/**
+	 * 
+	 * TODO: A state machine that actively uses the light sensors to realign the robot
+	 * perpendicularly with the black lines
+	 * 
+	 * 
+	 */
+	
+	
 
 }

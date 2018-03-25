@@ -56,10 +56,10 @@ public class LightLocalizer {
 		rightUpMotor.stop();
 
 		// wait two seconds to know its the light starting
-		Thread.sleep(500);
-
+		Thread.sleep(200);
+		
 		//performs the line waiting action to put the robot in a perfect perpendicular line with the black lines
-		lineLocWait();
+		driveManager.lineLocWait();
 				
 		// set the y coordinate to y=light radius
 		sensorManager.getOdometer().setY(DriveManager.LIGHT_RADIUS);
@@ -72,61 +72,26 @@ public class LightLocalizer {
 		driveManager.turnBy(90);
 	
 		//performs the line waiting action to put the robot in a perfect perpendicular line with the black lines
-		lineLocWait();
+		driveManager.lineLocWait();
 	
 		// set the x coordinate to x= light radius
+		
 		sensorManager.getOdometer().setX(DriveManager.LIGHT_RADIUS);
 		
 		driveManager.forwardBy(-DriveManager.LIGHT_RADIUS);
 		
 		driveManager.setRotSpd();
 
-		// turn back towards the (0,0) coordinate
-		driveManager.turnBy(-90);		
+		// turn back towards the (0,0) coordinate	
 		
-		sensorManager.getOdometer().setXYT(0,0,0);
+		
+		sensorManager.getOdometer().setXYT(DriveManager.TILE_SIZE,DriveManager.TILE_SIZE, 90);
 
 		// done
 		driveManager.stopAll();
 	}
 	
-	private void lineLocWait() throws InterruptedException {
-		driveManager.setDriveSpd();
-
-		// wait until black line hits one of the two light sensors
-		while (sensorManager.getLine() == 0) {
-			leftMotor.forward();
-			rightMotor.forward();
-		}
-		
-		//if the right light sensor hit first, stop right motor and keep left running until left light hits line
-		if(sensorManager.getLine()==2) {
-			rightMotor.stop(true);
-			driveManager.setRotSpd();
-			while (sensorManager.getLine() != 3) {
-				leftMotor.forward();
-			}
-			leftMotor.rotate(10);
-			
-		}
-		//if the left light sensor hit first, stop left motor and keep left running until right light hits line
-		else if(sensorManager.getLine()==1) {
-			leftMotor.stop(true);
-			driveManager.setRotSpd();
-			while (sensorManager.getLine() != 3) {
-				rightMotor.forward();
-			}
-			rightMotor.rotate(10);
-		}
-		
-		leftMotor.stop(true);
-		rightMotor.stop(false);
-		
-		sensorManager.getOdometer().roundToNearest90();
 	
-		
-		Thread.sleep(2000);
-	}
 	
 	
 }

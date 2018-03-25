@@ -3,15 +3,24 @@ package odometer;
 import java.text.DecimalFormat;
 
 import lejos.hardware.lcd.TextLCD;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import light.ColorPoller;
+import main.DriveManager;
 import main.SensorManager;
+import ultrasonic.UltrasonicPoller;
 
 /**
  * This class is used to display the content of the odometer variables (x, y,
  * Theta)
  */
 public class Display implements Runnable {
+	
+	EV3UltrasonicSensor ultrasonicSensor;
+	UltrasonicPoller usPoller;
 
+	
+	SensorManager sensorManager = SensorManager.getInstance();
+	
 	private Odometer odo;
 	private TextLCD lcd;
 	private double[] position;
@@ -27,6 +36,8 @@ public class Display implements Runnable {
 	public Display(TextLCD lcd) throws OdometerExceptions {
 		odo = Odometer.getOdometer();
 		this.lcd = lcd;
+		
+		this.usPoller = sensorManager.getUsPoller();
 	}
 
 	/**
@@ -40,8 +51,13 @@ public class Display implements Runnable {
 		this.timeout = timeout;
 		this.lcd = lcd;
 	}
+	
+	
 
 	public void run() {
+		
+		
+		
 
 		SensorManager sensorManager = null;
 		try {
@@ -67,12 +83,12 @@ public class Display implements Runnable {
 			lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
 			lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
 			lcd.drawString("T: " + numberFormat.format((int) (position[2] % 360)), 0, 2);
-			
-			lcd.clear(3); //always reload the color on the display
+			lcd.drawString("Wall: " + numberFormat.format(sensorManager.getDistanceD()), 0, 3);
+			//lcd.clear(3); //always reload the color on the display
 			lcd.clear(4); //always reload the color on the display
 			
 			if(sensorManager.getDistance() < 6) {
-				lcd.drawString("Object Detected", 0, 3);
+				//lcd.drawString("Object Detected", 0, 3);
 				lcd.drawString("Color:" + ColorPoller.color, 0, 4);
 			}	
 			

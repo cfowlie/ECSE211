@@ -86,6 +86,10 @@ public class SensorManager {
 		return this.getUsPoller().getDistance();
 	}
 	
+	public double getDistanceD() {
+		return this.getUsPoller().getDistanceD();
+	}
+	
 	
 	/*
 	 * Returns int if currently over a line

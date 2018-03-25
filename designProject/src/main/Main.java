@@ -5,8 +5,9 @@ import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import odometer.Display;
 import odometer.OdometerExceptions;
-import util.LightLocalizer;
-import util.UltrasonicLocalizer;
+
+import util.*;
+
 
 public class Main {
 
@@ -33,7 +34,9 @@ public class Main {
 		// Localizers
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
-
+		final CourseFollowing courseFollowing = new CourseFollowing();
+		
+		
 
 		
 		// Setup Drive Thread
@@ -42,10 +45,17 @@ public class Main {
 			@Override
 			public void run() throws InterruptedException, OdometerExceptions {
 				// Ultrasonic localize
-				ultrasonicLocalizer.fallingEdge();
+				//ultrasonicLocalizer.fallingEdge();
 
 				// Light localize
-				lightLocalizer.findOrigin();
+				//lightLocalizer.findOrigin();
+				
+				
+
+				
+				courseFollowing.followCourse();
+				
+				
 												
 				completion();
 			}

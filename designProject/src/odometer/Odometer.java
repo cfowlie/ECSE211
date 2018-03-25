@@ -68,7 +68,7 @@ public class Odometer extends OdometerData implements Runnable {
 		if (odo != null) { // Return existing object
 			return odo;
 		} else { // create object and return it
-			odo = new Odometer(driveManager.getLeftMotor(), driveManager.getRightMotor(), driveManager.TRACK_CLOSED, driveManager.WHEEL_RAD);
+			odo = new Odometer(driveManager.getLeftMotor(), driveManager.getRightMotor(), driveManager.widthCheck(), driveManager.WHEEL_RAD);
 			return odo;
 		}
 	}
@@ -94,7 +94,7 @@ public class Odometer extends OdometerData implements Runnable {
 			double distance = (d1 + d2) / 2;
 
 			// Theta
-			double dt = (d1 - d2) / DriveManager.TRACK_CLOSED;
+			double dt = (d1 - d2) / DriveManager.widthCheck();
 
 			position = odo.getXYT();
 			// Positions
