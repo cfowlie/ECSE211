@@ -1,5 +1,6 @@
 package main;
 
+import lejos.hardware.Wifi;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -31,6 +32,9 @@ public class SensorManager {
 	// Odometer
 	private Odometer odometer;
 
+	//initialize the wifi transmission
+	private final Wifi wifi = new Wifi();
+	
 	// Color Sensor
 	private EV3ColorSensor colorSensor = new EV3ColorSensor(colorPort);
 	private ColorPoller colorPoller;

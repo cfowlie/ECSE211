@@ -48,33 +48,53 @@ public class DriveManager {
 	public static final double NO_WALL_DIST = 35;
 	public static final double TILE_SIZE = 30.48;
 	
+	
+	public static int RedTeam; 
+	public static int RedCorner; 
+	public static int GreenTeam;
+	public static int GreenCorner; 
+	
+	public static int OG ;
+	public static int OR ;
+	
+	public static int Red_LLx; 
+	public static int Red_LLy ;
+	public static int Red_URx ;
+	public static int Red_URy ;
+	
+	public static int Green_LLx ; 
+	public static int Green_LLy ;
+	public static int Green_URx ;
+	public static int Green_URy ;
+	
+	public static int TN_LLx ;
+	public static int TN_LLy ;
+	public static int TN_URx ;
+	public static int TN_URy ;
+	
+	public static int BR_LLx ;
+	public static int BR_LLy ;
+	public static int BR_URx ;
+	public static int BR_URy ;
+	
+	public static int SR_LLx ;
+	public static int SR_LLy ;
+	public static int SR_URx ;
+	public static int SR_URy ;
+	
+	public static int SG_LLx ;
+	public static int SG_LLy ;
+	public static int SG_URx ;
+	public static int SG_URy ;
+
+	
 	/**
 	 * TODO:  All of these values need to be assigned and attributed in the CourseFollowing class
 	 * The way we assign them will be with the wifi program which will have a "get" method to call the values
 	 * 
 	 */
 	
-//	public static final double 	RedTeam; 
-//	public static final double GreenTeam; 
-//	public static final double RedCorner; 
-//	public static final double GreenCorner; 
-//	public static final double OG; 
-//	public static final double OR;
-//	public static final double Red_LL;  
-//	public static final double Red_UR; 
-//	public static final double Green_LL; 
-//	public static final double Green_UR;  
-//	public static final double TN_LL; 
-//	public static final double TN_UR;  
-//	public static final double BR_LL; 
-//	public static final double BR_UR; 
-//	public static final double SR_LL; 
-//	public static final double SR_UR;
-//	public static final double SG_LL;  
-//	public static final double SG_UR;  
-	
-	
-	
+
 	public static int trackState = 0 ; 
 
 
@@ -160,41 +180,40 @@ public class DriveManager {
     
     public void tunnelSeq() throws OdometerExceptions {
     	
-    	forwardBy(3*DriveManager.TILE_SIZE);
+    	forwardBy(4*DriveManager.TILE_SIZE);
     	
     }
     
     
     public void bridgeSeq() throws OdometerExceptions {
     	
-    	upOpen();
+    	transform();
     	forwardBy(3*DriveManager.TILE_SIZE);
-    	upClose();
+    	transform();
     	forwardBy(1*DriveManager.TILE_SIZE);
     }
        
-    public void upOpen() {
-    	
-    	leftUpMotor.setSpeed(ROTATE_UP_SPEED);
-    	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
-    	
-    	leftUpMotor.rotate(40,true);
-		rightUpMotor.rotate(40,true);
-		
-		trackState = 1;		
-    }
     
-public void upClose() {
-    	
-    	leftUpMotor.setSpeed(ROTATE_UP_SPEED);
-    	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
-    	
-    	leftUpMotor.rotate(-40,true);
-		rightUpMotor.rotate(-40,true);
-		
-		trackState = 0;		
-    	
+    public void transform() {
+    	if(trackState == 1) {
+    		leftUpMotor.setSpeed(ROTATE_UP_SPEED);
+        	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
+        	
+        	leftUpMotor.rotate(-45,true);
+    		rightUpMotor.rotate(-45,true);
+    		
+    		trackState = 0;	
+    	} else {
+    		leftUpMotor.setSpeed(ROTATE_UP_SPEED);
+        	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
+        	
+        	leftUpMotor.rotate(40,true);
+    		rightUpMotor.rotate(40,true);
+    		
+    		trackState = 1;	
+    	}
     }
+  
     
     /**
 	 * This method causes the robot to travel to the absolute field location (x,y),

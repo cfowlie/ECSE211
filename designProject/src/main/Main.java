@@ -1,6 +1,7 @@
 package main;
 
 import lejos.hardware.Button;
+import lejos.hardware.Wifi;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import odometer.Display;
@@ -37,6 +38,7 @@ public class Main {
 		final CourseFollowing courseFollowing = new CourseFollowing();
 		
 		
+		
 
 		
 		// Setup Drive Thread
@@ -45,15 +47,18 @@ public class Main {
 			@Override
 			public void run() throws InterruptedException, OdometerExceptions {
 				// Ultrasonic localize
-				//ultrasonicLocalizer.fallingEdge();
+				
+				
+				
+				ultrasonicLocalizer.fallingEdge();
 
 				// Light localize
-				//lightLocalizer.findOrigin();
+				lightLocalizer.findOrigin();
 				
 				
 
 				
-				courseFollowing.followCourse();
+				//courseFollowing.followCourse();
 				
 				
 												
