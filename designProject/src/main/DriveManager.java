@@ -3,6 +3,7 @@ package main;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import odometer.OdometerData;
 import odometer.OdometerExceptions;
 
 interface DriveThread {
@@ -135,6 +136,8 @@ public class DriveManager {
         return;
     }
     
+    
+    
 	/**
      * This method causes the robot to travel forward by a distance (cm)
      * 
@@ -179,8 +182,10 @@ public class DriveManager {
     /**
      * Returns the proper starting corner information.
      * @return
+     * 
+     * should be 11 instead of 7**************************
      */
-    public static int[] startCornerLoc() {
+    public int[] startCornerLoc() {
     	int[] loc = new int [3];
     	if(RedCorner == 0) {
     		loc[0] = 1;
@@ -188,44 +193,31 @@ public class DriveManager {
     		loc[2] = 90;
     		return loc;
     	}else if(RedCorner == 1) {
-    		loc[0] = 1;
-    		loc[1] = 11;
+    		loc[0] = 7;
+    		loc[1] = 1;
     		loc[2] = 0;
     		return loc;
     	}else if(RedCorner == 2) {
-    		loc[0] = 11;
-    		loc[1] = 11;
+    		loc[0] = 7;
+    		loc[1] = 7;
     		loc[2] = 270;
     		return loc;
     	}else {
-    		loc[0] = 11;
-    		loc[1] = 1;
+    		loc[0] = 1;
+    		loc[1] = 7;
     		loc[2] = 180;
     		return loc;
     	}
     }
+   
     
-    
-    public void tunnelSeq() throws OdometerExceptions {
-    	
-    	forwardBy(4*DriveManager.TILE_SIZE);
-    }
-    
-    
-    public void bridgeSeq() throws OdometerExceptions {
-    	
-    	transform();
-    	forwardBy(3*DriveManager.TILE_SIZE);
-    	transform();
-    	forwardBy(1*DriveManager.TILE_SIZE);
-    }
        
     
     public void transform() {
     	if(trackState == 1) {
     		leftUpMotor.setSpeed(ROTATE_UP_SPEED);
         	rightUpMotor.setSpeed(ROTATE_UP_SPEED);
-        	
+          	
         	leftUpMotor.rotate(-45,true);
     		rightUpMotor.rotate(-45,true);
     		
@@ -240,6 +232,9 @@ public class DriveManager {
     		trackState = 1;	
     	}
     }
+    
+    
+    
   
     
     /**
@@ -250,9 +245,31 @@ public class DriveManager {
 	 * @param y
      * @throws OdometerExceptions 
 	 */
-	public void travelTo(double x, double y, boolean avoid) throws OdometerExceptions {
+    public void turnTo(double headingT) throws OdometerExceptions {
+    	
+    	SensorManager sensorManager = SensorManager.getInstance();
+    	
+    	double position[] = sensorManager.getOdometer().getXYT();
+		
+		double currentT = position[2];
+																
+		double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
+
+		// This makes sure the robot always turns the smaller angle
+		if (theta < -180) {
+			theta += 360;
+		} else if (theta > 180) {
+			theta -= 360;
+		}
+		turnBy(theta);
+    	
+    }
+    
+    
+	public void travelTo(double x, double y, boolean avoid) throws OdometerExceptions, InterruptedException {
 		
 		SensorManager sensorManager = SensorManager.getInstance();
+		DriveManager driveManager = DriveManager.getInstance();
 		
 		// Get the current x, y and theta positions from the odometer
 		double position[] = sensorManager.getOdometer().getXYT();
@@ -279,9 +296,11 @@ public class DriveManager {
 		if(avoid==true) {
 		
 		turnBy(theta);
+		
+		driveManager.lineLocWait();
 
 		// Calculate the distance the robot must travel to get to the waypoint
-		double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+		double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)) - DriveManager.LIGHT_RADIUS;
 		
 		// Start robot forward towards the waypoint
 		forwardBy((int) distance);
@@ -305,20 +324,20 @@ public class DriveManager {
 		Sound.beep();
 	}
 	
-	public void travelToGrid(double x, double y) throws OdometerExceptions {
+	public void travelToGrid(double x, double y) throws OdometerExceptions, InterruptedException {
 		SensorManager sensorManager = SensorManager.getInstance();
 		
 		int curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
 		int curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
 		if((int) y != curY) {
-			travelTo(curX, y, false);
-			turnBy(90);
+			
+			travelTo(curX, y, true);
 		}
 		
 		curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
 		curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
 		if((int) x != curX) {
-			travelTo(x, curY, false);
+			travelTo(x, curY, true);
 		}
 	}
 	
@@ -391,7 +410,7 @@ public class DriveManager {
 	 * Convert and angle
 	 */
 	public static int convertAngle(double angle) {
-		double width = DriveManager.widthCheck();
+		double width = widthCheck();
 		return convertDistance(Math.PI * width * angle / 360.0);
 	}
 	
@@ -501,7 +520,15 @@ public class DriveManager {
 		leftMotor.stop(true);
 		rightMotor.stop(false);
 		
-		//sensorManager.getOdometer().roundToNearest90();
+		if(OdometerData.roundToNearest90()==0) {
+			sensorManager.getOdometer().setTheta(0);	
+		}else if(OdometerData.roundToNearest90()==1) {
+			sensorManager.getOdometer().setTheta(90);	
+		}else if(OdometerData.roundToNearest90()==2) {
+			sensorManager.getOdometer().setTheta(180);	
+		} else {
+			sensorManager.getOdometer().setTheta(270);	
+		}
 		setRotSpd();
 	
 		

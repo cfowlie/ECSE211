@@ -78,8 +78,8 @@ public class Display implements Runnable {
 
 			// Print x,y, and theta information
 			DecimalFormat numberFormat = new DecimalFormat("######0.00");
-			lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
-			lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
+			lcd.drawString("X: " + numberFormat.format(position[0]/DriveManager.TILE_SIZE), 0, 0);
+			lcd.drawString("Y: " + numberFormat.format(position[1]/DriveManager.TILE_SIZE), 0, 1);
 			lcd.drawString("T: " + numberFormat.format((int) (position[2] % 360)), 0, 2);
 			lcd.drawString("Wall: " + numberFormat.format(sensorManager.getDistanceD()), 0, 3);
 			//lcd.clear(3); //always reload the color on the display

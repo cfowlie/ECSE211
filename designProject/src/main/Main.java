@@ -25,11 +25,11 @@ public class Main {
 		// LCD
 		lcd.clear();
 
-		// ask the user whether the motors should drive in a square or float
-		lcd.drawString("	Press Any Button", 0, 0);
-		Button.waitForAnyPress(); // Record choice (left or right press)
-		
-		
+//		// ask the user whether the motors should drive in a square or float
+//		lcd.drawString("	Press Any Button", 0, 0);
+//		Button.waitForAnyPress(); // Record choice (left or right press)
+//		
+//		
 
 		// Odo Display
 		Display odometryDisplay = new Display(lcd);
@@ -48,22 +48,18 @@ public class Main {
 			
 			@Override
 			public void run() throws InterruptedException, OdometerExceptions {
-				// Ultrasonic localize
-				wifi.transmit();
-	
 				
+				//transfers all the data from the wifi server into the robot
+				wifi.transmit();
+						
+				// Ultrasonic localize
 				ultrasonicLocalizer.fallingEdge();
 				
 				// Light localize
 				lightLocalizer.findOrigin();
-				
-				
-
-				
-				//courseFollowing.followCourse();
-				
-				
-												
+		
+				courseFollowing.followCourse();
+									
 				completion();
 			}
 

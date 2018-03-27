@@ -219,7 +219,7 @@ public class OdometerData  {
 			lock.unlock();
 		}
 	}
-	public int roundToNearest90(double X, double Y) {
+	public static int roundToNearest90() {
 		double realT = Odometer.position[2];
 		
 		if(realT >=315 && realT <45) {

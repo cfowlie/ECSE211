@@ -5,7 +5,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import odometer.Odometer;
 import odometer.OdometerExceptions;
 
-public class BlockSearch {
+public class blockSearch {
 
 	private static int i = 0;
 
