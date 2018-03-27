@@ -222,8 +222,8 @@ public class OdometerData  {
 	public static int roundToNearest90() {
 		double realT = Odometer.position[2];
 		
-		if(realT >=315 && realT <45) {
-			return 0;
+		if(realT >=225 && realT <315) {
+			return 3;
 		}
 		else if(realT >=45 && realT <135) {
 			return 1;
@@ -232,7 +232,7 @@ public class OdometerData  {
 			return 2;
 		}
 		else {
-			return 3;
+			return 0;
 		}
 	}
 	

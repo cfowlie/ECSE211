@@ -329,14 +329,14 @@ public class DriveManager {
 		
 		int curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
 		int curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
-		if((int) y != curY) {
+		if( y != curY) {
 			
 			travelTo(curX, y, true);
 		}
 		
 		curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
 		curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
-		if((int) x != curX) {
+		if( x != curX) {
 			travelTo(x, curY, true);
 		}
 	}

@@ -78,7 +78,7 @@ public class CourseFollowing {
 		    	bridgeSeq();
 		    	
 		    	sensorManager.getOdometer().setX(DriveManager.BR_LLx+0.5);
-		    	sensorManager.getOdometer().setX(DriveManager.BR_LLy-1.5);
+		    	sensorManager.getOdometer().setY(DriveManager.BR_LLy-1.5);
 		    	
 		    	driveManager.travelToGrid(DriveManager.TN_LLx, DriveManager.TN_LLy-1.5);
 		    	
@@ -103,8 +103,8 @@ public class CourseFollowing {
 		    	
 		    	tunnelSeq();
 		    	
-		    	sensorManager.getOdometer().setX(DriveManager.TN_LLx+0.5);
-		    	sensorManager.getOdometer().setX(DriveManager.TN_LLy-1.5);
+		    	sensorManager.getOdometer().setX((DriveManager.TN_LLx+0.5)*DriveManager.TILE_SIZE);
+		    	sensorManager.getOdometer().setY((DriveManager.TN_LLy-1.5)*DriveManager.TILE_SIZE);
 		    	
 		    	driveManager.travelToGrid(DriveManager.BR_LLx, DriveManager.BR_LLy-1.5);
 		    	
