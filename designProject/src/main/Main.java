@@ -1,7 +1,7 @@
 package main;
 
 import lejos.hardware.Button;
-import lejos.hardware.Wifi;
+import wifi.*;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import odometer.Display;
@@ -13,12 +13,14 @@ import util.*;
 public class Main {
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
-
+	
 	public static void main(String[] args) throws OdometerExceptions, InterruptedException {
 
 		// Init shared Managers
 		final DriveManager driveManager = DriveManager.getInstance();
 		final SensorManager sensorManager = SensorManager.getInstance();
+		
+		
 
 		// LCD
 		lcd.clear();
@@ -26,6 +28,8 @@ public class Main {
 		// ask the user whether the motors should drive in a square or float
 		lcd.drawString("	Press Any Button", 0, 0);
 		Button.waitForAnyPress(); // Record choice (left or right press)
+		
+		
 
 		// Odo Display
 		Display odometryDisplay = new Display(lcd);
@@ -36,9 +40,7 @@ public class Main {
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
 		final CourseFollowing courseFollowing = new CourseFollowing();
-		
-		
-		
+		final Wifi wifi = new Wifi();
 
 		
 		// Setup Drive Thread
@@ -47,11 +49,11 @@ public class Main {
 			@Override
 			public void run() throws InterruptedException, OdometerExceptions {
 				// Ultrasonic localize
-				
-				
+				wifi.transmit();
+	
 				
 				ultrasonicLocalizer.fallingEdge();
-
+				
 				// Light localize
 				lightLocalizer.findOrigin();
 				

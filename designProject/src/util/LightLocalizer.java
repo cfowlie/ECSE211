@@ -85,7 +85,7 @@ public class LightLocalizer {
 		// turn back towards the (0,0) coordinate	
 		
 		
-		sensorManager.getOdometer().setXYT(DriveManager.TILE_SIZE,DriveManager.TILE_SIZE, 90);
+		sensorManager.getOdometer().setXYT(DriveManager.TILE_SIZE*DriveManager.startCornerLoc()[0],DriveManager.TILE_SIZE*DriveManager.startCornerLoc()[1], DriveManager.startCornerLoc()[2]);
 
 		// done
 		driveManager.stopAll();

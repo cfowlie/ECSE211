@@ -75,14 +75,6 @@ public class CourseFollowing {
 		 * 
 		 * 
 		 */
-	
-
-		
-		 
-		
-		
-		
-		
 
 		driveManager.stopAll();
 	}

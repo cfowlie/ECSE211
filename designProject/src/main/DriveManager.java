@@ -176,12 +176,39 @@ public class DriveManager {
     	}
     	
     }
+    /**
+     * Returns the proper starting corner information.
+     * @return
+     */
+    public static int[] startCornerLoc() {
+    	int[] loc = new int [3];
+    	if(RedCorner == 0) {
+    		loc[0] = 1;
+    		loc[1] = 1;
+    		loc[2] = 90;
+    		return loc;
+    	}else if(RedCorner == 1) {
+    		loc[0] = 1;
+    		loc[1] = 11;
+    		loc[2] = 0;
+    		return loc;
+    	}else if(RedCorner == 2) {
+    		loc[0] = 11;
+    		loc[1] = 11;
+    		loc[2] = 270;
+    		return loc;
+    	}else {
+    		loc[0] = 11;
+    		loc[1] = 1;
+    		loc[2] = 180;
+    		return loc;
+    	}
+    }
     
     
     public void tunnelSeq() throws OdometerExceptions {
     	
     	forwardBy(4*DriveManager.TILE_SIZE);
-    	
     }
     
     
@@ -262,10 +289,15 @@ public class DriveManager {
 		}
 		
 		else {
+		
+		if(dY < 1) {
+			if(dX>0) {
+			//	if()
+			}
 			
+		}
 	
 		forwardBy(dX);
-		turnBy(-90);
 		forwardBy(dY);		
 		}
 		
@@ -469,7 +501,7 @@ public class DriveManager {
 		leftMotor.stop(true);
 		rightMotor.stop(false);
 		
-		sensorManager.getOdometer().roundToNearest90();
+		//sensorManager.getOdometer().roundToNearest90();
 		setRotSpd();
 	
 		

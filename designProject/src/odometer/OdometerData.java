@@ -219,21 +219,25 @@ public class OdometerData  {
 			lock.unlock();
 		}
 	}
-	public void roundToNearest90() {
+	public int roundToNearest90(double X, double Y) {
 		double realT = Odometer.position[2];
 		
 		if(realT >=315 && realT <45) {
-			setTheta(0);
+			return 0;
 		}
 		else if(realT >=45 && realT <135) {
-			setTheta(90);
+			return 1;
 		}
 		else if(realT >=135 && realT <225) {
-			setTheta(180);
+			return 2;
 		}
-		else if(realT >=225 && realT <315) {
-			setTheta(270);
+		else {
+			return 3;
 		}
 	}
+	
+	
+	
+	
 
 }

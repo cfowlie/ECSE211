@@ -6,6 +6,7 @@ import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import light.ColorPoller;
 import main.DriveManager;
+import main.Main;
 import main.SensorManager;
 import ultrasonic.UltrasonicPoller;
 
@@ -55,9 +56,6 @@ public class Display implements Runnable {
 	
 
 	public void run() {
-		
-		
-		
 
 		SensorManager sensorManager = null;
 		try {

@@ -5,6 +5,7 @@ import java.util.Map;
 import ca.mcgill.ecse211.WiFiClient.WifiConnection;
 import lejos.hardware.Button;
 import main.DriveManager;
+import odometer.Display;
 import odometer.OdometerExceptions;
 
 
@@ -34,18 +35,16 @@ import odometer.OdometerExceptions;
  */
 public class Wifi {
 	
-	
-	
 
   // ** Set these as appropriate for your team and current situation **
-  private static final String SERVER_IP = "192.168.2.8";
+  private static final String SERVER_IP = "192.168.2.16";
   private static final int TEAM_NUMBER = 12;
 
   // Enable/disable printing of debug info from the WiFi class
   private static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
 
   @SuppressWarnings("rawtypes")
-  public static void main(String[] args) throws OdometerExceptions {
+  public void transmit() throws InterruptedException, OdometerExceptions {
 	  
 	  
 
@@ -124,7 +123,6 @@ public class Wifi {
       System.err.println("Error: " + e.getMessage());
     }
 
-    // Wait until user decides to end program
-    Button.waitForAnyPress();
+    System.out.print("                                                                                                                                                 ");
   }
 }

@@ -33,7 +33,7 @@ public class SensorManager {
 	private Odometer odometer;
 
 	//initialize the wifi transmission
-	private final Wifi wifi = new Wifi();
+	
 	
 	// Color Sensor
 	private EV3ColorSensor colorSensor = new EV3ColorSensor(colorPort);
