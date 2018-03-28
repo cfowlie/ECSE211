@@ -327,18 +327,18 @@ public class DriveManager {
 	public void travelToGrid(double x, double y) throws OdometerExceptions, InterruptedException {
 		SensorManager sensorManager = SensorManager.getInstance();
 		
-		int curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
-		int curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
-		if( y != curY) {
+		double curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
+		double curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
+		if( Math.abs(y - curY) < 2) {
 			
 			travelTo(curX, y, true);
 		}
 		
-		curY = (int) Math.round(sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE);
-		curX = (int) Math.round(sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE);
-		if( x != curX) {
+		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
+		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
+		
 			travelTo(x, curY, true);
-		}
+		
 	}
 	
     /**
