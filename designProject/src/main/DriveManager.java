@@ -36,7 +36,7 @@ public class DriveManager {
 	private final EV3LargeRegulatedMotor rightUpMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
 	// Constants
-	public static final double WHEEL_RAD = 2.02;
+	public static final double WHEEL_RAD = 2.01;
 	public static final double TRACK_OPEN = 21.2;
 	public static final double TRACK_CLOSED = 15.4 ;
 	public static final int ROTATE_SPEED = 140;
@@ -185,31 +185,7 @@ public class DriveManager {
      * 
      * should be 11 instead of 7**************************
      */
-    public int[] startCornerLoc() {
-    	int[] loc = new int [3];
-    	if(RedCorner == 0) {
-    		loc[0] = 1;
-    		loc[1] = 1;
-    		loc[2] = 90;
-    		return loc;
-    	}else if(RedCorner == 1) {
-    		loc[0] = 7;
-    		loc[1] = 1;
-    		loc[2] = 0;
-    		return loc;
-    	}else if(RedCorner == 2) {
-    		loc[0] = 7;
-    		loc[1] = 7;
-    		loc[2] = 270;
-    		return loc;
-    	}else {
-    		loc[0] = 1;
-    		loc[1] = 7;
-    		loc[2] = 180;
-    		return loc;
-    	}
-    }
-   
+     
     
        
     
@@ -230,6 +206,40 @@ public class DriveManager {
     		rightUpMotor.rotate(40,true);
     		
     		trackState = 1;	
+    	}
+    }
+    
+    
+    public double[] startCornerLoc() {
+    	double[] loc = new double [5];
+    	if(DriveManager.GreenCorner == 0) {
+    		loc[0] = 1;
+    		loc[1] = 1;
+    		loc[2] = 90;
+    		loc[3] = +.5;
+    		loc[4] = +.5;
+    		return loc;
+    	}else if(DriveManager.GreenCorner == 1) {
+    		loc[0] = 7;
+    		loc[1] = 1;
+    		loc[2] = 0;
+    		loc[3] = -.5;
+    		loc[4] = +.5;
+    		return loc;
+    	}else if(DriveManager.GreenCorner == 2) {
+    		loc[0] = 7;
+    		loc[1] = 7;
+    		loc[2] = 270;
+    		loc[3] = -.5;
+    		loc[4] = -.5;
+    		return loc;
+    	}else {
+    		loc[0] = 1;
+    		loc[1] = 7;
+    		loc[2] = 180;
+    		loc[3] = +.5;
+    		loc[4] = -.5;
+    		return loc;
     	}
     }
     
@@ -266,7 +276,7 @@ public class DriveManager {
     }
     
     
-	public void travelTo(double x, double y, boolean avoid) throws OdometerExceptions, InterruptedException {
+	public void travelTo(double x, double y, boolean avoid, boolean choice) throws OdometerExceptions, InterruptedException {
 		
 		SensorManager sensorManager = SensorManager.getInstance();
 		DriveManager driveManager = DriveManager.getInstance();
@@ -298,6 +308,11 @@ public class DriveManager {
 		turnBy(theta);
 		
 		driveManager.lineLocWait();
+		
+		if (choice == true) {
+			forwardBy(-DriveManager.LIGHT_RADIUS);
+			
+		}
 
 		// Calculate the distance the robot must travel to get to the waypoint
 		double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)) - DriveManager.LIGHT_RADIUS;
@@ -331,13 +346,29 @@ public class DriveManager {
 		double curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		if( Math.abs(y - curY) < 2) {
 			
-			travelTo(curX, y, true);
+			travelTo(curX, y, true, false);
 		}
 		
 		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
 		
-			travelTo(x, curY, true);
+			travelTo(x, curY, true, false);
+		
+	}
+	public void travelToGridC(double x, double y) throws OdometerExceptions, InterruptedException {
+		SensorManager sensorManager = SensorManager.getInstance();
+		
+		double curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
+		double curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
+		if( Math.abs(y - curY) < 2) {
+			
+			travelTo(curX, y, true, true);
+		}
+		
+		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
+		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
+		
+			travelTo(x, curY, true, true);
 		
 	}
 	
