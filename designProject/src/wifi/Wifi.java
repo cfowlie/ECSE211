@@ -10,12 +10,7 @@ import odometer.OdometerExceptions;
 
 
 /**
- * Example class using WifiConnection to communicate with a server and receive data concerning the
- * competition such as the starting corner the robot is placed in.
- * 
- * Keep in mind that this class is an **example** of how to use the WiFi code; you must use the
- * WifiConnection class yourself in your own code as appropriate. In this example, we simply show
- * how to get and process different types of data.
+ * @author David Castonguay
  * 
  * There are two variables you **MUST** set manually before trying to use this code.
  * 
@@ -29,15 +24,13 @@ import odometer.OdometerExceptions;
  * long string containing the transmission) can be read on the screen OR a remote console such as
  * the EV3Control program via Bluetooth or WiFi. You can disable printing from the WiFi code via
  * ENABLE_DEBUG_WIFI_PRINT (below).
- * 
- * @author Michael Smith, Tharsan Ponnampalam
  *
  */
 public class Wifi {
 	
 
   // ** Set these as appropriate for your team and current situation **
-  private static final String SERVER_IP = "192.168.2.10";
+  private static final String SERVER_IP = "192.168.2.6";
   private static final int TEAM_NUMBER = 12;
 
   // Enable/disable printing of debug info from the WiFi class

@@ -88,7 +88,7 @@ public class CourseFollowing {
 		    	
 		    	bridgeSeq();
 		    	
-		    	driveManager.travelToGridC(driveManager.startCornerLoc()[0]+driveManager.startCornerLoc()[3],driveManager.startCornerLoc()[1]+driveManager.startCornerLoc()[4]);
+		    	driveManager.travelToGrid(driveManager.startCornerLoc()[0]+driveManager.startCornerLoc()[3],driveManager.startCornerLoc()[1]+driveManager.startCornerLoc()[4]);
 		 
 		}else {
 			
@@ -103,7 +103,7 @@ public class CourseFollowing {
 		    	sensorManager.getOdometer().setX((DriveManager.TN_URx-0.5)*DriveManager.TILE_SIZE);
 		    	sensorManager.getOdometer().setY((DriveManager.TN_URy+1.5)*DriveManager.TILE_SIZE);
 		    	
-		    	driveManager.travelToGrid(DriveManager.BR_URx,DriveManager.BR_URy-1);
+		    	driveManager.travelToGrid(DriveManager.BR_URx-1,DriveManager.BR_URy-1);
 		    	
 		    	driveManager.turnTo(180);
 		    	
