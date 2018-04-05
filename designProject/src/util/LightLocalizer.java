@@ -33,10 +33,7 @@ public class LightLocalizer {
 		this.rightMotor = driveManager.getRightMotor();
 		this.leftUpMotor = driveManager.getLeftUpMotor();
 		this.rightUpMotor = driveManager.getRightUpMotor();
-		
-		// Sensors
-		this.lightRSensor = sensorManager.getLightSensorR(); 
-		this.lightLSensor = sensorManager.getLightSensorL();
+	
 	}
 	
 	/*

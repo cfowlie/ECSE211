@@ -315,15 +315,13 @@ public class DriveManager {
 
 			turnBy(theta);
 
-			driveManager.lineLocWait();
-
 			if (choice == true) {
 				forwardBy(-DriveManager.LIGHT_RADIUS);
 
 			}
 
 			// Calculate the distance the robot must travel to get to the waypoint
-			double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)) - DriveManager.LIGHT_RADIUS;
+			double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 
 			// Start robot forward towards the waypoint
 			forwardBy((int) distance);
@@ -331,13 +329,6 @@ public class DriveManager {
 		}
 
 		else {
-
-			if (dY < 1) {
-				if (dX > 0) {
-					// if()
-				}
-
-			}
 
 			forwardBy(dX);
 			forwardBy(dY);
@@ -366,26 +357,7 @@ public class DriveManager {
 		travelTo(x, curY, true, false);
 
 	}
-	
-	/*
-	 * Travels to an X and Y position by traveling X first and then Y, along grid lines
-	 */
-	public void travelToGridC(double x, double y) throws OdometerExceptions, InterruptedException {
-		SensorManager sensorManager = SensorManager.getInstance();
 
-		double curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
-		double curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
-		if (Math.abs(y - curY) < 2) {
-
-			travelTo(curX, y, true, true);
-		}
-
-		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
-		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
-
-		travelTo(x, curY, true, true);
-
-	}
 
 	/**
 	 * This method causes the robot to travel to the absolute field location (x,y),
