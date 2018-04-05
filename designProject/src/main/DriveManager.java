@@ -37,7 +37,7 @@ public class DriveManager {
 	// Constants
 	public static final double WHEEL_RAD = 2.01;
 	public static final double TRACK_OPEN = 21.2;
-	public static final double TRACK_CLOSED = 15.4;
+	public static final double TRACK_CLOSED = 14.8;
 	public static final int ROTATE_SPEED = 140;
 	public static final int SL_ROTATE_SPEED = 80;
 	public static final int ROTATE_UP_SPEED = 20;
@@ -175,7 +175,7 @@ public class DriveManager {
 	}
 
 	/*
-	 * Gets the current track width
+	 * Gets the current track width because our robot has different track widths depending on stage state.
 	 */
 	public static double widthCheck() {
 		if (trackState == 0) {

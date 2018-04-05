@@ -66,7 +66,10 @@ public class CourseFollowing {
 		// wait two seconds to know its the light starting
 		Thread.sleep(500);
 		
-		
+		driveManager.travelTo(2, 0, true);
+		driveManager.travelTo(1, 1, true);
+		driveManager.travelTo(1, 2, true);
+		driveManager.travelTo(2, 0, true);
 		
 		
 		

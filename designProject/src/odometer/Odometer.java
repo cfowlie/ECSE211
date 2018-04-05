@@ -22,8 +22,8 @@ public class Odometer extends OdometerData implements Runnable {
 	static Odometer odo = null; // Returned as singleton
 
 	// Motors and related variables
-	private int leftMotorTachoCount;
-	private int rightMotorTachoCount;
+	private double leftMotorTachoCount;
+	private double rightMotorTachoCount;
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 
@@ -84,8 +84,11 @@ public class Odometer extends OdometerData implements Runnable {
 		while (true) {
 			updateStart = System.currentTimeMillis();
 
-			double dL = leftMotor.getTachoCount() - leftMotorTachoCount;
-			double dR = rightMotor.getTachoCount() - rightMotorTachoCount;
+			double leftInstantTacho = leftMotor.getTachoCount();
+			double rightInstantTacho = rightMotor.getTachoCount();
+			
+			double dL = leftInstantTacho - leftMotorTachoCount;
+			double dR = rightInstantTacho - rightMotorTachoCount;
 
 			double d1 = (Math.PI * dL * DriveManager.WHEEL_RAD) / 180;
 			double d2 = (Math.PI * dR * DriveManager.WHEEL_RAD) / 180;
@@ -98,11 +101,11 @@ public class Odometer extends OdometerData implements Runnable {
 
 			position = odo.getXYT();
 			// Positions
-			double dx = distance * Math.sin((position[2] + dt) * Math.PI / 180);
-			double dy = distance * Math.cos((position[2] + dt) * Math.PI / 180);
+			double dx = distance * Math.sin((position[2]) * Math.PI / 180);
+			double dy = distance * Math.cos((position[2]) * Math.PI / 180);
 
-			leftMotorTachoCount = leftMotor.getTachoCount();
-			rightMotorTachoCount = rightMotor.getTachoCount();
+			leftMotorTachoCount = leftInstantTacho;
+			rightMotorTachoCount = rightInstantTacho;
 
 			odo.update(dx, dy, dt * 180 / Math.PI);
 

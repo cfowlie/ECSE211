@@ -40,13 +40,13 @@ public class Main {
 			public void run() throws InterruptedException, OdometerExceptions {
 
 				// transfers all the data from the wifi server into the robot
-				wifi.transmit();
+				//wifi.transmit();
 
 				// Ultrasonic localize
-				ultrasonicLocalizer.fallingEdge();
+				//ultrasonicLocalizer.fallingEdge();
 
 				// Light localize
-				lightLocalizer.findOrigin();
+				//lightLocalizer.findOrigin();
 
 				courseFollowing.followCourse();
 
