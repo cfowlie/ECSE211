@@ -9,27 +9,18 @@ import odometer.OdometerExceptions;
 
 import util.*;
 
-
 public class Main {
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
-	
+
 	public static void main(String[] args) throws OdometerExceptions, InterruptedException {
 
 		// Init shared Managers
 		final DriveManager driveManager = DriveManager.getInstance();
 		final SensorManager sensorManager = SensorManager.getInstance();
-		
-		
 
 		// LCD
 		lcd.clear();
-
-//		// ask the user whether the motors should drive in a square or float
-//		lcd.drawString("	Press Any Button", 0, 0);
-//		Button.waitForAnyPress(); // Record choice (left or right press)
-//		
-//		
 
 		// Odo Display
 		Display odometryDisplay = new Display(lcd);
@@ -42,35 +33,34 @@ public class Main {
 		final CourseFollowing courseFollowing = new CourseFollowing();
 		final Wifi wifi = new Wifi();
 
-		
 		// Setup Drive Thread
 		driveManager.setDriveThread(new DriveThread() {
-			
+
 			@Override
 			public void run() throws InterruptedException, OdometerExceptions {
-				
-				//transfers all the data from the wifi server into the robot
+
+				// transfers all the data from the wifi server into the robot
 				wifi.transmit();
-						
+
 				// Ultrasonic localize
 				ultrasonicLocalizer.fallingEdge();
-				
+
 				// Light localize
 				lightLocalizer.findOrigin();
-		
+
 				courseFollowing.followCourse();
-									
+
 				completion();
 			}
 
 			@Override
-			public void completion() throws OdometerExceptions {				
+			public void completion() throws OdometerExceptions {
 				driveManager.stopAll();
 			}
 		});
 
 		Thread.sleep(2500); // Wait to make sure all threads have initialzed before starting drive code
-		
+
 		// Start Drive Thread Async
 		driveManager.start();
 

@@ -18,23 +18,15 @@ public class SensorManager {
 	// Singleton Object
 	private static SensorManager sharedManager = null;
 
-	// Ultrasonic Sensor
+	// Sensor Ports
 	private static final Port usPort = LocalEV3.get().getPort("S4");
-	
 	private static final Port lightRightPort = LocalEV3.get().getPort("S2");
-
-	// Light Sensor
 	private static final Port lightLeftPort = LocalEV3.get().getPort("S3");
-
-	// Color Sensor
 	private static final Port colorPort = LocalEV3.get().getPort("S1");
 
 	// Odometer
 	private Odometer odometer;
 
-	//initialize the wifi transmission
-	
-	
 	// Color Sensor
 	private EV3ColorSensor colorSensor = new EV3ColorSensor(colorPort);
 	private ColorPoller colorPoller;
@@ -46,13 +38,16 @@ public class SensorManager {
 	// Ultrasonic Sensor
 	private SensorModes usSensor = new EV3UltrasonicSensor(usPort); // usSensor is the instance
 	private SampleProvider usDistance = usSensor.getMode("Distance");
-	
+
 	private float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
 	private UltrasonicPoller usPoller;
-	
 
+	/*
+	 * Init method
+	 * sets up instances of sensors on threads and starts
+	 */
 	private SensorManager() throws OdometerExceptions {
-		
+
 		// Odometer
 		this.setOdometer(Odometer.getOdometer());
 		Thread odoThread = new Thread(getOdometer());
@@ -61,13 +56,8 @@ public class SensorManager {
 		// Ultrasonic Sensor
 		this.setUsPoller(new UltrasonicPoller(usDistance, usData));
 		this.getUsPoller().start();
-		
-		
 
-		// Color Sensor
-		setColorPoller(new ColorPoller(colorSensor));
-		getColorPoller().start();
-		
+		// Color Sensors
 		setColorPoller(new ColorPoller(colorSensor));
 		getColorPoller().start();
 
@@ -76,44 +66,47 @@ public class SensorManager {
 		setLightSensorL(new EV3ColorSensor(lightLeftPort));
 	}
 
+	/*
+	 * Get singleton method
+	 * Call this to access the sensor manager
+	 */
 	public static SensorManager getInstance() throws OdometerExceptions {
 		if (sharedManager == null) {
 			sharedManager = new SensorManager();
 		}
 		return sharedManager;
 	}
-	
+
 	/*
-	 * Returns Ultrasonic Sensors distance
+	 * Returns Ultrasonic Sensors distance (int)
 	 */
 	public int getDistance() {
 		return this.getUsPoller().getDistance();
 	}
-	
+
+	/*
+	 * Returns Ultrasonic Sensors distance (double)
+	 */
 	public double getDistanceD() {
 		return this.getUsPoller().getDistanceD();
 	}
-	
-	
+
 	/*
-	 * Returns int if currently over a line
-	 * 0 -> No line
-	 * 1 -> Left Line
-	 * 2 -> Right Line
-	 * 3 -> Both Lines
+	 * Returns int if currently over a line 0 -> No line 1 -> Left Line 2 -> Right
+	 * Line 3 -> Both Lines
 	 */
 	public int getLine() {
 		int ret = 0;
-		if (this.lightLeftSensor.getColorID() > 10) ret +=1; 
-		if (this.lightRightSensor.getColorID() > 10) ret +=2;
+		if (this.lightLeftSensor.getColorID() > 10)
+			ret += 1;
+		if (this.lightRightSensor.getColorID() > 10)
+			ret += 2;
 		return ret;
-		
+
 	}
-	
-	
-	
+
 	/*
-	 * Returns true if currently over a line
+	 * Returns true if currently over a line for the right sensor
 	 */
 	public boolean getLineR() {
 		if (this.lightRightSensor.getColorID() < 10) {
@@ -121,23 +114,26 @@ public class SensorManager {
 		}
 		return true;
 	}
+
+	/*
+	 * Returns true if currently over a line for the left sensor
+	 */
 	public boolean getLineL() {
 		if (this.lightLeftSensor.getColorID() < 10) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	/*
 	 * Returns the Color Sensors current color
 	 */
 	public int getColor() {
 		return this.colorPoller.getColorInt();
 	}
-	
 
 	// MARK: Field Encapsulation
-	
+
 	/**
 	 * @return the odometer
 	 */
@@ -146,7 +142,8 @@ public class SensorManager {
 	}
 
 	/**
-	 * @param odometer the odometer to set
+	 * @param odometer
+	 *            the odometer to set
 	 */
 	private void setOdometer(Odometer odometer) {
 		this.odometer = odometer;
@@ -160,7 +157,8 @@ public class SensorManager {
 	}
 
 	/**
-	 * @param colorPoller the colorPoller to set
+	 * @param colorPoller
+	 *            the colorPoller to set
 	 */
 	private void setColorPoller(ColorPoller colorPoller) {
 		this.colorPoller = colorPoller;
@@ -172,16 +170,19 @@ public class SensorManager {
 	public EV3ColorSensor getLightSensorR() {
 		return lightRightSensor;
 	}
+
 	public EV3ColorSensor getLightSensorL() {
 		return lightLeftSensor;
 	}
 
 	/**
-	 * @param lightSensor the lightSensor to set
+	 * @param lightSensor
+	 *            the lightSensor to set
 	 */
 	private void setLightSensorR(EV3ColorSensor lightSensor) {
 		this.lightRightSensor = lightSensor;
 	}
+
 	private void setLightSensorL(EV3ColorSensor lightSensor) {
 		this.lightLeftSensor = lightSensor;
 	}
@@ -194,14 +195,11 @@ public class SensorManager {
 	}
 
 	/**
-	 * @param usPoller the usPoller to set
+	 * @param usPoller
+	 *            the usPoller to set
 	 */
 	private void setUsPoller(UltrasonicPoller usPoller) {
 		this.usPoller = usPoller;
 	}
-	
-	
-	
-	
 
 }
