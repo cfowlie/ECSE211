@@ -283,7 +283,7 @@ public class DriveManager {
 	 * @param y
 	 * @throws OdometerExceptions
 	 */
-	public void travelTo(double x, double y, boolean avoid, boolean choice)
+	public void travelTo(double x, double y, boolean avoid)
 			throws OdometerExceptions, InterruptedException {
 
 		SensorManager sensorManager = SensorManager.getInstance();
@@ -314,12 +314,7 @@ public class DriveManager {
 		if (avoid == true) {
 
 			turnBy(theta);
-
-			if (choice == true) {
-				forwardBy(-DriveManager.LIGHT_RADIUS);
-
-			}
-
+			
 			// Calculate the distance the robot must travel to get to the waypoint
 			double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 
@@ -348,13 +343,13 @@ public class DriveManager {
 		double curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		if (Math.abs(y - curY) < 2) {
 
-			travelTo(curX, y, true, false);
+			travelTo(curX, y, true);
 		}
 
 		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
 
-		travelTo(x, curY, true, false);
+		travelTo(x, curY, true);
 
 	}
 

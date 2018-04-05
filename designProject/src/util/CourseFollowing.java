@@ -66,55 +66,59 @@ public class CourseFollowing {
 		// wait two seconds to know its the light starting
 		Thread.sleep(500);
 		
-		if(DriveManager.GreenCorner == 2 || DriveManager.GreenCorner == 3) {
-					    	
-		    	driveManager.travelToGrid(DriveManager.TN_URx-0.5, DriveManager.TN_URy+1.5);
-		    	
-		    	
-		    	driveManager.turnTo(180);
-		    	
-		    	driveManager.lineLocWait();
-		    	
-		    	tunnelSeq();
-		    	
-		    	sensorManager.getOdometer().setX((DriveManager.TN_LLx+0.5)*DriveManager.TILE_SIZE);
-		    	sensorManager.getOdometer().setY((DriveManager.TN_LLy-1.5)*DriveManager.TILE_SIZE);
-		    	
-		    	driveManager.travelToGrid(DriveManager.BR_LLx+1, DriveManager.BR_LLy-1.5);
-		    	
-		    	driveManager.turnTo(0);
-		    	
-		    	driveManager.lineLocWait();
-		    	
-		    	bridgeSeq();
-		    	
-		    	driveManager.travelToGrid(driveManager.startCornerLoc()[0]+driveManager.startCornerLoc()[3],driveManager.startCornerLoc()[1]+driveManager.startCornerLoc()[4]);
-		 
-		}else {
-			
-		    	driveManager.travelToGrid(DriveManager.TN_LLx+0.5, DriveManager.TN_LLy-1);
-		    	
-		    	driveManager.turnTo(0);
-		    	
-		    	driveManager.lineLocWait();
-		    	
-		    	tunnelSeq();
-		    	
-		    	sensorManager.getOdometer().setX((DriveManager.TN_URx-0.5)*DriveManager.TILE_SIZE);
-		    	sensorManager.getOdometer().setY((DriveManager.TN_URy+1.5)*DriveManager.TILE_SIZE);
-		    	
-		    	driveManager.travelToGrid(DriveManager.BR_URx-1,DriveManager.BR_URy-1);
-		    	
-		    	driveManager.turnTo(180);
-		    	
-		    	driveManager.lineLocWait();
-		    	
-		    	bridgeSeq();
-		    	
-		    	driveManager.travelToGridC(driveManager.startCornerLoc()[0]+driveManager.startCornerLoc()[3],driveManager.startCornerLoc()[1]+driveManager.startCornerLoc()[4]);
-		    
-			
-		}
+		
+		
+		
+		
+//		if(DriveManager.GreenCorner == 2 || DriveManager.GreenCorner == 3) {
+//					    	
+//		    	driveManager.travelToGrid(DriveManager.TN_URx-0.5, DriveManager.TN_URy+1.5);
+//		    	
+//		    	
+//		    	driveManager.turnTo(180);
+//		    	
+//		    	driveManager.lineLocWait();
+//		    	
+//		    	tunnelSeq();
+//		    	
+//		    	sensorManager.getOdometer().setX((DriveManager.TN_LLx+0.5)*DriveManager.TILE_SIZE);
+//		    	sensorManager.getOdometer().setY((DriveManager.TN_LLy-1.5)*DriveManager.TILE_SIZE);
+//		    	
+//		    	driveManager.travelToGrid(DriveManager.BR_LLx+1, DriveManager.BR_LLy-1.5);
+//		    	
+//		    	driveManager.turnTo(0);
+//		    	
+//		    	driveManager.lineLocWait();
+//		    	
+//		    	bridgeSeq();
+//		    	
+//		    	driveManager.travelToGrid(driveManager.startCornerLoc()[0]+driveManager.startCornerLoc()[3],driveManager.startCornerLoc()[1]+driveManager.startCornerLoc()[4]);
+//		 
+//		}else {
+//			
+//		    	driveManager.travelToGrid(DriveManager.TN_LLx+0.5, DriveManager.TN_LLy-1);
+//		    	
+//		    	driveManager.turnTo(0);
+//		    	
+//		    	driveManager.lineLocWait();
+//		    	
+//		    	tunnelSeq();
+//		    	
+//		    	sensorManager.getOdometer().setX((DriveManager.TN_URx-0.5)*DriveManager.TILE_SIZE);
+//		    	sensorManager.getOdometer().setY((DriveManager.TN_URy+1.5)*DriveManager.TILE_SIZE);
+//		    	
+//		    	driveManager.travelToGrid(DriveManager.BR_URx-1,DriveManager.BR_URy-1);
+//		    	
+//		    	driveManager.turnTo(180);
+//		    	
+//		    	driveManager.lineLocWait();
+//		    	
+//		    	bridgeSeq();
+//		    	
+//		    	driveManager.travelToGrid(driveManager.startCornerLoc()[0]+driveManager.startCornerLoc()[3],driveManager.startCornerLoc()[1]+driveManager.startCornerLoc()[4]);
+//		    
+//			
+//		}
 		// -1 in starting corner 0 for bridge BR_URy
 		
 	    
