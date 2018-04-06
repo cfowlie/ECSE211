@@ -22,7 +22,7 @@ public class BlockSearch {
 	DriveManager driveManager = DriveManager.getInstance();
 	SensorManager sensorManager = SensorManager.getInstance();
 	
-	private static double instDist;
+	private static double instUSDist;
 	
 	private static double afterBlockDist;
 
@@ -82,10 +82,10 @@ public class BlockSearch {
 					do  {
 					leftMotor.forward();
 					rightMotor.forward();
-					} while(usPoller.getDistance() > 25);
+					} while(usPoller.getDistance() > 55);
 					
 						driveManager.stopAll();
-						instDist = usPoller.getDistance();
+						instUSDist = usPoller.getDistance();
 						Sound.beep();
 						blockDetected();
 						if (blockFound) {
@@ -110,7 +110,7 @@ public class BlockSearch {
 
 	void blockDetected() throws InterruptedException, OdometerExceptions {
 
-		afterBlockDist = 0.22*instDist+DriveManager.ULTRA_OFFSET;
+		afterBlockDist = 0.22*instUSDist+DriveManager.ULTRA_OFFSET;
 		
 		// Correct for forward sensor offset
 		driveManager.forwardBy(afterBlockDist);
@@ -139,7 +139,7 @@ public class BlockSearch {
 		
 
 		// Check Color
-		if (sensorManager.getColor() == DriveManager.OR) {
+		if (sensorManager.getColor() == DriveManager.T12_FLAG) {
 			// Play tone and exit
 			Sound.playTone(1000, 200);
 			blockFound = true;

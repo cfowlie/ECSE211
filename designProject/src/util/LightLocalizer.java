@@ -61,7 +61,7 @@ public class LightLocalizer {
 		// set the y coordinate to y=light radius
 		sensorManager.getOdometer().setY(DriveManager.LIGHT_RADIUS);
 		
-		driveManager.forwardBy(-DriveManager.LIGHT_RADIUS);
+		driveManager.forwardBySlow(-DriveManager.LIGHT_RADIUS);
 		
 		driveManager.setRotSpd();
 
@@ -75,7 +75,7 @@ public class LightLocalizer {
 		
 		sensorManager.getOdometer().setX(DriveManager.LIGHT_RADIUS);
 		
-		driveManager.forwardBy(-DriveManager.LIGHT_RADIUS);
+		driveManager.forwardBySlow(-DriveManager.LIGHT_RADIUS);
 		
 		driveManager.setRotSpd();
 

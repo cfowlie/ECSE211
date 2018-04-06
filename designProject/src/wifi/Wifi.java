@@ -118,12 +118,27 @@ public class Wifi {
 
     System.out.print("                                                                                                                                                 ");
     
+    //if team red is 12, then team is true, otherwise we are team green (team is false)
     if(DriveManager.RedTeam == 12) {
-			DriveManager.OUR_COLOR = 0;
+			DriveManager.TEAM = true;
 		}else {
-			DriveManager.OUR_COLOR = 1;
+			DriveManager.TEAM = false;
 			
 		}
+    
+    
+
+	
+	
+	
+	if(DriveManager.TEAM==true) {
+		DriveManager.T12_FLAG = DriveManager.OR;
+		
+	}else {
+		
+		DriveManager.T12_FLAG = DriveManager.OG;
+		
+	}
   }
   
   		

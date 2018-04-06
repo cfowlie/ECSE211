@@ -42,7 +42,7 @@ public class DriveManager {
 	public static final int SL_ROTATE_SPEED = 80;
 	public static final int ROTATE_UP_SPEED = 20;
 	public static final double UP_ROTATION = 40;
-	public static final int FWD_SPEED = 300;
+	public static final int FWD_SPEED = 200;
 	public static final double LIGHT_RADIUS = 4.2;
 	public static final double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 	public static final double NO_WALL_DIST = 35;
@@ -87,7 +87,22 @@ public class DriveManager {
 	public static int SG_URx;
 	public static int SG_URy;
 	
-	public static int OUR_COLOR; //0 == red, 1 == green
+	public static boolean TEAM; //TRUE == red, FALSE == green
+	
+	/**
+	 * 
+	 * Values to be used as a replacement of red and green,
+	 * instead we use "T12_FLAG"
+	 * 
+	 */
+	
+	public static int T12_FLAG;
+	
+	public static int T12_SRLLx;
+	public static int T12_SRLLy;
+	public static int T12_SRURx;
+	public static int T12_SRURy;
+	
 	
 	
 
@@ -139,8 +154,7 @@ public class DriveManager {
 	 * @throws OdometerExceptions
 	 */
 	public void turnBy(double theta) throws OdometerExceptions {
-		getLeftMotor().setSpeed(ROTATE_SPEED);
-		getRightMotor().setSpeed(ROTATE_SPEED);
+		setRotSpd();
 		getLeftMotor().rotate(DriveManager.convertAngle(theta), true);
 		getRightMotor().rotate(-DriveManager.convertAngle(theta), false);
 		return;
@@ -153,8 +167,14 @@ public class DriveManager {
 	 * @throws OdometerExceptions
 	 */
 	public void forwardBy(double dist) throws OdometerExceptions {
-		getLeftMotor().setSpeed(FWD_SPEED);
-		getRightMotor().setSpeed(FWD_SPEED);
+		setDriveSpd();
+		getLeftMotor().rotate(DriveManager.convertDistance(dist), true);
+		getRightMotor().rotate(DriveManager.convertDistance(dist), false);
+		return;
+	}
+	
+	public void forwardBySlow(double dist) throws OdometerExceptions {
+		setRotSpd();
 		getLeftMotor().rotate(DriveManager.convertDistance(dist), true);
 		getRightMotor().rotate(DriveManager.convertDistance(dist), false);
 		return;
@@ -201,6 +221,8 @@ public class DriveManager {
 	 * 
 	 * 		should be 11 instead of 7**************************
 	 */
+	
+	
 	public double[] startCornerLoc() {
 		double[] loc = new double[5];
 		if (DriveManager.RedCorner == 0) {
@@ -394,7 +416,7 @@ public class DriveManager {
 	public void lineLocWait() throws InterruptedException, OdometerExceptions {
 
 		SensorManager sensorManager = SensorManager.getInstance();
-		setDriveSpd();
+		setRotSpd();
 
 		// wait until black line hits one of the two light sensors
 		while (sensorManager.getLine() == 0) {
@@ -407,7 +429,7 @@ public class DriveManager {
 		if (sensorManager.getLine() == 2) {
 			rightMotor.stop(true);
 			setSLRotSpd();
-			while (sensorManager.getLine() != 3) {
+			while (sensorManager.getLine() !=1) {
 				leftMotor.forward();
 			}
 			leftMotor.rotate(20);
@@ -418,7 +440,7 @@ public class DriveManager {
 		else if (sensorManager.getLine() == 1) {
 			leftMotor.stop(true);
 			setSLRotSpd();
-			while (sensorManager.getLine() != 3) {
+			while (sensorManager.getLine() != 2) {
 				rightMotor.forward();
 			}
 			rightMotor.rotate(20);
