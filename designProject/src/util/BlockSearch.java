@@ -148,6 +148,8 @@ public class BlockSearch {
 			Sound.playTone(300, 200);
 			Thread.sleep(200);
 			Sound.playTone(300, 200);
+			Thread.sleep(200);
+			Sound.playTone(300, 200);
 		}
 
 		double temp2x = Odometer.position[0];

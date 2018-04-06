@@ -42,7 +42,7 @@ public class DriveManager {
 	public static final int SL_ROTATE_SPEED = 80;
 	public static final int ROTATE_UP_SPEED = 20;
 	public static final double UP_ROTATION = 40;
-	public static final int FWD_SPEED = 200;
+	public static final int FWD_SPEED = 300;
 	public static final double LIGHT_RADIUS = 4.2;
 	public static final double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 	public static final double NO_WALL_DIST = 35;
@@ -159,26 +159,6 @@ public class DriveManager {
 		getRightMotor().rotate(DriveManager.convertDistance(dist), false);
 		return;
 	}
-
-	/**
-	 * This method causes the robot to travel forward by a set number of tiles
-	 * 
-	 * @param tile_amount
-	 * @throws OdometerExceptions
-	 */
-	public void forwardByT(int tile_amount) throws OdometerExceptions {
-		getLeftMotor().setSpeed(FWD_SPEED);
-		getRightMotor().setSpeed(FWD_SPEED);
-
-		for (int i = 0; i > tile_amount; i++) {
-
-			getLeftMotor().rotate(DriveManager.convertDistance(tile_amount * TILE_SIZE), true);
-			getRightMotor().rotate(DriveManager.convertDistance(tile_amount * TILE_SIZE), true);
-
-		}
-		return;
-	}
-
 	/*
 	 * Gets the current track width because our robot has different track widths depending on stage state.
 	 */
@@ -293,6 +273,11 @@ public class DriveManager {
 
 		SensorManager sensorManager = SensorManager.getInstance();
 		DriveManager driveManager = DriveManager.getInstance();
+		
+		if(avoid == true) {
+			lineLocWait();			
+		}
+		
 
 		// Get the current x, y and theta positions from the odometer
 		double position[] = sensorManager.getOdometer().getXYT();
@@ -330,8 +315,7 @@ public class DriveManager {
 
 		else {
 
-			forwardBy(dX);
-			forwardBy(dY);
+			travelToGrid(x,y);
 		}
 
 		// Play sound when reaching location
@@ -346,16 +330,17 @@ public class DriveManager {
 
 		double curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
 		double curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
-		if (Math.abs(y - curY) < 2) {
+		if (Math.abs(y - curY) > 0.25) {
 
 			travelTo(curX, y, true);
 		}
 
 		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
-
-		travelTo(x, curY, true);
-
+		if (Math.abs(y - curY) > 0.25) {
+		
+			travelTo(x, curY, true);
+		}
 	}
 
 
