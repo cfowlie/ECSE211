@@ -31,6 +31,7 @@ public class Main {
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
 		final CourseFollowing courseFollowing = new CourseFollowing();
+		final BlockSearch blockSearch = new BlockSearch();
 		final Wifi wifi = new Wifi();
 
 		// Setup Drive Thread
@@ -40,15 +41,17 @@ public class Main {
 			public void run() throws InterruptedException, OdometerExceptions {
 
 				// transfers all the data from the wifi server into the robot
-				//wifi.transmit();
+				wifi.transmit();
 
 				// Ultrasonic localize
 				//ultrasonicLocalizer.fallingEdge();
 
 				// Light localize
 				//lightLocalizer.findOrigin();
+				
+				blockSearch.search();
 
-				courseFollowing.followCourse();
+				//courseFollowing.followCourse();
 
 				completion();
 			}

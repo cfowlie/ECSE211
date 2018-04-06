@@ -124,11 +124,18 @@ public class SensorManager {
 		return true;
 	}
 
-	/*
+	/**
 	 * Returns the Color Sensors current color
 	 */
 	public int getColor() {
 		return this.colorPoller.getColorInt();
+	}
+	
+	/**going to be used for distance measuring
+	 *
+	 */
+	public double getEuclidColor() {
+		return this.colorPoller.getEuclidColor();
 	}
 
 	// MARK: Field Encapsulation

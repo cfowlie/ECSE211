@@ -10,15 +10,17 @@ public class ColorPoller extends Thread implements Runnable {
 	private EV3ColorSensor colorSensor;
 	
 	public static COLOR color;
+	
+	public static double euclidColor;
 
 	private static final long ODOMETER_PERIOD = 100;
 	
 	public enum COLOR{
-        RED(0),
-        BLUE(1),
-        YELLOW(2),
-        WHITE(3),
-		DEFAULT(4);
+        RED(1),
+        BLUE(2),
+        YELLOW(3),
+        WHITE(4),
+		DEFAULT(0);
 		
 		private final int value;
 
@@ -41,6 +43,8 @@ public class ColorPoller extends Thread implements Runnable {
 			updateStart = System.currentTimeMillis();
 
 			getColorSensor().fetchSample(ColorID, 0);
+			
+			euclidColor = Math.sqrt(Math.pow(ColorID[0],2)+Math.pow(ColorID[1],2)+Math.pow(ColorID[2],2));
 
 			if (ColorID[0] > 0.02 && ColorID[1] < 0.025 && ColorID[2] < 0.02) { // red detected
 				// Sound.playTone(100, 300);
@@ -58,6 +62,7 @@ public class ColorPoller extends Thread implements Runnable {
 			} else {
 				color = COLOR.DEFAULT;
 			}
+			
 			updateEnd = System.currentTimeMillis();
 			if (updateEnd - updateStart < ODOMETER_PERIOD) {
 				try {
@@ -70,12 +75,18 @@ public class ColorPoller extends Thread implements Runnable {
 	}
 	
 	
+	
+	
 	public COLOR getColor() {
 		return this.color;
 	}
 	
 	public int getColorInt() {
 		return color.intValue();
+	}
+	//going to be used for distance measuring
+	public double getEuclidColor() {
+		return euclidColor;
 	}
 
 	/**

@@ -35,9 +35,9 @@ public class DriveManager {
 	private final EV3LargeRegulatedMotor rightUpMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
 	// Constants
-	public static final double WHEEL_RAD = 2.01;
+	public static final double WHEEL_RAD = 2.1;
 	public static final double TRACK_OPEN = 21.2;
-	public static final double TRACK_CLOSED = 14.8;
+	public static final double TRACK_CLOSED = 15.8;
 	public static final int ROTATE_SPEED = 140;
 	public static final int SL_ROTATE_SPEED = 80;
 	public static final int ROTATE_UP_SPEED = 20;
@@ -47,6 +47,7 @@ public class DriveManager {
 	public static final double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 	public static final double NO_WALL_DIST = 35;
 	public static final double TILE_SIZE = 30.48;
+	public static final double ULTRA_OFFSET = 5.0;
 
 	public static int RedTeam;
 	public static int RedCorner;
@@ -85,6 +86,10 @@ public class DriveManager {
 	public static int SG_LLy;
 	public static int SG_URx;
 	public static int SG_URy;
+	
+	public static int OUR_COLOR; //0 == red, 1 == green
+	
+	
 
 	/**
 	 * TODO: All of these values need to be assigned and attributed in the
@@ -362,35 +367,7 @@ public class DriveManager {
 	 * @param y
 	 * @throws OdometerExceptions
 	 */
-	public void travelToDistance(double xDist, double yDist, boolean avoid) throws OdometerExceptions {
-
-		SensorManager sensorManager = SensorManager.getInstance();
-
-		// Get the current x, y and theta positions from the odometer
-		double position[] = sensorManager.getOdometer().getXYT();
-		double currentT = position[2];
-
-		double headingT = Math.toDegrees(Math.atan2(xDist, yDist)); // Calculate the angle the robot need to turn to and
-
-		double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
-
-		// This makes sure the robot always turns the smaller angle
-		if (theta < -180) {
-			theta += 360;
-		} else if (theta > 180) {
-			theta -= 360;
-		}
-		turnBy(theta);
-
-		// Calculate the distance the robot must travel to get to the waypoint
-		double distance = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-
-		// Start robot forward towards the waypoint
-		forwardBy((int) distance);
-
-		// Play sound when reaching location
-		Sound.beep();
-	}
+	
 
 	/*
 	 * Stops all motors

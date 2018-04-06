@@ -30,7 +30,7 @@ public class Wifi {
 	
 
   // ** Set these as appropriate for your team and current situation **
-  private static final String SERVER_IP = "192.168.2.6";
+  private static final String SERVER_IP = "192.168.2.28";
   private static final int TEAM_NUMBER = 12;
 
   // Enable/disable printing of debug info from the WiFi class
@@ -117,5 +117,16 @@ public class Wifi {
     }
 
     System.out.print("                                                                                                                                                 ");
+    
+    if(DriveManager.RedTeam == 12) {
+			DriveManager.OUR_COLOR = 0;
+		}else {
+			DriveManager.OUR_COLOR = 1;
+			
+		}
   }
+  
+  		
+  
+  
 }
