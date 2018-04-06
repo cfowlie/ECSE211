@@ -203,21 +203,21 @@ public class DriveManager {
 	 */
 	public double[] startCornerLoc() {
 		double[] loc = new double[5];
-		if (DriveManager.GreenCorner == 0) {
+		if (DriveManager.RedCorner == 0) {
 			loc[0] = 1;
 			loc[1] = 1;
 			loc[2] = 90;
 			loc[3] = +.5;
 			loc[4] = +.5;
 			return loc;
-		} else if (DriveManager.GreenCorner == 1) {
+		} else if (DriveManager.RedCorner == 1) {
 			loc[0] = 7;
 			loc[1] = 1;
 			loc[2] = 0;
 			loc[3] = -.5;
 			loc[4] = +.5;
 			return loc;
-		} else if (DriveManager.GreenCorner == 2) {
+		} else if (DriveManager.RedCorner == 2) {
 			loc[0] = 7;
 			loc[1] = 7;
 			loc[2] = 270;

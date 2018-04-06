@@ -44,10 +44,10 @@ public class Main {
 				wifi.transmit();
 
 				// Ultrasonic localize
-				//ultrasonicLocalizer.fallingEdge();
+				ultrasonicLocalizer.fallingEdge();
 
 				// Light localize
-				//lightLocalizer.findOrigin();
+				lightLocalizer.findOrigin();
 				
 				blockSearch.search();
 

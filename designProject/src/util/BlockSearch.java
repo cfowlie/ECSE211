@@ -24,7 +24,7 @@ public class BlockSearch {
 	
 	private static double instDist;
 	
-	
+	private static double afterBlockDist;
 
 	boolean blockFound = false;
 
@@ -48,11 +48,8 @@ public class BlockSearch {
 		}
 
 		Thread.sleep(1000);
-		
-		sensorManager.getOdometer().setXYT(0, 0, 0);
-
-		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
-		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
+	
+		driveManager.setRotSpd();  //prefered slower speed for block searching so it misses nothing.
 
 		double dx = DriveManager.SR_URx - DriveManager.SR_LLx;
 		double dy = DriveManager.SR_URy - DriveManager.SR_LLy;
@@ -64,6 +61,8 @@ public class BlockSearch {
 		double DDx = (DriveManager.SR_URx - DriveManager.SR_LLx) * DriveManager.TILE_SIZE;
 
 		double xORy = 0;
+		
+		driveManager.turnTo(0);
 
 		do {
 			for (; i <= 3; i++) {
@@ -90,7 +89,7 @@ public class BlockSearch {
 						Sound.beep();
 						blockDetected();
 						if (blockFound) {
-							driveManager.forwardBy(xORy - dist - DriveManager.ULTRA_OFFSET);
+							driveManager.travelTo(DriveManager.SG_URx,DriveManager.SG_URy,true);
 							return;
 						} else {
 							driveManager.forwardBy(15); // Blocks must be 10cm apart, stops from seeing same block twice
@@ -98,9 +97,7 @@ public class BlockSearch {
 					
 				
 					// Get distance already traveled
-					double deltaX = sensorManager.getOdometer().getXYT()[0] - currentX;
-					double deltaY = sensorManager.getOdometer().getXYT()[1] - currentY;
-					dist = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+						driveManager.travelTo(DriveManager.SG_URx,DriveManager.SG_URy, true);
 				}
 				driveManager.turnBy(90);
 			}
@@ -113,8 +110,10 @@ public class BlockSearch {
 
 	void blockDetected() throws InterruptedException, OdometerExceptions {
 
+		afterBlockDist = 0.22*instDist+DriveManager.ULTRA_OFFSET;
+		
 		// Correct for forward sensor offset
-		driveManager.forwardBy(0.22*instDist+DriveManager.ULTRA_OFFSET);
+		driveManager.forwardBy(afterBlockDist);
 
 		// Stop
 		driveManager.stopAll();
