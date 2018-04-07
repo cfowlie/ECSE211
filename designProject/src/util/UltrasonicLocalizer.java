@@ -52,6 +52,11 @@ public class UltrasonicLocalizer {
 	 */
 	public void fallingEdge() throws InterruptedException, OdometerExceptions {
 
+		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
+			motor.stop();
+			motor.setAcceleration(800);
+		}
+		
 		Thread.sleep(200);
 
 		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);

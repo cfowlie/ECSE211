@@ -9,7 +9,8 @@ public class LightPollerR extends Thread implements Runnable {
 	
 	private EV3ColorSensor lightSensor;
 	
-	public static float color;
+	public static float color = 0;
+	public static float diff = 0;
 
 	private static final long ODOMETER_PERIOD = 100;
 	
@@ -27,6 +28,14 @@ public class LightPollerR extends Thread implements Runnable {
 			updateStart = System.currentTimeMillis();
 
 			getLightSensor().fetchSample(RedID, 0);
+			
+			/**
+			 * 
+			 * Using a differential method to calculate the difference between the old sensor reading and the new one
+			 * to help at line checking.
+			 * 
+			 */
+			diff = Math.abs(RedID[0]-color);  
 
 			color = RedID[0];
 			
@@ -43,8 +52,8 @@ public class LightPollerR extends Thread implements Runnable {
 	}
 	
 	
-	public float getColor() {
-		return this.color;
+	public float getDiff() {
+		return this.diff;
 	}
 	
 

@@ -35,10 +35,10 @@ public class SensorManager {
 
 	// Light Sensor
 	private EV3ColorSensor lightRightSensor = new EV3ColorSensor(lightRightPort);
-	private LightPollerR lightRightPoller;
+	public LightPollerR lightRightPoller;
 	
 	private EV3ColorSensor lightLeftSensor = new EV3ColorSensor(lightLeftPort);
-	private LightPollerL lightLeftPoller;
+	public LightPollerL lightLeftPoller;
 
 	// Ultrasonic Sensor
 	private SensorModes usSensor = new EV3UltrasonicSensor(usPort); // usSensor is the instance
@@ -102,8 +102,8 @@ public class SensorManager {
 	 */
 	public int getLine() {
 		int ret = 0;
-		if (this.lightLeftPoller.getColor() < 0.42) ret +=1; 
-		if (this.lightRightPoller.getColor() < 0.42) ret +=2;
+		if (this.lightLeftPoller.getDiff() > 0.05) ret +=1; 
+		if (this.lightRightPoller.getDiff() > 0.05) ret +=2;
 		return ret;
 		
 	}
@@ -112,13 +112,13 @@ public class SensorManager {
 	 * Returns true if currently over a line for the right sensor
 	 */
 	public boolean getLineR() {
-		if (this.lightRightPoller.getColor() > 0.42) {
+		if (this.lightRightPoller.getDiff() < 0.03) {
 			return false;
 		}
 		return true;
 	}
 	public boolean getLineL() {
-		if (this.lightLeftPoller.getColor() > 0.42) {
+		if (this.lightLeftPoller.getDiff() < 0.03) {
 			return false;
 		}
 		return true;
@@ -137,8 +137,6 @@ public class SensorManager {
 	public double getEuclidColor() {
 		return this.colorPoller.getEuclidColor();
 	}
-
-	// MARK: Field Encapsulation
 
 	/**
 	 * @return the odometer

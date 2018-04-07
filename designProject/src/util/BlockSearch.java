@@ -44,7 +44,7 @@ public class BlockSearch {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
-			motor.setAcceleration(3000);
+			motor.setAcceleration(800);
 		}
 
 		Thread.sleep(1000);
@@ -110,7 +110,7 @@ public class BlockSearch {
 
 	void blockDetected() throws InterruptedException, OdometerExceptions {
 
-		afterBlockDist = 0.22*instUSDist+DriveManager.ULTRA_OFFSET;
+		afterBlockDist = 0.3*instUSDist+DriveManager.ULTRA_OFFSET;
 		
 		// Correct for forward sensor offset
 		driveManager.forwardBy(afterBlockDist);

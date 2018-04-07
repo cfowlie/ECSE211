@@ -359,7 +359,7 @@ public class DriveManager {
 
 		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
-		if (Math.abs(y - curY) > 0.25) {
+		if (Math.abs(x - curX) > 0.25) {
 		
 			travelTo(x, curY, true);
 		}
@@ -432,7 +432,7 @@ public class DriveManager {
 			while (sensorManager.getLine() !=1) {
 				leftMotor.forward();
 			}
-			leftMotor.rotate(20);
+			leftMotor.rotate(30);
 
 		}
 		// if the left light sensor hit first, stop left motor and keep left running
@@ -443,7 +443,7 @@ public class DriveManager {
 			while (sensorManager.getLine() != 2) {
 				rightMotor.forward();
 			}
-			rightMotor.rotate(20);
+			rightMotor.rotate(30);
 		}
 
 		leftMotor.stop(true);
