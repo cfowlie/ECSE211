@@ -39,7 +39,7 @@ public class DriveManager {
 	public static final double TRACK_OPEN = 21.2;
 	public static final double TRACK_CLOSED = 15.8;
 	public static final int ROTATE_SPEED = 140;
-	public static final int SL_ROTATE_SPEED = 80;
+	public static final int SL_ROTATE_SPEED = 40;
 	public static final int ROTATE_UP_SPEED = 20;
 	public static final double UP_ROTATION = 40;
 	public static final int FWD_SPEED = 200;

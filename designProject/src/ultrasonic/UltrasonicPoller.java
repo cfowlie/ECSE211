@@ -30,7 +30,7 @@ public class UltrasonicPoller extends Thread implements Runnable {
 		double distance;
 		while (true) {
 			us.fetchSample(usData, 0); // acquire data
-			distance = (double) (usData[0] * 100.0); // extract from buffer, cast to int
+			distance = (int) (usData[0] * 100.0); // extract from buffer, cast to int
 			this.distance = distance;
 			try {
 				Thread.sleep(25);

@@ -65,7 +65,7 @@ public class BlockSearch {
 		
 		driveManager.travelTo(squareDist()[0][0],squareDist()[1][0], false);
 		
-		
+		driveManager.turnBy(90);
 
 		do {
 			for (; i <= 3; i++) {

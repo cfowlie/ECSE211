@@ -102,8 +102,8 @@ public class SensorManager {
 	 */
 	public int getLine() {
 		int ret = 0;
-		if (this.lightLeftPoller.getDiff() > 0.05) ret +=1; 
-		if (this.lightRightPoller.getDiff() > 0.05) ret +=2;
+		if (getLineL()) ret +=1; 
+		if (getLineR()) ret +=2;
 		return ret;
 		
 	}
@@ -112,13 +112,13 @@ public class SensorManager {
 	 * Returns true if currently over a line for the right sensor
 	 */
 	public boolean getLineR() {
-		if (this.lightRightPoller.getDiff() < 0.03) {
+		if (this.lightRightPoller.getDiff() < 0.04) {
 			return false;
 		}
 		return true;
 	}
 	public boolean getLineL() {
-		if (this.lightLeftPoller.getDiff() < 0.03) {
+		if (this.lightLeftPoller.getDiff() < 0.04) {
 			return false;
 		}
 		return true;
