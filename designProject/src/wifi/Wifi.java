@@ -118,7 +118,7 @@ public class Wifi {
 
     System.out.print("                                                                                                                                                 ");
     
-    //if team red is 12, then team is true, otherwise we are team green (team is false)
+    //if team red is 12, then TEAM is true, also means true for going to the bridge first, otherwise we are team green (team is false)
     if(DriveManager.RedTeam == 12) {
 			DriveManager.TEAM = true;
 		}else {
@@ -133,11 +133,20 @@ public class Wifi {
 	
 	if(DriveManager.TEAM==true) {
 		DriveManager.T12_FLAG = DriveManager.OR;
+		DriveManager.T12_SC =  DriveManager.RedCorner;
+		DriveManager.T12_SLLx = DriveManager.SG_LLx;
+		DriveManager.T12_SLLy = DriveManager.SG_LLy;
+		DriveManager.T12_SURx = DriveManager.SG_URx;
+		DriveManager.T12_SURy = DriveManager.SG_URy;
 		
 	}else {
 		
 		DriveManager.T12_FLAG = DriveManager.OG;
-		
+		DriveManager.T12_SC =  DriveManager.GreenCorner;
+		DriveManager.T12_SLLx = DriveManager.SR_LLx;
+		DriveManager.T12_SLLy = DriveManager.SR_LLy;
+		DriveManager.T12_SURx = DriveManager.SR_URx;
+		DriveManager.T12_SURy = DriveManager.SR_URy;
 	}
   }
   

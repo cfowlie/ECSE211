@@ -98,10 +98,12 @@ public class DriveManager {
 	
 	public static int T12_FLAG;
 	
-	public static int T12_SRLLx;
-	public static int T12_SRLLy;
-	public static int T12_SRURx;
-	public static int T12_SRURy;
+	public static int T12_SC;
+		
+	public static int T12_SLLx;
+	public static int T12_SLLy;
+	public static int T12_SURx;
+	public static int T12_SURy;
 	
 	
 	
@@ -114,6 +116,8 @@ public class DriveManager {
 	 */
 
 	public static int trackState = 0;
+
+	
 
 	/*
 	 * Setup Drivemanager threads
@@ -225,21 +229,21 @@ public class DriveManager {
 	
 	public double[] startCornerLoc() {
 		double[] loc = new double[5];
-		if (DriveManager.RedCorner == 0) {
+		if (DriveManager.T12_SC == 0) {
 			loc[0] = 1;
 			loc[1] = 1;
 			loc[2] = 90;
 			loc[3] = +.5;
 			loc[4] = +.5;
 			return loc;
-		} else if (DriveManager.RedCorner == 1) {
+		} else if (DriveManager.T12_SC == 1) {
 			loc[0] = 7;
 			loc[1] = 1;
 			loc[2] = 0;
 			loc[3] = -.5;
 			loc[4] = +.5;
 			return loc;
-		} else if (DriveManager.RedCorner == 2) {
+		} else if (DriveManager.T12_SC == 2) {
 			loc[0] = 7;
 			loc[1] = 7;
 			loc[2] = 270;

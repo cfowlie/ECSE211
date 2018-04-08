@@ -51,18 +51,21 @@ public class BlockSearch {
 	
 		driveManager.setRotSpd();  //prefered slower speed for block searching so it misses nothing.
 
-		double dx = DriveManager.SR_URx - DriveManager.SR_LLx;
-		double dy = DriveManager.SR_URy - DriveManager.SR_LLy;
+		double dx = DriveManager.T12_SURx - DriveManager.T12_SLLx;
+		double dy = DriveManager.T12_SURy - DriveManager.T12_SLLy;
 
 		// Y-dist in cm
-		double DDy = (DriveManager.SR_URy - DriveManager.SR_LLy) * DriveManager.TILE_SIZE;
+		double DDy = dy * DriveManager.TILE_SIZE;
 
 		// X-dist in cm
-		double DDx = (DriveManager.SR_URx - DriveManager.SR_LLx) * DriveManager.TILE_SIZE;
+		double DDx = dx * DriveManager.TILE_SIZE;
 
 		double xORy = 0;
 		
-		driveManager.turnTo(0);
+		
+		driveManager.travelTo(squareDist()[0][0],squareDist()[1][0], false);
+		
+		
 
 		do {
 			for (; i <= 3; i++) {
@@ -89,15 +92,29 @@ public class BlockSearch {
 						Sound.beep();
 						blockDetected();
 						if (blockFound) {
-							driveManager.travelTo(DriveManager.SG_URx,DriveManager.SG_URy,true);
+							if(DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3) {
+								
+								if(DriveManager.TEAM) {
+									driveManager.travelTo(DriveManager.TN_LLx,DriveManager.TN_LLy,true);}
+								else {
+									driveManager.travelTo(DriveManager.BR_LLx,DriveManager.BR_LLy,true);
+							}
+						}else{
+							if(DriveManager.TEAM) {
+								driveManager.travelTo(DriveManager.TN_URx,DriveManager.TN_URy,true);}
+							else {
+								driveManager.travelTo(DriveManager.BR_URx,DriveManager.BR_URy,true);	
+							
+							}
+						}
 							return;
 						} else {
 							driveManager.forwardBy(15); // Blocks must be 10cm apart, stops from seeing same block twice
 						}
 					
 				
-					// Get distance already traveled
-						driveManager.travelTo(DriveManager.SG_URx,DriveManager.SG_URy, true);
+					// Travel rest of the square
+						driveManager.travelTo(squareDist()[0][i],squareDist()[1][i], false);
 				}
 				driveManager.turnBy(90);
 			}
@@ -166,6 +183,29 @@ public class BlockSearch {
 	}
 	
 	
+	//makes the robot go to the right corners during block search.
+	private int[][] squareDist() throws OdometerExceptions, InterruptedException {
+		int[][] cornersXY = new int[2][4];
+		int[] cornersX = new int[4];
+		int[] cornersY = new int[4];
+		
+		if(DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3) {
+			
+			cornersX[0]=DriveManager.T12_SURx; cornersY[0]=DriveManager.T12_SURy;
+			cornersX[1]=DriveManager.T12_SURx; cornersY[1]=DriveManager.T12_SLLy;
+			cornersX[2]=DriveManager.T12_SLLx; cornersY[2]=DriveManager.T12_SLLy;
+			cornersX[3]=DriveManager.T12_SLLx; cornersY[3]=DriveManager.T12_SURy;
+		
+	}else{
+		cornersX[0]=DriveManager.T12_SLLx; cornersY[0]=DriveManager.T12_SLLy;
+		cornersX[1]=DriveManager.T12_SLLx; cornersY[1]=DriveManager.T12_SURy;
+		cornersX[2]=DriveManager.T12_SURx; cornersY[2]=DriveManager.T12_SURy;
+		cornersX[3]=DriveManager.T12_SURx; cornersY[3]=DriveManager.T12_SLLy;
+	}
+		cornersXY[0]=cornersX;
+		cornersXY[1]=cornersY;
+		return cornersXY;
+	}
 	
 
 }
