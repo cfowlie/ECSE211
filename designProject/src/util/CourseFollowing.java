@@ -105,7 +105,7 @@ public class CourseFollowing {
 		// If the red team starts in corner 0 or 1, it must travel travel to the lower part of the bridge
 		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3)) || 
 			 (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
-			driveManager.travelToGrid(DriveManager.BR_LLx + 1, DriveManager.BR_LLy - 1.5);
+			driveManager.travelToGrid(DriveManager.BR_LLx + 0.5, DriveManager.BR_LLy - 1.5);
 			driveManager.turnTo(0);
 		} else {
 			// otherwise, the robot travels to the upper part of the bridge

@@ -229,21 +229,21 @@ public class DriveManager {
 	
 	public double[] startCornerLoc() {
 		double[] loc = new double[5];
-		if (DriveManager.T12_SC == 0) {
+		if (T12_SC == 0) {
 			loc[0] = 1;
 			loc[1] = 1;
 			loc[2] = 90;
 			loc[3] = +.5;
 			loc[4] = +.5;
 			return loc;
-		} else if (DriveManager.T12_SC == 1) {
+		} else if (T12_SC == 1) {
 			loc[0] = 7;
 			loc[1] = 1;
 			loc[2] = 0;
 			loc[3] = -.5;
 			loc[4] = +.5;
 			return loc;
-		} else if (DriveManager.T12_SC == 2) {
+		} else if (T12_SC == 2) {
 			loc[0] = 7;
 			loc[1] = 7;
 			loc[2] = 270;
@@ -300,13 +300,6 @@ public class DriveManager {
 		SensorManager sensorManager = SensorManager.getInstance();
 		DriveManager driveManager = DriveManager.getInstance();
 		
-		if(avoid == true) {
-			lineLocWait();
-			forwardBy(-DriveManager.LIGHT_RADIUS);
-			
-		}
-		
-
 		// Get the current x, y and theta positions from the odometer
 		double position[] = sensorManager.getOdometer().getXYT();
 		double currentX = position[0];
@@ -328,26 +321,15 @@ public class DriveManager {
 		} else if (theta > 180) {
 			theta -= 360;
 		}
-
-		if (avoid == true) {
-
-			turnBy(theta);
+		// Turn by theta degrees so that the robot is facing the direction is needs to go
+		turnBy(theta);
 			
-			// Calculate the distance the robot must travel to get to the waypoint
-			double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+		// Calculate the distance the robot must travel to get to the way point
+		double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 
-			// Start robot forward towards the waypoint
-			forwardBy((int) distance);
+		// Start robot forward towards the way point
+		forwardBy(distance);
 
-		}
-
-		else {
-
-			travelToGrid(x,y);
-		}
-
-		// Play sound when reaching location
-		Sound.beep();
 	}
 
 	/*
@@ -355,19 +337,22 @@ public class DriveManager {
 	 */
 	public void travelToGrid(double x, double y) throws OdometerExceptions, InterruptedException {
 		SensorManager sensorManager = SensorManager.getInstance();
-
-		double curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
-		double curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
-		if (Math.abs(y - curY) > 0.25) {
-
-			travelTo(curX, y, true);
-		}
-
+		double curX, curY;
+		
+		// Get the current x and y position
 		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
+		// Only travel to the given x position if it is further than some distance
 		if (Math.abs(x - curX) > 0.25) {
-		
 			travelTo(x, curY, true);
+		}
+		
+		// Get the current x and y position
+		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
+		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
+		// Only travel to the given y position if it is further than some distance
+		if (Math.abs(y - curY) > 0.25) {
+			travelTo(curX, y, true);
 		}
 	}
 

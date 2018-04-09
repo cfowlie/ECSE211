@@ -199,7 +199,7 @@ public class BlockSearch {
 		double stage_distance = Math.sqrt(Math.pow(distx, 2) + Math.pow(disty, 2));
 
 		//go back to perimeter.
-		driveManager.forwardBy(-(int) stage_distance);
+		driveManager.forwardBy(- stage_distance);
 
 		//repoint itself forward.
 		driveManager.turnBy(-90);
