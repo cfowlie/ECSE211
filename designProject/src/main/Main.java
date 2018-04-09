@@ -51,9 +51,27 @@ public class Main {
 				// Light localize
 				lightLocalizer.findOrigin();
 				
-				blockSearch.search();
-
-				//courseFollowing.followCourse();
+				// if red team:
+				// traverse the bridge first,
+				// then search for target block
+				// then traverse the tunnel
+				// finally, go back to start corner
+				if(DriveManager.TEAM) {
+					courseFollowing.traverseBridge();
+					blockSearch.search();
+					courseFollowing.traverseTunnel();
+					courseFollowing.travelToStartCorner();
+				// if green team:
+				// traverse the tunnel first,
+				// then search for target block
+				// then traverse the bridge
+				// finally, go back to start corner
+				} else {
+					courseFollowing.traverseTunnel();
+					blockSearch.search();
+					courseFollowing.traverseBridge();
+					courseFollowing.travelToStartCorner();
+				}
 
 				completion();
 			}
