@@ -8,6 +8,7 @@ import main.SensorManager;
 import odometer.Odometer;
 import odometer.OdometerExceptions;
 import ultrasonic.UltrasonicPoller;
+import wifi.Wifi;
 
 public class BlockSearch {
 
@@ -23,6 +24,9 @@ public class BlockSearch {
 	SensorManager sensorManager = SensorManager.getInstance();
 	
 	private static double instUSDist;
+	
+	private static final int BLOCK_DIST = 55;
+	private static final double EUCLID_DIST = 0.05;
 	
 	private static double afterBlockDist;
 
@@ -40,7 +44,18 @@ public class BlockSearch {
 	
 	
 	
+	/**
+	 * The idea behind search is 
+	 * 
+	 * 
+	 * 
+	 * @throws InterruptedException
+	 * @throws OdometerExceptions
+	 */
+	
 	public void search() throws InterruptedException, OdometerExceptions {
+		
+		
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
@@ -63,13 +78,16 @@ public class BlockSearch {
 		double xORy = 0;
 		
 		
-		driveManager.travelTo(squareDist()[0][0],squareDist()[1][0], false);
+		driveManager.travelTo(squareDist()[0][3],squareDist()[1][3], false);
 		
-		driveManager.turnBy(90);
+		
+		driveManager.turnTo(270);
 
 		do {
 			for (; i <= 3; i++) {
-
+				
+				driveManager.setRotSpd();  //prefered slower speed for block searching so it misses nothing.
+				
 				if (i == 0 || i == 2) {
 					xORy = DDy;
 				} else {
@@ -82,12 +100,15 @@ public class BlockSearch {
 				double currentY = sensorManager.getOdometer().getXYT()[1];
 
 				while (dist < xORy) {
+					
+					//moves forward until it sees a block from the ultrasonic sensor
 					do  {
 					leftMotor.forward();
 					rightMotor.forward();
-					} while(usPoller.getDistance() > 55);
+					} while(usPoller.getDistance() > BLOCK_DIST);
 					
 						driveManager.stopAll();
+						//records the distance from which the block is located
 						instUSDist = usPoller.getDistance();
 						Sound.beep();
 						blockDetected();
@@ -127,7 +148,8 @@ public class BlockSearch {
 
 	void blockDetected() throws InterruptedException, OdometerExceptions {
 
-		afterBlockDist = 0.3*instUSDist+DriveManager.ULTRA_OFFSET;
+		//drives a distance to get perfectly perpendicular to the block, works as a linear function of distance.
+		afterBlockDist = 0.3*instUSDist+DriveManager.ULTRA_OFFSET; 
 		
 		// Correct for forward sensor offset
 		driveManager.forwardBy(afterBlockDist);
@@ -145,7 +167,7 @@ public class BlockSearch {
 		double temp1y = Odometer.position[1];
 
 		// Get distance to block by using the light sensor's euclidian color as distance
-		while (sensorManager.getEuclidColor() < 0.04) {
+		while (sensorManager.getEuclidColor() < EUCLID_DIST) {
 			leftMotor.forward();
 			rightMotor.forward();
 		}
@@ -157,14 +179,14 @@ public class BlockSearch {
 
 		// Check Color
 		if (sensorManager.getColor() == DriveManager.T12_FLAG) {
-			// Play tone and exit
-			Sound.playTone(1000, 200);
+			// Beep three times and exit
+			for(int i =0;i<3;i++) {
+			Sound.beep();
+			Thread.sleep(200);
+			}
 			blockFound = true;
 		} else {
-			Sound.playTone(300, 200);
-			Thread.sleep(200);
-			Sound.playTone(300, 200);
-			Thread.sleep(200);
+			
 			Sound.playTone(300, 200);
 		}
 
@@ -176,14 +198,19 @@ public class BlockSearch {
 
 		double stage_distance = Math.sqrt(Math.pow(distx, 2) + Math.pow(disty, 2));
 
+		//go back to perimeter.
 		driveManager.forwardBy(-(int) stage_distance);
 
+		//repoint itself forward.
 		driveManager.turnBy(-90);
 
 	}
+
+////////// PLS READ:   Okay so i know this is not the best way to do it, but Connor, could you please find a better way to do it.
 	
 	
 	//makes the robot go to the right corners during block search.
+	//depending on if starting in corner 0, 1, 2 or 3, it will send the proper corners to go to after the end of one blocksearch loop.
 	private int[][] squareDist() throws OdometerExceptions, InterruptedException {
 		int[][] cornersXY = new int[2][4];
 		int[] cornersX = new int[4];

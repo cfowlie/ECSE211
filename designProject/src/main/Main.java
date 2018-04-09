@@ -30,6 +30,8 @@ public class Main {
 		// Localizers
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
+		
+		//sections of the process 
 		final CourseFollowing courseFollowing = new CourseFollowing();
 		final BlockSearch blockSearch = new BlockSearch();
 		final Wifi wifi = new Wifi();

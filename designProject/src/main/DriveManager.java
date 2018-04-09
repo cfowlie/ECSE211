@@ -39,10 +39,10 @@ public class DriveManager {
 	public static final double TRACK_OPEN = 21.2;
 	public static final double TRACK_CLOSED = 15.8;
 	public static final int ROTATE_SPEED = 140;
-	public static final int SL_ROTATE_SPEED = 40;
+	public static final int SL_ROTATE_SPEED = 70;
 	public static final int ROTATE_UP_SPEED = 20;
 	public static final double UP_ROTATION = 40;
-	public static final int FWD_SPEED = 200;
+	public static final int FWD_SPEED = 240;
 	public static final double LIGHT_RADIUS = 4.2;
 	public static final double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 	public static final double NO_WALL_DIST = 35;
@@ -301,7 +301,9 @@ public class DriveManager {
 		DriveManager driveManager = DriveManager.getInstance();
 		
 		if(avoid == true) {
-			lineLocWait();			
+			lineLocWait();
+			forwardBy(-DriveManager.LIGHT_RADIUS);
+			
 		}
 		
 
@@ -433,6 +435,7 @@ public class DriveManager {
 		if (sensorManager.getLine() == 2) {
 			rightMotor.stop(true);
 			setSLRotSpd();
+			leftMotor.rotate(-30);
 			while (sensorManager.getLine() !=1) {
 				leftMotor.forward();
 			}
@@ -444,6 +447,7 @@ public class DriveManager {
 		else if (sensorManager.getLine() == 1) {
 			leftMotor.stop(true);
 			setSLRotSpd();
+			rightMotor.rotate(-30);
 			while (sensorManager.getLine() != 2) {
 				rightMotor.forward();
 			}

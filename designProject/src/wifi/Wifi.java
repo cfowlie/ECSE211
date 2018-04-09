@@ -125,13 +125,10 @@ public class Wifi {
 			DriveManager.TEAM = false;
 			
 		}
+	    
     
-    
-
-	
-	
-	
-	if(DriveManager.TEAM==true) {
+     //Returns the proper constants that we are going to need.
+      if(DriveManager.TEAM) {
 		DriveManager.T12_FLAG = DriveManager.OR;
 		DriveManager.T12_SC =  DriveManager.RedCorner;
 		DriveManager.T12_SLLx = DriveManager.SG_LLx;
