@@ -429,29 +429,23 @@ public class DriveManager {
 			leftMotor.forward();
 			rightMotor.forward();
 		}
-
-		// if the right light sensor hit first, stop right motor and keep left running
-		// until left light hits line
-		if (sensorManager.getLine() == 2) {
-			rightMotor.stop(true);
-			setSLRotSpd();
-			leftMotor.rotate(-30);
-			while (sensorManager.getLine() !=1) {
-				leftMotor.forward();
-			}
-			leftMotor.rotate(30);
-
-		}
-		// if the left light sensor hit first, stop left motor and keep left running
-		// until right light hits line
-		else if (sensorManager.getLine() == 1) {
-			leftMotor.stop(true);
-			setSLRotSpd();
-			rightMotor.rotate(-30);
-			while (sensorManager.getLine() != 2) {
-				rightMotor.forward();
-			}
-			rightMotor.rotate(30);
+		
+		switch (sensorManager.getLine()) {
+			case 1: // Left line
+				leftMotor.stop(true);
+				setSLRotSpd();
+				while (sensorManager.getLine() != 3) {
+					rightMotor.forward();
+				}
+				break;
+			case 2: // Right line
+				rightMotor.stop(true);
+				setSLRotSpd();
+				while (sensorManager.getLine() != 3) {
+					leftMotor.forward();
+				}
+			case 3: // Both lines
+				break;
 		}
 
 		leftMotor.stop(true);
