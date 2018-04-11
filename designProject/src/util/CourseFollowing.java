@@ -112,17 +112,24 @@ public class CourseFollowing {
 		// part of the bridge
 		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3))
 				|| (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
-			driveManager.travelToGrid(DriveManager.BR_LLx + 0.5, DriveManager.BR_LLy - 1.5);
+			driveManager.travelToGrid(DriveManager.BR_LLx + 0.5, DriveManager.BR_LLy - 2.5);
 			driveManager.turnTo(0);
 		} else {
 			// otherwise, the robot travels to the upper part of the bridge
-			driveManager.travelToGrid(DriveManager.BR_URx - 0.5, DriveManager.BR_URy + 1.5);
+			driveManager.travelToGrid(DriveManager.BR_URx - 0.5, DriveManager.BR_URy + 2.5);
 			driveManager.turnTo(180);
 		}
 
 		// straightens out the robot before going over the bridge
-
+		driveManager.transform();
 		driveManager.lineLocWait();
+		driveManager.forwardBy(0.5*DriveManager.TILE_SIZE);
+		driveManager.turnBy(90);
+		driveManager.lineLocWait();
+		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE);
+		driveManager.turnBy(-90);
+		driveManager.lineLocWait();
+		
 		// traverse the bridge
 		bridgeSeq();
 
@@ -147,7 +154,6 @@ public class CourseFollowing {
 
 	public void bridgeSeq() throws OdometerExceptions {
 
-		driveManager.transform();
 		driveManager.forwardBy(3.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 		driveManager.transform();
 		driveManager.forwardBy(1 * DriveManager.TILE_SIZE);
