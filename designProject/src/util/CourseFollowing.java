@@ -42,29 +42,32 @@ public class CourseFollowing {
 	}
 
 	/**
-	 * The following method brings the robot to the front of the tunnel, then travels through it
+	 * The following method brings the robot to the front of the tunnel, then
+	 * travels through it
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
 	 */
 	public void traverseTunnel() throws OdometerExceptions, InterruptedException {
-		
+
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
-			motor.setAcceleration(3000);
+			motor.setAcceleration(500);
 		}
-		
+
 		// prevents the upper motors from rotating (locks them in place)
 		leftUpMotor.stop();
 		rightUpMotor.stop();
-		
+
 		// wait two seconds to know its the light starting
 		Thread.sleep(500);
-		
-		// If the green team starts in corner 2 or 3, it must travel to the upper part of the tunnel
-		// If the red team starts in corner 0 or 1, it must travel travel to the upper part of the tunnel
-		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3)) || 
-			 (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
+
+		// If the green team starts in corner 2 or 3, it must travel to the upper part
+		// of the tunnel
+		// If the red team starts in corner 0 or 1, it must travel travel to the upper
+		// part of the tunnel
+		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3))
+				|| (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
 			driveManager.travelToGrid(DriveManager.TN_URx - 0.5, DriveManager.TN_URy + 1.5);
 			driveManager.turnTo(180);
 		} else {
@@ -74,6 +77,7 @@ public class CourseFollowing {
 		}
 
 		// straighten out the robot before going through the tunnel
+
 		driveManager.lineLocWait();
 
 		// traverse through the tunnel
@@ -82,7 +86,8 @@ public class CourseFollowing {
 	}
 
 	/**
-	 * The following method brings the robot to the front of the bridge, then travels over it
+	 * The following method brings the robot to the front of the bridge, then
+	 * travels over it
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -93,18 +98,20 @@ public class CourseFollowing {
 			motor.stop();
 			motor.setAcceleration(3000);
 		}
-		
+
 		// prevents the upper motors from rotating (locks them in place)
 		leftUpMotor.stop();
 		rightUpMotor.stop();
-		
+
 		// wait two seconds to know its the light starting
 		Thread.sleep(500);
 
-		// If the green team starts in corner 2 or 3, it must travel to the lower part of the bridge
-		// If the red team starts in corner 0 or 1, it must travel travel to the lower part of the bridge
-		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3)) || 
-			 (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
+		// If the green team starts in corner 2 or 3, it must travel to the lower part
+		// of the bridge
+		// If the red team starts in corner 0 or 1, it must travel travel to the lower
+		// part of the bridge
+		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3))
+				|| (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
 			driveManager.travelToGrid(DriveManager.BR_LLx + 0.5, DriveManager.BR_LLy - 1.5);
 			driveManager.turnTo(0);
 		} else {
@@ -114,16 +121,16 @@ public class CourseFollowing {
 		}
 
 		// straightens out the robot before going over the bridge
-		driveManager.lineLocWait();
 
+		driveManager.lineLocWait();
 		// traverse the bridge
 		bridgeSeq();
 
 	}
 
 	/**
-	 * After the bridge and tunnel have both been traversed, this method brings the robot back to
-	 * its starting location
+	 * After the bridge and tunnel have both been traversed, this method brings the
+	 * robot back to its starting location
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -132,7 +139,6 @@ public class CourseFollowing {
 		driveManager.travelToGrid(driveManager.startCornerLoc()[0], driveManager.startCornerLoc()[1]);
 		driveManager.stopAll();
 	}
-
 
 	public void tunnelSeq() throws OdometerExceptions {
 

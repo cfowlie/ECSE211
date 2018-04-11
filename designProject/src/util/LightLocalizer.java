@@ -45,7 +45,7 @@ public class LightLocalizer {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
-			motor.setAcceleration(800);
+			motor.setAcceleration(500);
 		}
 		
 		// keeps the upper motors upsraight without them moving

@@ -42,6 +42,9 @@ public class Main {
 			@Override
 			public void run() throws InterruptedException, OdometerExceptions {
 
+				
+		
+				
 				// transfers all the data from the wifi server into the robot
 				wifi.transmit();
 
@@ -58,7 +61,7 @@ public class Main {
 				// finally, go back to start corner
 				if(DriveManager.TEAM) {
 					courseFollowing.traverseBridge();
-					blockSearch.search();
+					//blockSearch.search();
 					courseFollowing.traverseTunnel();
 					courseFollowing.travelToStartCorner();
 				// if green team:
@@ -68,7 +71,7 @@ public class Main {
 				// finally, go back to start corner
 				} else {
 					courseFollowing.traverseTunnel();
-					blockSearch.search();
+					//blockSearch.search();
 					courseFollowing.traverseBridge();
 					courseFollowing.travelToStartCorner();
 				}

@@ -35,15 +35,15 @@ public class DriveManager {
 	private final EV3LargeRegulatedMotor rightUpMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
 	// Constants
-	public static final double WHEEL_RAD = 2.1;
+	public static final double WHEEL_RAD = 2.0;
 	public static final double TRACK_OPEN = 21.2;
-	public static final double TRACK_CLOSED = 15.8;
-	public static final int ROTATE_SPEED = 140;
-	public static final int SL_ROTATE_SPEED = 70;
+	public static final double TRACK_CLOSED = 15.2;
+	public static final int FWD_SPEED = 280;
+	public static final int ROTATE_SPEED = 180;
+	public static final int SL_ROTATE_SPEED = 90;
 	public static final int ROTATE_UP_SPEED = 20;
 	public static final double UP_ROTATION = 40;
-	public static final int FWD_SPEED = 240;
-	public static final double LIGHT_RADIUS = 4.2;
+	public static final double LIGHT_RADIUS = -5;
 	public static final double LR2 = Math.sqrt(2 * Math.pow(DriveManager.LIGHT_RADIUS, 2));
 	public static final double NO_WALL_DIST = 35;
 	public static final double TILE_SIZE = 30.48;
@@ -86,27 +86,24 @@ public class DriveManager {
 	public static int SG_LLy;
 	public static int SG_URx;
 	public static int SG_URy;
-	
-	public static boolean TEAM; //TRUE == red, FALSE == green
-	
+
+	public static boolean TEAM; // TRUE == red, FALSE == green
+
 	/**
 	 * 
-	 * Values to be used as a replacement of red and green,
-	 * instead we use "T12_FLAG"
+	 * Values to be used as a replacement of red and green, instead we use
+	 * "T12_FLAG"
 	 * 
 	 */
-	
+
 	public static int T12_FLAG;
-	
+
 	public static int T12_SC;
-		
+
 	public static int T12_SLLx;
 	public static int T12_SLLy;
 	public static int T12_SURx;
 	public static int T12_SURy;
-	
-	
-	
 
 	/**
 	 * TODO: All of these values need to be assigned and attributed in the
@@ -116,8 +113,6 @@ public class DriveManager {
 	 */
 
 	public static int trackState = 0;
-
-	
 
 	/*
 	 * Setup Drivemanager threads
@@ -176,15 +171,17 @@ public class DriveManager {
 		getRightMotor().rotate(DriveManager.convertDistance(dist), false);
 		return;
 	}
-	
+
 	public void forwardBySlow(double dist) throws OdometerExceptions {
 		setRotSpd();
 		getLeftMotor().rotate(DriveManager.convertDistance(dist), true);
 		getRightMotor().rotate(DriveManager.convertDistance(dist), false);
 		return;
 	}
+
 	/*
-	 * Gets the current track width because our robot has different track widths depending on stage state.
+	 * Gets the current track width because our robot has different track widths
+	 * depending on stage state.
 	 */
 	public static double widthCheck() {
 		if (trackState == 0) {
@@ -223,10 +220,9 @@ public class DriveManager {
 	 * 
 	 * @return
 	 * 
-	 * 		should be 11 instead of 7**************************
+	 * 
 	 */
-	
-	
+
 	public double[] startCornerLoc() {
 		double[] loc = new double[5];
 		if (T12_SC == 0) {
@@ -237,22 +233,22 @@ public class DriveManager {
 			loc[4] = +.5;
 			return loc;
 		} else if (T12_SC == 1) {
-			loc[0] = 7;
+			loc[0] = 11;
 			loc[1] = 1;
 			loc[2] = 0;
 			loc[3] = -.5;
 			loc[4] = +.5;
 			return loc;
 		} else if (T12_SC == 2) {
-			loc[0] = 7;
-			loc[1] = 7;
+			loc[0] = 11;
+			loc[1] = 11;
 			loc[2] = 270;
 			loc[3] = -.5;
 			loc[4] = -.5;
 			return loc;
 		} else {
 			loc[0] = 1;
-			loc[1] = 7;
+			loc[1] = 11;
 			loc[2] = 180;
 			loc[3] = +.5;
 			loc[4] = -.5;
@@ -294,12 +290,11 @@ public class DriveManager {
 	 * @param y
 	 * @throws OdometerExceptions
 	 */
-	public void travelTo(double x, double y, boolean avoid)
-			throws OdometerExceptions, InterruptedException {
+	public void travelTo(double x, double y, boolean avoid) throws OdometerExceptions, InterruptedException {
 
 		SensorManager sensorManager = SensorManager.getInstance();
 		DriveManager driveManager = DriveManager.getInstance();
-		
+
 		// Get the current x, y and theta positions from the odometer
 		double position[] = sensorManager.getOdometer().getXYT();
 		double currentX = position[0];
@@ -321,9 +316,21 @@ public class DriveManager {
 		} else if (theta > 180) {
 			theta -= 360;
 		}
-		// Turn by theta degrees so that the robot is facing the direction is needs to go
+		// Turn by theta degrees so that the robot is facing the direction is needs to
+		// go
 		turnBy(theta);
-			
+
+		lineLocWait();
+
+		double posAfter[] = sensorManager.getOdometer().getXYT();
+		currentX = posAfter[0];
+		currentY = posAfter[1];
+		currentT = posAfter[2];
+
+		dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
+											// direction
+		dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
+
 		// Calculate the distance the robot must travel to get to the way point
 		double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 
@@ -333,12 +340,13 @@ public class DriveManager {
 	}
 
 	/*
-	 * Travels to an X and Y position by traveling X first and then Y, along grid lines
+	 * Travels to an X and Y position by traveling X first and then Y, along grid
+	 * lines
 	 */
 	public void travelToGrid(double x, double y) throws OdometerExceptions, InterruptedException {
 		SensorManager sensorManager = SensorManager.getInstance();
 		double curX, curY;
-		
+
 		// Get the current x and y position
 		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
 		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
@@ -346,7 +354,7 @@ public class DriveManager {
 		if (Math.abs(x - curX) > 0.25) {
 			travelTo(x, curY, true);
 		}
-		
+
 		// Get the current x and y position
 		curX = sensorManager.getOdometer().getXYT()[0] / DriveManager.TILE_SIZE;
 		curY = sensorManager.getOdometer().getXYT()[1] / DriveManager.TILE_SIZE;
@@ -356,16 +364,15 @@ public class DriveManager {
 		}
 	}
 
-
 	/**
 	 * This method causes the robot to travel to the absolute field location (x,y),
 	 * specified in tile points.
 	 * 
-	 * @param xDist the distance to travel in the x direction
+	 * @param xDist
+	 *            the distance to travel in the x direction
 	 * @param y
 	 * @throws OdometerExceptions
 	 */
-	
 
 	/*
 	 * Stops all motors
@@ -414,23 +421,23 @@ public class DriveManager {
 			leftMotor.forward();
 			rightMotor.forward();
 		}
-		
+
 		switch (sensorManager.getLine()) {
-			case 1: // Left line
-				leftMotor.stop(true);
-				setSLRotSpd();
-				while (sensorManager.getLine() != 3) {
-					rightMotor.forward();
-				}
-				break;
-			case 2: // Right line
-				rightMotor.stop(true);
-				setSLRotSpd();
-				while (sensorManager.getLine() != 3) {
-					leftMotor.forward();
-				}
-			case 3: // Both lines
-				break;
+		case 1: // Left line
+			leftMotor.stop(true);
+			setSLRotSpd();
+			while (sensorManager.getLine() != 2) {
+				rightMotor.forward();
+			}
+			break;
+		case 2: // Right line
+			rightMotor.stop(true);
+			setSLRotSpd();
+			while (sensorManager.getLine() != 1) {
+				leftMotor.forward();
+			}
+		case 3: // Both lines
+			break;
 		}
 
 		leftMotor.stop(true);
@@ -448,6 +455,179 @@ public class DriveManager {
 		setRotSpd();
 
 		Thread.sleep(200);
+	}
+
+	public void lineLocWaitDrive(double x, double y) throws InterruptedException, OdometerExceptions {
+
+		SensorManager sensorManager = SensorManager.getInstance();
+		setRotSpd();
+
+		double position[] = sensorManager.getOdometer().getXYT();
+		double currentX = position[0];
+		double currentY = position[1];
+		double currentT = position[2];
+
+		double dX = 100;
+		double dY = 100;
+
+		while (Math.abs(dX) > 1.5) {
+			position = sensorManager.getOdometer().getXYT();
+			currentX = position[0];
+			currentY = position[1];
+			currentT = position[2];
+
+			dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
+												// direction
+			dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
+
+			double headingT = Math.toDegrees(Math.atan2(dX, currentY)); // Calculate the angle the robot need to turn to
+																		// and
+
+			double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
+
+			// This makes sure the robot always turns the smaller angle
+			if (theta < -180) {
+				theta += 360;
+			} else if (theta > 180) {
+				theta -= 360;
+			}
+			// Turn by theta degrees so that the robot is facing the direction is needs to
+			// go
+			turnBy(theta);
+			// This makes sure the robot always turns the smaller angle
+
+			// wait until black line hits one of the two light sensors
+			while (sensorManager.getLine() == 0) {
+
+				leftMotor.forward();
+				rightMotor.forward();
+
+			}
+
+			switch (sensorManager.getLine()) {
+			case 1: // Left line
+				leftMotor.stop(true);
+				setSLRotSpd();
+				while (sensorManager.getLine() != 2) {
+					rightMotor.forward();
+					leftMotor.setSpeed(SL_ROTATE_SPEED - 20);
+					leftMotor.backward();
+				}
+				break;
+			case 2: // Right line
+				rightMotor.stop(true);
+				setSLRotSpd();
+				while (sensorManager.getLine() != 1) {
+					leftMotor.forward();
+					rightMotor.setSpeed(SL_ROTATE_SPEED - 20);
+					rightMotor.backward();
+				}
+			case 3: // Both lines
+				break;
+			}
+
+			leftMotor.stop(true);
+			rightMotor.stop(false);
+
+			if (OdometerData.roundToNearest90() == 0) {
+				sensorManager.getOdometer().setTheta(0);
+			} else if (OdometerData.roundToNearest90() == 1) {
+				sensorManager.getOdometer().setTheta(90);
+			} else if (OdometerData.roundToNearest90() == 2) {
+				sensorManager.getOdometer().setTheta(180);
+			} else {
+				sensorManager.getOdometer().setTheta(270);
+			}
+			setRotSpd();
+			leftMotor.rotate(50, true);
+			leftMotor.rotate(50, false);
+
+		}
+
+		travelTo(dX, currentY, true);
+
+		position = sensorManager.getOdometer().getXYT();
+		currentX = position[0];
+		currentY = position[1];
+		currentT = position[2];
+
+		dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
+											// direction
+		dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
+											// direction
+
+		double headingT = Math.toDegrees(Math.atan2(currentX, dY)); // Calculate the angle the robot need to turn to and
+
+		double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
+
+		// This makes sure the robot always turns the smaller angle
+		if (theta < -180) {
+			theta += 360;
+		} else if (theta > 180) {
+			theta -= 360;
+		}
+		// Turn by theta degrees so that the robot is facing the direction is needs to
+		// go
+		turnBy(theta);
+
+		while (Math.abs(dY) > 1.5) {
+			position = sensorManager.getOdometer().getXYT();
+			currentX = position[0];
+			currentY = position[1];
+			currentT = position[2];
+
+			dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
+												// direction
+			dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
+												// direction
+
+			// wait until black line hits one of the two light sensors
+			while (sensorManager.getLine() == 0) {
+				leftMotor.forward();
+				rightMotor.forward();
+
+			}
+
+			switch (sensorManager.getLine()) {
+			case 1: // Left line
+				leftMotor.stop(true);
+				setSLRotSpd();
+				while (sensorManager.getLine() != 2) {
+					rightMotor.forward();
+
+				}
+				break;
+			case 2: // Right line
+				rightMotor.stop(true);
+				setSLRotSpd();
+				while (sensorManager.getLine() != 1) {
+					leftMotor.forward();
+
+				}
+			case 3: // Both lines
+				break;
+			}
+
+			leftMotor.stop(true);
+			rightMotor.stop(false);
+
+			if (OdometerData.roundToNearest90() == 0) {
+				sensorManager.getOdometer().setTheta(0);
+			} else if (OdometerData.roundToNearest90() == 1) {
+				sensorManager.getOdometer().setTheta(90);
+			} else if (OdometerData.roundToNearest90() == 2) {
+				sensorManager.getOdometer().setTheta(180);
+			} else {
+				sensorManager.getOdometer().setTheta(270);
+			}
+			setRotSpd();
+
+			leftMotor.rotate(50, true);
+			leftMotor.rotate(50, false);
+		}
+
+		travelTo(currentX, dY, true);
+
 	}
 
 	// MARK: Speed
