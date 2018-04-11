@@ -77,8 +77,12 @@ public class CourseFollowing {
 		}
 
 		// straighten out the robot before going through the tunnel
-
+		driveManager.turnBy(90);
 		driveManager.lineLocWait();
+		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE);
+		driveManager.turnBy(-90);
+		driveManager.lineLocWait();
+		
 
 		// traverse through the tunnel
 		tunnelSeq();
@@ -122,8 +126,7 @@ public class CourseFollowing {
 
 		// straightens out the robot before going over the bridge
 		driveManager.transform();
-		driveManager.lineLocWait();
-		driveManager.forwardBy(0.5*DriveManager.TILE_SIZE);
+		driveManager.forwardBy(DriveManager.TILE_SIZE);
 		driveManager.turnBy(90);
 		driveManager.lineLocWait();
 		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE);
@@ -153,7 +156,6 @@ public class CourseFollowing {
 	}
 
 	public void bridgeSeq() throws OdometerExceptions {
-
 		driveManager.forwardBy(3.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 		driveManager.transform();
 		driveManager.forwardBy(1 * DriveManager.TILE_SIZE);
