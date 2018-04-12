@@ -43,7 +43,7 @@ public class CourseFollowing {
 
 	/**
 	 * The following method brings the robot to the front of the tunnel, then
-	 * travels through it
+	 * travels through it.
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -79,7 +79,7 @@ public class CourseFollowing {
 		// straighten out the robot before going through the tunnel
 		driveManager.turnBy(90);
 		driveManager.lineLocWait();
-		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE);
+		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE-DriveManager.LIGHT_RADIUS);
 		driveManager.turnBy(-90);
 		driveManager.lineLocWait();
 		
@@ -90,7 +90,7 @@ public class CourseFollowing {
 
 	/**
 	 * The following method brings the robot to the front of the bridge, then
-	 * travels over it
+	 * travels over it.
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -99,7 +99,7 @@ public class CourseFollowing {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
-			motor.setAcceleration(3000);
+			motor.setAcceleration(1000);
 		}
 
 		// prevents the upper motors from rotating (locks them in place)
@@ -126,7 +126,7 @@ public class CourseFollowing {
 		// straightens out the robot before going over the bridge
 		driveManager.turnBy(90);
 		driveManager.lineLocWait();
-		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE);
+		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE-DriveManager.LIGHT_RADIUS);
 		driveManager.turnBy(-90);
 		driveManager.transform();
 		driveManager.forwardBy(DriveManager.TILE_SIZE);

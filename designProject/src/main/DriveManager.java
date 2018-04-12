@@ -214,6 +214,25 @@ public class DriveManager {
 			trackState = 1;
 		}
 	}
+	
+	
+	public void beep6() throws InterruptedException {
+		
+		Sound.beep();
+		Thread.sleep(200);
+		Sound.beep();
+		Thread.sleep(200);
+		Sound.beep();
+		Thread.sleep(200);
+		Sound.beep();
+		Thread.sleep(200);
+		Sound.beep();
+		Thread.sleep(200);
+		Sound.beep();
+		Thread.sleep(200);
+		
+		
+	}
 
 	/**
 	 * Returns the proper starting corner information.
@@ -420,19 +439,18 @@ public class DriveManager {
 		while (sensorManager.getLine() == 0) {
 			leftMotor.forward();
 			rightMotor.forward();
+			
 		}
 
 		switch (sensorManager.getLine()) {
 		case 1: // Left line
 			stopAll();
-			
 			setSLRotSpd();
 			while (sensorManager.getLine() != 2) {
 				rightMotor.forward();
 			}
-			
-			rightMotor.rotate(30);
 			stopAll();
+			rightMotor.rotate(10);
 			break;
 		case 2: // Right line
 			stopAll();
@@ -440,9 +458,8 @@ public class DriveManager {
 			while (sensorManager.getLine() != 1) {
 				leftMotor.forward();
 			}
-			
-			leftMotor.rotate(30);
 			stopAll();
+			leftMotor.rotate(10);
 			break;
 		case 3: // Both lines
 			stopAll();
@@ -462,7 +479,6 @@ public class DriveManager {
 		}
 		setRotSpd();
 
-		Thread.sleep(50);
 	}
 
 	public void lineLocWaitDrive(double x, double y) throws InterruptedException, OdometerExceptions {
@@ -519,7 +535,7 @@ public class DriveManager {
 					rightMotor.forward();
 					
 				}
-				rightMotor.rotate(15);
+				rightMotor.rotate(10);
 				break;
 			case 2: // Right line
 				rightMotor.stop(true);
@@ -528,7 +544,7 @@ public class DriveManager {
 					leftMotor.forward();
 					
 				}
-				leftMotor.rotate(15);
+				leftMotor.rotate(10);
 				break;
 			case 3: // Both lines
 				break;

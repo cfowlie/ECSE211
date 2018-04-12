@@ -13,6 +13,14 @@ public class Main {
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
+	
+	/**
+	 * 
+	 * 
+	 * @param args
+	 * @throws OdometerExceptions
+	 * @throws InterruptedException
+	 */
 	public static void main(String[] args) throws OdometerExceptions, InterruptedException {
 
 		// Init shared Managers
@@ -62,6 +70,7 @@ public class Main {
 				if(DriveManager.TEAM) {
 					courseFollowing.traverseBridge();
 					//blockSearch.search();
+					driveManager.beep6();
 					courseFollowing.traverseTunnel();
 					courseFollowing.travelToStartCorner();
 				// if green team:
@@ -72,6 +81,7 @@ public class Main {
 				} else {
 					courseFollowing.traverseTunnel();
 					//blockSearch.search();
+					driveManager.beep6();
 					courseFollowing.traverseBridge();
 					courseFollowing.travelToStartCorner();
 				}

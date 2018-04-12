@@ -112,13 +112,13 @@ public class SensorManager {
 	 * Returns true if currently over a line for the right sensor
 	 */
 	public boolean getLineR() {
-		if (this.lightRightPoller.getDiff() < 0.06) {
+		if (this.lightRightPoller.getDiff() < 0.07) {
 			return false;
 		}
 		return true;
 	}
 	public boolean getLineL() {
-		if (this.lightLeftPoller.getDiff() < 0.06) {
+		if (this.lightLeftPoller.getDiff() < 0.07) {
 			return false;
 		}
 		return true;
