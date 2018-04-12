@@ -45,7 +45,7 @@ public class LightLocalizer {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
-			motor.setAcceleration(3000);
+			motor.setAcceleration(1000);
 		}
 		
 		// keeps the upper motors upsraight without them moving
@@ -80,10 +80,18 @@ public class LightLocalizer {
 		driveManager.setRotSpd();
 
 		// turn back towards the (0,0) coordinate	
-		
-		
 		sensorManager.getOdometer().setXYT(DriveManager.TILE_SIZE*driveManager.startCornerLoc()[0],DriveManager.TILE_SIZE*driveManager.startCornerLoc()[1], driveManager.startCornerLoc()[2]);
-
+		
+		driveManager.turnBy(-90);
+		
+		driveManager.forwardBy(DriveManager.LIGHT_RADIUS-5);
+		
+		driveManager.lineLocWait();
+		
+		driveManager.forwardBy(-DriveManager.LIGHT_RADIUS);
+		
+		
+		
 		// done
 		driveManager.stopAll();
 	}

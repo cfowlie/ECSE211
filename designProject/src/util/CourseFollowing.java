@@ -43,7 +43,7 @@ public class CourseFollowing {
 
 	/**
 	 * The following method brings the robot to the front of the tunnel, then
-	 * travels through it
+	 * travels through it.
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -68,18 +68,21 @@ public class CourseFollowing {
 		// part of the tunnel
 		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3))
 				|| (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
-			driveManager.travelToGrid(DriveManager.TN_URx - 0.5, DriveManager.TN_URy + 1.5);
-			driveManager.turnTo(180);
+			driveManager.travelToGrid(DriveManager.TN_URx - 1.5, DriveManager.TN_URy + 0.5);
+			driveManager.turnTo(90);
 		} else {
 			// otherwise, the robot travels to the lower part of the bridge
-			driveManager.travelToGrid(DriveManager.TN_LLx + 0.5, DriveManager.TN_LLy - 1.5);
-			driveManager.turnTo(0);
+			driveManager.travelToGrid(DriveManager.TN_LLx + 1.5, DriveManager.TN_LLy - 0.5);
+			driveManager.turnTo(270);
 		}
 
 		// straighten out the robot before going through the tunnel
-
+		driveManager.turnBy(90);
 		driveManager.lineLocWait();
-
+		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE-DriveManager.LIGHT_RADIUS);
+		driveManager.turnBy(-90);
+		driveManager.lineLocWait();
+		
 		// traverse through the tunnel
 		tunnelSeq();
 
@@ -87,7 +90,7 @@ public class CourseFollowing {
 
 	/**
 	 * The following method brings the robot to the front of the bridge, then
-	 * travels over it
+	 * travels over it.
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -96,7 +99,7 @@ public class CourseFollowing {
 
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
-			motor.setAcceleration(3000);
+			motor.setAcceleration(1000);
 		}
 
 		// prevents the upper motors from rotating (locks them in place)
@@ -112,17 +115,23 @@ public class CourseFollowing {
 		// part of the bridge
 		if ((!DriveManager.TEAM && (DriveManager.T12_SC == 2 || DriveManager.T12_SC == 3))
 				|| (DriveManager.TEAM && (DriveManager.T12_SC == 0 || DriveManager.T12_SC == 1))) {
-			driveManager.travelToGrid(DriveManager.BR_LLx + 0.5, DriveManager.BR_LLy - 1.5);
-			driveManager.turnTo(0);
+			driveManager.travelToGrid(DriveManager.BR_LLx + 2.5, DriveManager.BR_LLy - 0.5);
+			driveManager.turnTo(270);
 		} else {
 			// otherwise, the robot travels to the upper part of the bridge
-			driveManager.travelToGrid(DriveManager.BR_URx - 0.5, DriveManager.BR_URy + 1.5);
-			driveManager.turnTo(180);
+			driveManager.travelToGrid(DriveManager.BR_URx - 2.5, DriveManager.BR_URy + 0.5);
+			driveManager.turnTo(90);
 		}
 
 		// straightens out the robot before going over the bridge
-
+		driveManager.turnBy(90);
 		driveManager.lineLocWait();
+		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE-DriveManager.LIGHT_RADIUS);
+		driveManager.turnBy(-90);
+		driveManager.transform();
+		driveManager.forwardBy(DriveManager.TILE_SIZE);
+		driveManager.lineLocWait();
+		
 		// traverse the bridge
 		bridgeSeq();
 
@@ -141,13 +150,10 @@ public class CourseFollowing {
 	}
 
 	public void tunnelSeq() throws OdometerExceptions {
-
 		driveManager.forwardBy(4.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 	}
 
 	public void bridgeSeq() throws OdometerExceptions {
-
-		driveManager.transform();
 		driveManager.forwardBy(3.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 		driveManager.transform();
 		driveManager.forwardBy(1 * DriveManager.TILE_SIZE);
