@@ -76,7 +76,7 @@ public class Odometer extends OdometerData implements Runnable {
 	}
 
 	/**
-	 * This method is where the logic for the odometer runs. It uses the methods
+	 * This method is where the logic for the odometer runs.&nbsp;It uses the methods
 	 * provided from the OdometerData class to implement the odometer.
 	 */
 	// run method (required for Thread)

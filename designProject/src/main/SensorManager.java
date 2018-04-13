@@ -86,7 +86,7 @@ public class SensorManager {
 	/**
 	 * Get singleton method, call this to access the sensor manager.
 	 * 
-	 * @return
+	 * @return sharedManager
 	 * @throws OdometerExceptions
 	 */
 	public static SensorManager getInstance() throws OdometerExceptions {
@@ -106,10 +106,12 @@ public class SensorManager {
 	}
 
 	/**
-	 * Returns int if currently over a line: 0 -> No line, 1 -> Left Line, 2 ->
-	 * Right Line, 3 -> Both Lines.
+	 * Returns int if currently over a line: 0 = No line, 1 = Left Line, 2 = Right
+	 * Line, 3 = Both Lines.
 	 * 
-	 * @return
+	 * @return 0 if neither sensor is over a line, 1 if left sensor is over a line,
+	 *         2 if right sensor is over a line, and 3 if both sensor are over a
+	 *         line
 	 */
 	public int getLine() {
 		int ret = 0;
@@ -123,7 +125,7 @@ public class SensorManager {
 	/**
 	 * Returns true if the right light sensor is currently over a line.
 	 * 
-	 * @return
+	 * @return true if a line is detected; false otherwise.
 	 */
 	public boolean getLineR() {
 		if (this.lightRightPoller.getDiff() < 0.07) {
@@ -135,7 +137,7 @@ public class SensorManager {
 	/**
 	 * Returns true if the left light sensor is currently over a line.
 	 * 
-	 * @return
+	 * @return true if a line is detected; false otherwise.
 	 */
 	public boolean getLineL() {
 		if (this.lightLeftPoller.getDiff() < 0.07) {
@@ -147,7 +149,7 @@ public class SensorManager {
 	/**
 	 * Returns the front facing light sensors current color as an int.
 	 * 
-	 * @return
+	 * @return color from the collorPoller as an integer value.
 	 */
 	public int getColor() {
 		return this.colorPoller.getColorInt();
@@ -157,7 +159,7 @@ public class SensorManager {
 	 * Uses the Euclidean color from the forward facing light sensor to detect
 	 * distance from a block.
 	 * 
-	 * @return
+	 * @return Euclidean color from the colorPoller
 	 */
 	public double getEuclidColor() {
 		return this.colorPoller.getEuclidColor();
@@ -166,7 +168,7 @@ public class SensorManager {
 	/**
 	 * Returns the current instance of the Odometer.
 	 * 
-	 * @return the odometer
+	 * @return odometer instance
 	 */
 	public Odometer getOdometer() {
 		return odometer;

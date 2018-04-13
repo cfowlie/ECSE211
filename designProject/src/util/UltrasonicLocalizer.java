@@ -57,10 +57,10 @@ public class UltrasonicLocalizer {
 
 	/**
 	 * This is the method that orients the robot in its starting corner using a
-	 * routine called the fallingEdge method. The robot rotates towards the wall
+	 * routine called the fallingEdge method.&nbsp;The robot rotates towards the wall
 	 * until it reaches a set distance, records the angle, then rotates in the
 	 * opposite direction until it reaches the set distance again and records the
-	 * angle. The two recorded angles are then used to calculate the angle that must
+	 * angle.&nbsp;The two recorded angles are then used to calculate the angle that must
 	 * be added to robots current heading so the robot knows its actual angle
 	 * relative to the grid map.
 	 * 

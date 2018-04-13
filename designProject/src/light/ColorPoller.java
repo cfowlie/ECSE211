@@ -40,7 +40,6 @@ public class ColorPoller extends Thread implements Runnable {
 	}
 
 	/**
-	 * 
 	 * @param colorSensor
 	 */
 	public ColorPoller(EV3ColorSensor colorSensor) {
@@ -88,7 +87,7 @@ public class ColorPoller extends Thread implements Runnable {
 	/**
 	 * Returns the current color detected by the front facing light sensor.
 	 * 
-	 * @return
+	 * @return color detected by the front facing light sensor
 	 */
 	public COLOR getColor() {
 		return this.color;
@@ -98,7 +97,7 @@ public class ColorPoller extends Thread implements Runnable {
 	 * Returns the current color detected by the front facing light sensor as an
 	 * int.
 	 * 
-	 * @return
+	 * @return color detected as an int
 	 */
 	public int getColorInt() {
 		return color.intValue();
@@ -107,7 +106,7 @@ public class ColorPoller extends Thread implements Runnable {
 	/**
 	 * Returns the Euclidean Color from the front facing light sensor.
 	 * 
-	 * @return
+	 * @return Euclidian color
 	 */
 	public double getEuclidColor() {
 		return euclidColor;

@@ -47,7 +47,7 @@ public class LightLocalizer {
 	/**
 	 * This method uses two light sensors located just in front of the two front
 	 * wheels to localize itself over top of the starting corner coordinates facing
-	 * the proper direction, depedning on which corner it is in.
+	 * the proper direction, depending on which corner it is in.
 	 * 
 	 * @throws InterruptedException
 	 * @throws OdometerExceptions

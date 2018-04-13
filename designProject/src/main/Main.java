@@ -10,7 +10,7 @@ import odometer.OdometerExceptions;
 import util.*;
 
 /**
- * Main class which contains the main method.
+ * Main class which contains the main method, the first method run when the program is started.
  * 
  * @author Connor Fowlie
  * @author David Castonguay
@@ -76,7 +76,7 @@ public class Main {
 				 */
 				if (DriveManager.TEAM) {
 					courseFollowing.traverseBridge();
-					// blockSearch.search();
+					blockSearch.search();
 					driveManager.beep6();
 					courseFollowing.traverseTunnel();
 					courseFollowing.travelToStartCorner();
@@ -86,7 +86,7 @@ public class Main {
 					 */
 				} else {
 					courseFollowing.traverseTunnel();
-					// blockSearch.search();
+					blockSearch.search();
 					driveManager.beep6();
 					courseFollowing.traverseBridge();
 					courseFollowing.travelToStartCorner();

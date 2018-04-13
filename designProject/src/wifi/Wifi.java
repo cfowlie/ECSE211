@@ -39,7 +39,7 @@ public class Wifi {
 
 	/**
 	 * The transmit method is used to get all of the data from the server and send
-	 * it to the robot. This way the robot knows the whether it is the Green Team or
+	 * it to the robot.&nbsp;This way the robot knows the whether it is the Green Team or
 	 * Red Team, the coordinates of the green zone, red zone, bridge, tunnel, search
 	 * region, and what its starting corner is.
 	 * 

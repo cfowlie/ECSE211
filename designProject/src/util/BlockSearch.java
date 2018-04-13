@@ -11,6 +11,9 @@ import ultrasonic.UltrasonicPoller;
 import wifi.Wifi;
 
 /**
+ * This class contains the two methods used to perform the block search routine.&nbsp;
+ * One method traverses the perimeter of the search region searching for a, and the other method
+ * goes to a block once one is detected and determines if it is the target block or not.
  * 
  * @author David Castonguay
  *
@@ -49,7 +52,7 @@ public class BlockSearch {
 	/**
 	 * This is the method that causes the robot to traverse around the perimeter of
 	 * the search region, searching for blocks as it goes using the ultrasonic
-	 * sensor. If a non-target block is found, the robot continues searching. Once
+	 * sensor.&nbsp;If a non-target block is found, the robot continues searching.&nbsp;Once
 	 * the target block is found, it continues on its path back to its starting
 	 * corner.
 	 *
@@ -142,15 +145,15 @@ public class BlockSearch {
 
 	/**
 	 * The search method calls this method whenever a block is detected by the
-	 * ultrasonic sensor. This method cause the robot to turn toward the block,
-	 * travel to it and check its color. If it is the target block the robot beeps 3
-	 * times, otherwise it beeps once. Next, the robot goes back to the perimeter
+	 * ultrasonic sensor.&nbsp;This method cause the robot to turn toward the block,
+	 * travel to it and check its color.&nbsp;If it is the target block the robot beeps 3
+	 * times, otherwise it beeps once.&nbsp;Next, the robot goes back to the perimeter
 	 * and goes back to to where it was in the search method.
 	 * 
 	 * @throws InterruptedException
 	 * @throws OdometerExceptions
 	 */
-	void blockDetected() throws InterruptedException, OdometerExceptions {
+	public void blockDetected() throws InterruptedException, OdometerExceptions {
 
 		// drives a distance to get perfectly perpendicular to the block, works as a
 		// linear function of distance.
@@ -210,7 +213,7 @@ public class BlockSearch {
 	}
 
 	/**
-	 * Makes the robot go to the right corners during block search. Depending on if
+	 * Makes the robot go to the right corners during block search.&nbsp;Depending on if
 	 * starting in corner 0, 1, 2 or 3, it will send the proper corners to go to
 	 * after the end of one blocksearch loop.
 	 * 

@@ -57,9 +57,9 @@ public class Display implements Runnable {
 	}
 
 	/**
-	 * This is the first method to run in this class when the thread begins. It
+	 * This is the first method to run in this class when the thread begins.&nbsp;It
 	 * clears the lcd screen, then continuously displays the current x, y, and theta
-	 * position of the robot.
+	 * position of the robot. 
 	 */
 	public void run() {
 

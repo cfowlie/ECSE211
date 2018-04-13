@@ -21,7 +21,7 @@ interface DriveThread {
 
 /**
  * The DriveManager Class is responsible for controlling all of the robots
- * movements, such at driving forward, rotating or transforming. It also stores
+ * movements, such at driving forward, rotating or transforming.&nbsp;It also stores
  * all of the important constants.
  * 
  * @author Connor Fowlie
@@ -137,7 +137,7 @@ public class DriveManager {
 	 * Gets the drive manager instance, this is used to access drive manager and
 	 * helps prevent more than one instance of the drive manager.
 	 * 
-	 * @return
+	 * @return sharedManager
 	 * @throws OdometerExceptions
 	 */
 	public static DriveManager getInstance() throws OdometerExceptions {

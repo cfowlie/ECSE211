@@ -181,7 +181,7 @@ public class OdometerData {
 	}
 
 	/**
-	 * Overrides y. Use for odometry correction.
+	 * Overrides y.&nbsp;Used for odometry correction.
 	 * 
 	 * @param y
 	 *            the value of y
@@ -200,7 +200,7 @@ public class OdometerData {
 	}
 
 	/**
-	 * Overrides theta. Use for odometry correction.
+	 * Overrides theta.&nbsp;Use for odometry correction.
 	 * 
 	 * @param theta
 	 *            the value of theta
