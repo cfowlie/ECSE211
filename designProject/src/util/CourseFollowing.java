@@ -11,10 +11,12 @@ import odometer.Odometer;
 import odometer.OdometerExceptions;
 
 /**
- * Course following class is meant mainly for Beta Demo as a way to hardcode the
- * process.
+ * This class contains the methods that navigate the robot to the tunnel or
+ * bridge and then traverse the tunnel or bridge.
  * 
- * Author: David Cast
+ * @author Lucas Bluethner
+ * @author David Castonguay
+ * @version Final 1.0.5
  */
 
 public class CourseFollowing {
@@ -42,8 +44,9 @@ public class CourseFollowing {
 	}
 
 	/**
-	 * The following method brings the robot to the front of the tunnel, then
-	 * travels through it.
+	 * The following method brings the robot to the front of the tunnel, performs a
+	 * light localization routine to make sure its perfectly in line, then travels
+	 * through the tunnel.
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -79,18 +82,19 @@ public class CourseFollowing {
 		// straighten out the robot before going through the tunnel
 		driveManager.turnBy(90);
 		driveManager.lineLocWait();
-		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE-DriveManager.LIGHT_RADIUS);
+		driveManager.forwardBy(-0.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 		driveManager.turnBy(-90);
 		driveManager.lineLocWait();
-		
+
 		// traverse through the tunnel
 		tunnelSeq();
 
 	}
 
 	/**
-	 * The following method brings the robot to the front of the bridge, then
-	 * travels over it.
+	 * The following method brings the robot to the front of the bridge, performs a
+	 * light localization routine to make sure its perfectly in line, expands its
+	 * track by transforming, then travels over the bridge.
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -126,20 +130,20 @@ public class CourseFollowing {
 		// straightens out the robot before going over the bridge
 		driveManager.turnBy(90);
 		driveManager.lineLocWait();
-		driveManager.forwardBy(-0.5*DriveManager.TILE_SIZE-DriveManager.LIGHT_RADIUS);
+		driveManager.forwardBy(-0.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 		driveManager.turnBy(-90);
 		driveManager.transform();
 		driveManager.forwardBy(DriveManager.TILE_SIZE);
 		driveManager.lineLocWait();
-		
+
 		// traverse the bridge
 		bridgeSeq();
 
 	}
 
 	/**
-	 * After the bridge and tunnel have both been traversed, this method brings the
-	 * robot back to its starting location
+	 * After the bridge and tunnel have both been traversed, this is the method that
+	 * is called to bring the robot back to its starting corner.
 	 * 
 	 * @throws OdometerExceptions
 	 * @throws InterruptedException
@@ -149,10 +153,23 @@ public class CourseFollowing {
 		driveManager.stopAll();
 	}
 
+	/**
+	 * Once lined up with the tunnel, this method is called to drive through the
+	 * tunnel
+	 * 
+	 * @throws OdometerExceptions
+	 */
 	public void tunnelSeq() throws OdometerExceptions {
 		driveManager.forwardBy(4.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 	}
 
+	/**
+	 * Once lined up with the bridge, this method is called to drive over the
+	 * bridge, the robot then contracts its track using the transform() method once
+	 * it is over the bridge.
+	 * 
+	 * @throws OdometerExceptions
+	 */
 	public void bridgeSeq() throws OdometerExceptions {
 		driveManager.forwardBy(3.5 * DriveManager.TILE_SIZE - DriveManager.LIGHT_RADIUS);
 		driveManager.transform();

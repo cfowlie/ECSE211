@@ -15,9 +15,17 @@ import odometer.Odometer;
 import odometer.OdometerExceptions;
 import ultrasonic.UltrasonicPoller;
 
+/**
+ * The SensorManager manages all the methods responsible for interacting with
+ * the ultrasonic sensor and light sensors.
+ * 
+ * @author Connor Fowlie, David Castonguay, Lucas Bluethner
+ * @version Final 1.0.5
+ * 
+ */
 public class SensorManager {
 
-	// Singleton Object
+	/** Singleton Object */
 	private static SensorManager sharedManager = null;
 
 	// Sensor Ports
@@ -36,7 +44,7 @@ public class SensorManager {
 	// Light Sensor
 	private EV3ColorSensor lightRightSensor = new EV3ColorSensor(lightRightPort);
 	public LightPollerR lightRightPoller;
-	
+
 	private EV3ColorSensor lightLeftSensor = new EV3ColorSensor(lightLeftPort);
 	public LightPollerL lightLeftPoller;
 
@@ -47,9 +55,10 @@ public class SensorManager {
 	private float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
 	private UltrasonicPoller usPoller;
 
-	/*
-	 * Init method
-	 * sets up instances of sensors on threads and starts
+	/**
+	 * Init method sets up instances of sensors on threads and starts.
+	 * 
+	 * @throws OdometerExceptions
 	 */
 	private SensorManager() throws OdometerExceptions {
 
@@ -69,14 +78,16 @@ public class SensorManager {
 		// Light Sensors
 		setLightRPoller(new LightPollerR(lightRightSensor));
 		getLightPollerR().start();
-		
+
 		setLightLPoller(new LightPollerL(lightLeftSensor));
 		getLightPollerL().start();
 	}
 
-	/*
-	 * Get singleton method
-	 * Call this to access the sensor manager
+	/**
+	 * Get singleton method, call this to access the sensor manager.
+	 * 
+	 * @return
+	 * @throws OdometerExceptions
 	 */
 	public static SensorManager getInstance() throws OdometerExceptions {
 		if (sharedManager == null) {
@@ -85,31 +96,34 @@ public class SensorManager {
 		return sharedManager;
 	}
 
-	/*
-	 * Returns Ultrasonic Sensors distance (int)
+	/**
+	 * Returns Ultrasonic Sensors distance in cm
+	 * 
+	 * @return integer ultrasonic sensor distance
 	 */
 	public int getDistance() {
 		return this.getUsPoller().getDistance();
 	}
 
-	/*
-	 * Returns Ultrasonic Sensors distance (double)
-	 */
-
-	/*
-	 * Returns int if currently over a line 0 -> No line 1 -> Left Line 2 -> Right
-	 * Line 3 -> Both Lines
+	/**
+	 * Returns int if currently over a line: 0 -> No line, 1 -> Left Line, 2 ->
+	 * Right Line, 3 -> Both Lines.
+	 * 
+	 * @return
 	 */
 	public int getLine() {
 		int ret = 0;
-		if (getLineL()) ret +=1; 
-		if (getLineR()) ret +=2;
+		if (getLineL())
+			ret += 1;
+		if (getLineR())
+			ret += 2;
 		return ret;
-		
 	}
 
-	/*
-	 * Returns true if currently over a line for the right sensor
+	/**
+	 * Returns true if the right light sensor is currently over a line.
+	 * 
+	 * @return
 	 */
 	public boolean getLineR() {
 		if (this.lightRightPoller.getDiff() < 0.07) {
@@ -117,6 +131,12 @@ public class SensorManager {
 		}
 		return true;
 	}
+
+	/**
+	 * Returns true if the left light sensor is currently over a line.
+	 * 
+	 * @return
+	 */
 	public boolean getLineL() {
 		if (this.lightLeftPoller.getDiff() < 0.07) {
 			return false;
@@ -125,20 +145,27 @@ public class SensorManager {
 	}
 
 	/**
-	 * Returns the Color Sensors current color
+	 * Returns the front facing light sensors current color as an int.
+	 * 
+	 * @return
 	 */
 	public int getColor() {
 		return this.colorPoller.getColorInt();
 	}
-	
-	/**going to be used for distance measuring
-	 *
+
+	/**
+	 * Uses the Euclidean color from the forward facing light sensor to detect
+	 * distance from a block.
+	 * 
+	 * @return
 	 */
 	public double getEuclidColor() {
 		return this.colorPoller.getEuclidColor();
 	}
 
 	/**
+	 * Returns the current instance of the Odometer.
+	 * 
 	 * @return the odometer
 	 */
 	public Odometer getOdometer() {
@@ -154,15 +181,28 @@ public class SensorManager {
 	}
 
 	/**
+	 * Returns the current instance of the ColorPoller.
+	 * 
 	 * @return the colorPoller
 	 */
 	public ColorPoller getColorPoller() {
 		return colorPoller;
 	}
-	
+
+	/**
+	 * Returns the current instance of LightPollerR.
+	 * 
+	 * @return lightRightPoller
+	 */
 	public LightPollerR getLightPollerR() {
 		return lightRightPoller;
 	}
+
+	/**
+	 * Returns the current instance of LightPollerL.
+	 * 
+	 * @return lightLefttPoller
+	 */
 	public LightPollerL getLightPollerL() {
 		return lightLeftPoller;
 	}
@@ -174,25 +214,14 @@ public class SensorManager {
 	private void setColorPoller(ColorPoller colorPoller) {
 		this.colorPoller = colorPoller;
 	}
-	
+
 	private void setLightRPoller(LightPollerR lightPoller) {
 		this.lightRightPoller = lightPoller;
 	}
-	
+
 	private void setLightLPoller(LightPollerL lightPoller) {
 		this.lightLeftPoller = lightPoller;
 	}
-
-	/**
-	 * @return the lightSensor
-	 */
-
-
-	/**
-	 * @param lightSensor
-	 *            the lightSensor to set
-	 */
-
 
 	/**
 	 * @return the usPoller

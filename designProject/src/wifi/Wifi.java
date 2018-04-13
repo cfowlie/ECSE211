@@ -9,23 +9,23 @@ import odometer.Display;
 import odometer.OdometerExceptions;
 
 /**
+ * There are two variables you **MUST** set manually before trying to use this
+ * code.
+ * 
+ * 1. SERVER_IP: The IP address of the computer running the server application.
+ * This will be your own laptop, until the beta beta demo or competition where
+ * this is the TA or professor's laptop. In that case, set the IP to
+ * 192.168.2.3.
+ * 
+ * 2. TEAM_NUMBER: your project team number
+ * 
+ * Note: We System.out.println() instead of LCD printing so that full debug
+ * output (e.g. the very long string containing the transmission) can be read on
+ * the screen OR a remote console such as the EV3Control program via Bluetooth
+ * or WiFi. You can disable printing from the WiFi code via
+ * ENABLE_DEBUG_WIFI_PRINT (below).
+ * 
  * @author David Castonguay
- * 
- *         There are two variables you **MUST** set manually before trying to
- *         use this code.
- * 
- *         1. SERVER_IP: The IP address of the computer running the server
- *         application. This will be your own laptop, until the beta beta demo
- *         or competition where this is the TA or professor's laptop. In that
- *         case, set the IP to 192.168.2.3.
- * 
- *         2. TEAM_NUMBER: your project team number
- * 
- *         Note: We System.out.println() instead of LCD printing so that full
- *         debug output (e.g. the very long string containing the transmission)
- *         can be read on the screen OR a remote console such as the EV3Control
- *         program via Bluetooth or WiFi. You can disable printing from the WiFi
- *         code via ENABLE_DEBUG_WIFI_PRINT (below).
  *
  */
 public class Wifi {
@@ -37,6 +37,15 @@ public class Wifi {
 	// Enable/disable printing of debug info from the WiFi class
 	private static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
 
+	/**
+	 * The transmit method is used to get all of the data from the server and send
+	 * it to the robot. This way the robot knows the whether it is the Green Team or
+	 * Red Team, the coordinates of the green zone, red zone, bridge, tunnel, search
+	 * region, and what its starting corner is.
+	 * 
+	 * @throws InterruptedException
+	 * @throws OdometerExceptions
+	 */
 	@SuppressWarnings("rawtypes")
 	public void transmit() throws InterruptedException, OdometerExceptions {
 
@@ -100,19 +109,12 @@ public class Wifi {
 			DriveManager.SG_URx = ((Long) data.get("SG_UR_x")).intValue();
 			DriveManager.SG_URy = ((Long) data.get("SG_UR_y")).intValue();
 
-			// Example 1: Print out all received data
+			// Print out all received data
 			System.out.println("Map:\n" + data);
-
-			// Example 2 : Print out specific values
-
-			// Example 3: Compare value
 
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
 		}
-
-		System.out.print(
-				"                                                                                                                                                 ");
 
 		// if team red is 12, then TEAM is true, also means true for going to the bridge
 		// first, otherwise we are team green (team is false)

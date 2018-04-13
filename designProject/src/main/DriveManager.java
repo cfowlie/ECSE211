@@ -19,6 +19,17 @@ interface DriveThread {
 	void completion() throws OdometerExceptions;
 }
 
+/**
+ * The DriveManager Class is responsible for controlling all of the robots
+ * movements, such at driving forward, rotating or transforming. It also stores
+ * all of the important constants.
+ * 
+ * @author Connor Fowlie
+ * @author David Castonguay
+ * @author Lucas Bluethner
+ * @version Final 1.0.5
+ * 
+ */
 public class DriveManager {
 
 	// Singleton Object
@@ -89,13 +100,7 @@ public class DriveManager {
 
 	public static boolean TEAM; // TRUE == red, FALSE == green
 
-	/**
-	 * 
-	 * Values to be used as a replacement of red and green, instead we use
-	 * "T12_FLAG"
-	 * 
-	 */
-
+	// T12_FLAG is tells us which colour we need to search for, found from OG or OR
 	public static int T12_FLAG;
 
 	public static int T12_SC;
@@ -104,18 +109,10 @@ public class DriveManager {
 	public static int T12_SLLy;
 	public static int T12_SURx;
 	public static int T12_SURy;
-
-	/**
-	 * TODO: All of these values need to be assigned and attributed in the
-	 * CourseFollowing class The way we assign them will be with the wifi program
-	 * which will have a "get" method to call the values
-	 * 
-	 */
-
 	public static int trackState = 0;
 
 	/*
-	 * Setup Drivemanager threads
+	 * Setup DriveManager threads
 	 */
 	private DriveManager() throws OdometerExceptions {
 		setThread((new Thread() {
@@ -123,21 +120,25 @@ public class DriveManager {
 				try {
 					DriveManager.driveThread.run();
 				} catch (InterruptedException | OdometerExceptions e) {
-					// TODO Auto-generated catch block
+					// Auto-generated catch block
 				}
 			}
 		}));
 	}
 
-	/*
-	 * Starts the drive thread
+	/**
+	 * Starts the drive thread.
 	 */
 	public void start() {
 		this.getThread().start();
 	}
 
-	/*
-	 * Gets the drive manager instance. Use this to access drive manager
+	/**
+	 * Gets the drive manager instance, this is used to access drive manager and
+	 * helps prevent more than one instance of the drive manager.
+	 * 
+	 * @return
+	 * @throws OdometerExceptions
 	 */
 	public static DriveManager getInstance() throws OdometerExceptions {
 		if (sharedManager == null) {
@@ -147,9 +148,11 @@ public class DriveManager {
 	}
 
 	/**
-	 * This method causes the robot to turn (on point) by amount theta
+	 * This method causes the robot to turn (on point) by amount theta.
 	 * 
 	 * @param theta
+	 *            angle to turn by in degrees; positive angle turns clockwise,
+	 *            negative angle turns counter-clockwise
 	 * @throws OdometerExceptions
 	 */
 	public void turnBy(double theta) throws OdometerExceptions {
@@ -160,7 +163,7 @@ public class DriveManager {
 	}
 
 	/**
-	 * This method causes the robot to travel forward by a distance (cm)
+	 * This method causes the robot to travel forward by a distance (in cm)
 	 * 
 	 * @param dist
 	 * @throws OdometerExceptions
@@ -172,16 +175,11 @@ public class DriveManager {
 		return;
 	}
 
-	public void forwardBySlow(double dist) throws OdometerExceptions {
-		setRotSpd();
-		getLeftMotor().rotate(DriveManager.convertDistance(dist), true);
-		getRightMotor().rotate(DriveManager.convertDistance(dist), false);
-		return;
-	}
-
-	/*
-	 * Gets the current track width because our robot has different track widths
-	 * depending on stage state.
+	/**
+	 * This methods tells us what the current track with is depending on which state
+	 * the robot is in, transformed state or not.
+	 * 
+	 * @return current track width
 	 */
 	public static double widthCheck() {
 		if (trackState == 0) {
@@ -192,8 +190,9 @@ public class DriveManager {
 
 	}
 
-	/*
-	 * Causes the robot to transform from its current state to the other
+	/**
+	 * This method cause the robots track to expand or contract depending on what
+	 * state it is in already.
 	 */
 	public void transform() {
 		if (trackState == 1) {
@@ -214,10 +213,14 @@ public class DriveManager {
 			trackState = 1;
 		}
 	}
-	
-	
+
+	/**
+	 * This method cause the robot to beep 6 times, it is used if the robot has to
+	 * abandon flag search.
+	 * 
+	 * @throws InterruptedException
+	 */
 	public void beep6() throws InterruptedException {
-		
 		Sound.beep();
 		Thread.sleep(200);
 		Sound.beep();
@@ -230,18 +233,13 @@ public class DriveManager {
 		Thread.sleep(200);
 		Sound.beep();
 		Thread.sleep(200);
-		
-		
 	}
 
 	/**
 	 * Returns the proper starting corner information.
 	 * 
 	 * @return
-	 * 
-	 * 
 	 */
-
 	public double[] startCornerLoc() {
 		double[] loc = new double[5];
 		if (T12_SC == 0) {
@@ -278,7 +276,8 @@ public class DriveManager {
 	/**
 	 * This method causes the robot to turn towards an explicit heading
 	 * 
-	 * @param heading
+	 * @param headingT
+	 *            angle heading the robot must turn to
 	 * @throws OdometerExceptions
 	 */
 	public void turnTo(double headingT) throws OdometerExceptions {
@@ -358,9 +357,14 @@ public class DriveManager {
 
 	}
 
-	/*
-	 * Travels to an X and Y position by traveling X first and then Y, along grid
-	 * lines
+	/**
+	 * Travels to the given x and y coordinated by traveling in the x direction
+	 * first and then Y.
+	 * 
+	 * @param x
+	 * @param y
+	 * @throws OdometerExceptions
+	 * @throws InterruptedException
 	 */
 	public void travelToGrid(double x, double y) throws OdometerExceptions, InterruptedException {
 		SensorManager sensorManager = SensorManager.getInstance();
@@ -384,17 +388,9 @@ public class DriveManager {
 	}
 
 	/**
-	 * This method causes the robot to travel to the absolute field location (x,y),
-	 * specified in tile points.
+	 * This method stops the motors controlling the wheels to stop rotating.
 	 * 
-	 * @param xDist
-	 *            the distance to travel in the x direction
-	 * @param y
 	 * @throws OdometerExceptions
-	 */
-
-	/*
-	 * Stops all motors
 	 */
 	public void stopAll() throws OdometerExceptions {
 		getLeftMotor().stop(true);
@@ -411,35 +407,44 @@ public class DriveManager {
 		return getLeftMotor().isMoving() && getRightMotor().isMoving();
 	}
 
-	/*
-	 * Convert distance in cm to motor rotation
+	/**
+	 * Converts a distance in cm to motor rotation.
+	 * 
+	 * @param distance
+	 * @return
 	 */
 	public static int convertDistance(double distance) {
 		double radius = DriveManager.WHEEL_RAD;
 		return (int) ((180.0 * distance) / (Math.PI * radius));
 	}
 
-	/*
-	 * Convert and angle
+	/**
+	 * Takes in and angle and converts it to a rotational distance.
+	 * 
+	 * @param angle
+	 * @return
 	 */
 	public static int convertAngle(double angle) {
 		double width = widthCheck();
 		return convertDistance(Math.PI * width * angle / 360.0);
 	}
 
-	/*
-	 * Drive strait correction
+	/**
+	 * This method drives forward until a black line is detected, and used it to
+	 * straighten out the robots trajectory.
+	 * 
+	 * @throws InterruptedException
+	 * @throws OdometerExceptions
 	 */
 	public void lineLocWait() throws InterruptedException, OdometerExceptions {
 
 		SensorManager sensorManager = SensorManager.getInstance();
 		setRotSpd();
 
-		// wait until black line hits one of the two light sensors
+		// Drive forward until a black line is detected by one of the two light sensors
 		while (sensorManager.getLine() == 0) {
 			leftMotor.forward();
 			rightMotor.forward();
-			
 		}
 
 		switch (sensorManager.getLine()) {
@@ -481,189 +486,31 @@ public class DriveManager {
 
 	}
 
-	public void lineLocWaitDrive(double x, double y) throws InterruptedException, OdometerExceptions {
-
-		SensorManager sensorManager = SensorManager.getInstance();
-		setRotSpd();
-
-		double position[] = sensorManager.getOdometer().getXYT();
-		double currentX = position[0];
-		double currentY = position[1];
-		double currentT = position[2];
-
-		double dX = 100;
-		double dY = 100;
-
-		while (Math.abs(dX) > 1.5*TILE_SIZE) {
-			position = sensorManager.getOdometer().getXYT();
-			currentX = position[0];
-			currentY = position[1];
-			currentT = position[2];
-
-			dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
-												// direction
-			dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
-
-			double headingT = Math.toDegrees(Math.atan2(dX, 0.001)); // Calculate the angle the robot need to turn to
-																		// and
-
-			double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
-
-			// This makes sure the robot always turns the smaller angle
-			if (theta < -180) {
-				theta += 360;
-			} else if (theta > 180) {
-				theta -= 360;
-			}
-			// Turn by theta degrees so that the robot is facing the direction is needs to
-			// go
-			turnBy(theta);
-			// This makes sure the robot always turns the smaller angle
-
-			// wait until black line hits one of the two light sensors
-			while (sensorManager.getLine() == 0) {
-
-				leftMotor.forward();
-				rightMotor.forward();
-			}
-
-			switch (sensorManager.getLine()) {
-			case 1: // Left line
-				leftMotor.stop(true);
-				setSLRotSpd();
-				while (sensorManager.getLine() != 2) {
-					rightMotor.forward();
-					
-				}
-				rightMotor.rotate(10);
-				break;
-			case 2: // Right line
-				rightMotor.stop(true);
-				setSLRotSpd();
-				while (sensorManager.getLine() != 1) {
-					leftMotor.forward();
-					
-				}
-				leftMotor.rotate(10);
-				break;
-			case 3: // Both lines
-				break;
-			}
-
-			
-
-			if (OdometerData.roundToNearest90() == 0) {
-				sensorManager.getOdometer().setTheta(0);
-			} else if (OdometerData.roundToNearest90() == 1) {
-				sensorManager.getOdometer().setTheta(90);
-			} else if (OdometerData.roundToNearest90() == 2) {
-				sensorManager.getOdometer().setTheta(180);
-			} else {
-				sensorManager.getOdometer().setTheta(270);
-			}
-			setRotSpd();
-			forwardBy(10);
-
-		}
-
-		travelTo(dX, currentY, true);
-
-		position = sensorManager.getOdometer().getXYT();
-		currentX = position[0];
-		currentY = position[1];
-		currentT = position[2];
-
-		dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
-											// direction
-		dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
-											// direction
-
-		double headingT = Math.toDegrees(Math.atan2(0.001, dY)); // Calculate the angle the robot need to turn to and
-
-		double theta = headingT - currentT; // Calculate the angle the robot has to actually turn
-
-		// This makes sure the robot always turns the smaller angle
-		if (theta < -180) {
-			theta += 360;
-		} else if (theta > 180) {
-			theta -= 360;
-		}
-		// Turn by theta degrees so that the robot is facing the direction is needs to
-		// go
-		turnBy(theta);
-
-		while (Math.abs(dY) > 1.5) {
-			position = sensorManager.getOdometer().getXYT();
-			currentX = position[0];
-			currentY = position[1];
-			currentT = position[2];
-
-			dX = (TILE_SIZE * x) - currentX; // Calculate the distance the robot has left to travel in the x
-												// direction
-			dY = (TILE_SIZE * y) - currentY; // Calculate the distance the robot has left to travel in the y
-												// direction
-
-			// wait until black line hits one of the two light sensors
-			while (sensorManager.getLine() == 0) {
-				leftMotor.forward();
-				rightMotor.forward();
-
-			}
-
-			switch (sensorManager.getLine()) {
-			case 1: // Left line
-				leftMotor.stop(true);
-				setSLRotSpd();
-				while (sensorManager.getLine() != 2) {
-					rightMotor.forward();
-
-				}
-				break;
-			case 2: // Right line
-				rightMotor.stop(true);
-				setSLRotSpd();
-				while (sensorManager.getLine() != 1) {
-					leftMotor.forward();
-
-				}
-			case 3: // Both lines
-				break;
-			}
-
-			leftMotor.stop(true);
-			rightMotor.stop(false);
-
-			if (OdometerData.roundToNearest90() == 0) {
-				sensorManager.getOdometer().setTheta(0);
-			} else if (OdometerData.roundToNearest90() == 1) {
-				sensorManager.getOdometer().setTheta(90);
-			} else if (OdometerData.roundToNearest90() == 2) {
-				sensorManager.getOdometer().setTheta(180);
-			} else {
-				sensorManager.getOdometer().setTheta(270);
-			}
-			setRotSpd();
-
-			forwardBy(10);
-		}
-
-		travelTo(currentX, dY, true);
-
-	}
-
 	// MARK: Speed
 
-	public void setRotSpd() { // setting wheels to a slower rotating speed
+	/**
+	 * This method sets the wheel motors speed to a slower speed suitable for
+	 * rotating on point.
+	 */
+	public void setRotSpd() {
 		leftMotor.setSpeed(DriveManager.ROTATE_SPEED);
 		rightMotor.setSpeed(DriveManager.ROTATE_SPEED);
 	}
 
-	public void setSLRotSpd() { // setting wheels to a slower rotating speed
+	/**
+	 * This method sets the wheel motors speed to a slower speed suitable for line
+	 * localization.
+	 */
+	public void setSLRotSpd() {
 		leftMotor.setSpeed(DriveManager.SL_ROTATE_SPEED);
 		rightMotor.setSpeed(DriveManager.SL_ROTATE_SPEED);
 	}
 
-	public void setDriveSpd() { // setting wheels to a faster forward speed
+	/**
+	 * This method sets the wheel motors to a speed suitable for driving in a
+	 * straight line.
+	 */
+	public void setDriveSpd() {
 		leftMotor.setSpeed(DriveManager.FWD_SPEED);
 		rightMotor.setSpeed(DriveManager.FWD_SPEED);
 	}
@@ -671,6 +518,8 @@ public class DriveManager {
 	// MARK: Field Encapsulation
 
 	/**
+	 * Returns the instance of leftMotor.
+	 * 
 	 * @return the leftMotor
 	 */
 	public EV3LargeRegulatedMotor getLeftMotor() {
@@ -678,6 +527,8 @@ public class DriveManager {
 	}
 
 	/**
+	 * Returns the instance of rightMotor.
+	 * 
 	 * @return the rightMotor
 	 */
 	public EV3LargeRegulatedMotor getRightMotor() {
@@ -685,6 +536,7 @@ public class DriveManager {
 	}
 
 	/**
+	 * Returns the instance of leftUpMotor.
 	 * 
 	 * @return the leftUpMotor
 	 */
@@ -693,6 +545,8 @@ public class DriveManager {
 	}
 
 	/**
+	 * Returns the instance of rightUpMotor.
+	 * 
 	 * @return the rightUpMotor
 	 */
 	public EV3LargeRegulatedMotor getRightUpMotor() {
@@ -700,6 +554,8 @@ public class DriveManager {
 	}
 
 	/**
+	 * Returns the instance of the DriveThread
+	 * 
 	 * @return the driveThread
 	 */
 	public DriveThread getDriveThread() {
@@ -707,6 +563,8 @@ public class DriveManager {
 	}
 
 	/**
+	 * Sets to the driveThead given
+	 * 
 	 * @param driveThread
 	 *            the driveThread to set
 	 */

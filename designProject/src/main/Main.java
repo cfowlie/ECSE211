@@ -9,13 +9,24 @@ import odometer.OdometerExceptions;
 
 import util.*;
 
+/**
+ * Main class which contains the main method.
+ * 
+ * @author Connor Fowlie
+ * @author David Castonguay
+ * @author Lucas Bluethner
+ * @version Final 1.0.5
+ * 
+ */
 public class Main {
 
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
-	
 	/**
-	 * 
+	 * This is the main method where instances and threads for DriveManager and
+	 * SensorManager are created, Threads are created for the odometry and display,
+	 * and the order of operations is decided depending on whether we are the Red
+	 * Team or the Green Team.
 	 * 
 	 * @param args
 	 * @throws OdometerExceptions
@@ -38,8 +49,8 @@ public class Main {
 		// Localizers
 		final UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer();
 		final LightLocalizer lightLocalizer = new LightLocalizer();
-		
-		//sections of the process 
+
+		// sections of the process
 		final CourseFollowing courseFollowing = new CourseFollowing();
 		final BlockSearch blockSearch = new BlockSearch();
 		final Wifi wifi = new Wifi();
@@ -50,9 +61,6 @@ public class Main {
 			@Override
 			public void run() throws InterruptedException, OdometerExceptions {
 
-				
-		
-				
 				// transfers all the data from the wifi server into the robot
 				wifi.transmit();
 
@@ -61,26 +69,24 @@ public class Main {
 
 				// Light localize
 				lightLocalizer.findOrigin();
-				
-				// if red team:
-				// traverse the bridge first,
-				// then search for target block
-				// then traverse the tunnel
-				// finally, go back to start corner
-				if(DriveManager.TEAM) {
+
+				/*
+				 * if red team: traverse the bridge first, then search for target block then
+				 * traverse the tunnel finally, go back to start corner
+				 */
+				if (DriveManager.TEAM) {
 					courseFollowing.traverseBridge();
-					//blockSearch.search();
+					// blockSearch.search();
 					driveManager.beep6();
 					courseFollowing.traverseTunnel();
 					courseFollowing.travelToStartCorner();
-				// if green team:
-				// traverse the tunnel first,
-				// then search for target block
-				// then traverse the bridge
-				// finally, go back to start corner
+					/*
+					 * if green team: traverse the tunnel first, then search for target block then
+					 * traverse the bridge finally, go back to start corner
+					 */
 				} else {
 					courseFollowing.traverseTunnel();
-					//blockSearch.search();
+					// blockSearch.search();
 					driveManager.beep6();
 					courseFollowing.traverseBridge();
 					courseFollowing.travelToStartCorner();
@@ -95,9 +101,9 @@ public class Main {
 			}
 		});
 
-		Thread.sleep(2500); // Wait to make sure all threads have initialzed before starting drive code
+		Thread.sleep(2500); // Wait to make sure all threads have initialized before starting drive code
 
-		// Start Drive Thread Async
+		// Start Drive Thread asynchronously
 		driveManager.start();
 
 		Button.waitForAnyPress(); // Wait to exit program

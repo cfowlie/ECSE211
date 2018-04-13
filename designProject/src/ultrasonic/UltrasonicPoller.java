@@ -3,12 +3,9 @@ package ultrasonic;
 import lejos.robotics.SampleProvider;
 
 /**
- * Control of the wall follower is applied periodically by the UltrasonicPoller
- * thread. The while loop at the bottom executes in a loop. Assuming that the
- * us.fetchSample, and cont.processUSData methods operate in about 20mS, and
- * that the thread sleeps for 50 mS at the end of each loop, then one cycle
- * through the loop is approximately 70 mS. This corresponds to a sampling rate
- * of 1/70mS or about 14 Hz.
+ * This class is where the Ultrasonic data is read from the sensor and stored.
+ * 
+ * @author Connor Fowlie
  */
 public class UltrasonicPoller extends Thread implements Runnable {
 	private SampleProvider us;
@@ -38,14 +35,19 @@ public class UltrasonicPoller extends Thread implements Runnable {
 			} // Poor man's timed sampling
 		}
 	}
-	
+
+	/**
+	 * @return distance read by the ultrasonic sensor as an int.
+	 */
 	public int getDistance() {
 		return (int) this.distance;
 	}
+
+	/**
+	 * @return distance read by the ultrasonic sensor as an double.
+	 */
 	public double getDistanceD() {
 		return this.distance;
 	}
-
-
 
 }

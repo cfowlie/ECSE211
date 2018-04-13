@@ -6,6 +6,9 @@
  * @author Derek Yu
  * @author Karim El-Baba
  * @author Michael Smith
+ * @author David Castonguay
+ * @author Connor Fowlie
+ * @author Lucas Bluethner
  */
 
 package odometer;
@@ -16,8 +19,6 @@ import main.DriveManager;
 import main.SensorManager;
 
 public class Odometer extends OdometerData implements Runnable {
-	
-	
 
 	static Odometer odo = null; // Returned as singleton
 
@@ -64,17 +65,18 @@ public class Odometer extends OdometerData implements Runnable {
 	 */
 	public synchronized static Odometer getOdometer() throws OdometerExceptions {
 		DriveManager driveManager = DriveManager.getInstance();
-		
+
 		if (odo != null) { // Return existing object
 			return odo;
 		} else { // create object and return it
-			odo = new Odometer(driveManager.getLeftMotor(), driveManager.getRightMotor(), driveManager.widthCheck(), driveManager.WHEEL_RAD);
+			odo = new Odometer(driveManager.getLeftMotor(), driveManager.getRightMotor(), driveManager.widthCheck(),
+					driveManager.WHEEL_RAD);
 			return odo;
 		}
 	}
 
 	/**
-	 * This method is where the logic for the odometer will run. Use the methods
+	 * This method is where the logic for the odometer runs. It uses the methods
 	 * provided from the OdometerData class to implement the odometer.
 	 */
 	// run method (required for Thread)
@@ -86,7 +88,7 @@ public class Odometer extends OdometerData implements Runnable {
 
 			double leftInstantTacho = leftMotor.getTachoCount();
 			double rightInstantTacho = rightMotor.getTachoCount();
-			
+
 			double dL = leftInstantTacho - leftMotorTachoCount;
 			double dR = rightInstantTacho - rightMotorTachoCount;
 
@@ -118,11 +120,7 @@ public class Odometer extends OdometerData implements Runnable {
 					// there is nothing to be done
 				}
 			}
-		}		
+		}
 	}
-	
-	
-	
-	
 
 }

@@ -16,10 +16,8 @@ import main.SensorManager;
  * @author Michael Smith
  */
 
-public class OdometerData  {
+public class OdometerData {
 
-	
-	
 	// Position parameters
 	private volatile double x; // x-axis position
 	private volatile double y; // y-axis position
@@ -219,25 +217,19 @@ public class OdometerData  {
 			lock.unlock();
 		}
 	}
+
 	public static int roundToNearest90() {
 		double realT = Odometer.position[2];
-		
-		if(realT >=225 && realT <315) {
+
+		if (realT >= 225 && realT < 315) {
 			return 3;
-		}
-		else if(realT >=45 && realT <135) {
+		} else if (realT >= 45 && realT < 135) {
 			return 1;
-		}
-		else if(realT >=135 && realT <225) {
+		} else if (realT >= 135 && realT < 225) {
 			return 2;
-		}
-		else {
+		} else {
 			return 0;
 		}
 	}
-	
-	
-	
-	
 
 }
